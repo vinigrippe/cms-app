@@ -1,5 +1,5 @@
 import React from "react";
-import elementsList from "../../elementList.json";
+import elementsList from "@/utils/elementList.json";
 
 const SideBarElements = () => {
   return (

@@ -1,5 +1,5 @@
-import PageEditor from "./components/pageEditor/pageEditor";
-import SideBarElements from "./components/sideBarElements/sideBarElements";
+import PageEditor from "./pageEditor/pageEditor";
+import SideBarElements from "./sideBarElements/sideBarElements";
 
 function Editor() {
   return (

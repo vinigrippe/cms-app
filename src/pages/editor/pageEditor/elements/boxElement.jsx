@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { DropComponent } from "../../../../../../../utils/dropElement";
+import { DropComponent } from "@/utils/dropElement";
 
-import { BoxElementContext } from "../gridElement";
+import { BoxElementContext } from "./gridElement";
 
-import elementsList from "../../../../../elementList.json";
-import { generateId } from "../../../functions";
-import { ContextMenu } from "./contextMenu";
+import elementsList from "@/utils/elementList.json";
+import { generateId } from "@/utils/functions";
+import { ContextMenu } from "../contextMenu/contextMenu";
 
-import { ButtonElement } from "../../elements/buttonElement";
-import { HeadingElement } from "../../elements/headingElement";
-import { TextElement } from "../../elements/textElement";
-import { ImageElement } from "../../elements/imageElement";
-import { VideoElement } from "../../elements/videoElement";
+import { ButtonElement } from "./buttonElement";
+import { HeadingElement } from "./headingElement";
+import { TextElement } from "./textElement";
+import { ImageElement } from "./imageElement";
+import { VideoElement } from "./videoElement";
+import { LineElement } from "./lineElement";
 
 export function BoxElement() {
   const { gridIndex, gridElements, setGridElements, boxIndex, boxElement } =
@@ -20,6 +21,10 @@ export function BoxElement() {
 
   const [displayContextMenu, setDisplayContextMenu] = useState(false);
   const [event, setEvent] = useState({ clientX: 0, clientY: 0 });
+  const [gridOnFocus, setGridOnFocus] = useState({
+    id: "",
+    element: null,
+  });
   const [boxOnFocus, setBoxOnFocus] = useState(null);
   const [elementOnFocus, setElementOnFocus] = useState({
     id: "",
@@ -54,6 +59,7 @@ export function BoxElement() {
     setDisplayContextMenu(true);
     setElementOnFocus({ type: "", element: null, id: "", style: "" });
     setBoxOnFocus(null);
+    setGridOnFocus({ element: null, id: "" });
 
     const element = e.target?.closest("[data-type]");
 
@@ -75,6 +81,11 @@ export function BoxElement() {
 
     if (boxElement) {
       setBoxOnFocus(boxElement);
+    }
+
+    const gridElement = e.target.closest("[data-grid='grid']");
+    if (gridElement) {
+      setGridOnFocus({ element: gridElement, id: gridElement.id });
     }
   };
 
@@ -142,11 +153,26 @@ export function BoxElement() {
     setGridElements(cloneBoxElements);
   };
 
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    userSelect: "none",
+    background: isDragging ? "#fff" : " ",
+    outline: isDragging ? "2px solid #3b82f6" : "2px solid transparent",
+    borderRadius: isDragging ? "0.25rem" : "0px",
+    outlineOffset: "3px",
+    marginBottom: "0.5rem",
+    ...draggableStyle,
+  });
+
+  const getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? "#f8fafc" : " ",
+    position: "relative",
+  });
+
   return (
     <>
       <div
         id={boxElement.id}
-        className="editor h-full relative group/box"
+        className="h-full relative group/box"
         onContextMenu={(e) => handleContextMenu(e)}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
@@ -164,14 +190,15 @@ export function BoxElement() {
         ) : (
           <DragDropContext onDragEnd={handleDragEnd}>
             <DropComponent id="droppable">
-              {(provided) => (
+              {(provided, snapshot) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
                   data-grid="box"
                   onDragOver={(e) => handleDragOver(e)}
                   onDragLeave={(e) => handleDragLeave(e)}
-                  className="flex flex-col gap-2 w-full h-full border-2 p-3 border-transparent border-dashed rounded-lg group-hover/box:border-slate-200"
+                  className="flex flex-col w-full h-full border-2 p-3 border-transparent border-dashed rounded-lg group-hover/box:border-slate-200"
                 >
                   {gridElements[gridIndex].boxes[boxIndex].elements.map(
                     (element, index) => (
@@ -180,13 +207,17 @@ export function BoxElement() {
                         draggableId={element.id.toString()}
                         index={index}
                       >
-                        {(provided) => (
+                        {(provided, snapshot) => (
                           <div
                             {...provided.draggableProps}
                             data-grid="element"
                             className="flex items-center gap-1 group/element w-full"
                             id={element.id}
                             ref={provided.innerRef}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
                           >
                             <div
                               {...provided.dragHandleProps}
@@ -199,6 +230,7 @@ export function BoxElement() {
                                 button: <ButtonElement />,
                                 image: <ImageElement id={element.id} />,
                                 video: <VideoElement id={element.id} />,
+                                line: <LineElement />,
                               }[element.type]
                             }
                           </div>
@@ -206,6 +238,7 @@ export function BoxElement() {
                       </Draggable>
                     )
                   )}
+                  {provided.placeholder}
                 </div>
               )}
             </DropComponent>
@@ -231,6 +264,7 @@ export function BoxElement() {
           event={event}
           elementOnFocus={elementOnFocus}
           boxOnFocus={boxOnFocus}
+          gridOnFocus={gridOnFocus}
         />
       )}
     </>

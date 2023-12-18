@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { GridElement } from "./components/sections/gridElement";
-import { generateId } from "./functions";
+import { GridElement } from "./elements/gridElement";
+import { generateId } from "@/utils/functions";
 
-import defaultAle from "../../defaultAle.json";
+// import defaultAle from "@/utils/defaultAle.json";
 import "./pageEditor.css";
 
 function PageEditor() {

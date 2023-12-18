@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const ButtonElement = () => {
   const refButtonEl = useRef(null);
+
   const [isFocused, setIsFocused] = useState(false);
 
   const [value, setValue] = useState("");
@@ -21,17 +22,17 @@ export const ButtonElement = () => {
   }, [refButtonEl]);
 
   return (
-    <span ref={refButtonEl} className="relative">
-      <input
-        data-type="button"
-        data-style="primary-button"
-        type="text"
-        size="10"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Button"
-        onClick={() => setIsFocused(true)}
-      />
+    <span ref={refButtonEl} className="w-full relative">
+      <label data-value={value} data-type="button" data-style="primary-button">
+        <input
+          type="text"
+          size="10"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Button"
+          onClick={() => setIsFocused(true)}
+        />
+      </label>
 
       {isFocused && (
         <div className="absolute z-[10] mt-1 bg-white rounded-lg border shadow-lg py-3 px-4 w-[200px] flex flex-col gap-1">
