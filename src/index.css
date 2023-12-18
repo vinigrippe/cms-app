@@ -16,47 +16,9 @@ body {
   font-size: 1em;
 }
 
-textarea.textareaEditor {
+input,
+textarea,
+button {
   outline: none;
   all: unset;
-  width: 100%;
-  overflow: hidden;
-  resize: none;
-  border: 2px solid transparent;
-  border-radius: 0.3em;
-  transition: all 0.2s ease-in-out;
-  padding: 0 0.2em;
-  margin: 0 -0.2em;
-}
-
-textarea.textareaEditor:focus {
-  border: 2px solid theme("colors.blue.600");
-}
-
-textarea.textareaEditor.heading {
-  font-size: 1.7em;
-  font-weight: 600;
-}
-
-textarea.textareaEditor.text {
-  font-size: 1.2em;
-  font-weight: 400;
-}
-
-input.textareaEditor.button {
-  outline: none;
-  all: unset;
-  width: auto;
-  min-width: 100px;
-  text-align: center;
-  resize: none;
-  border-radius: 0.6em;
-  background-color: black;
-  color: white;
-  padding: 0.7em 1.3em;
-  transition: all 0.2s ease-in-out;
-}
-
-input.textareaEditor.button:hover {
-  background-color: theme("colors.blue.700");
 }

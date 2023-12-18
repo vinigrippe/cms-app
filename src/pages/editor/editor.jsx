@@ -1,6 +1,5 @@
 import PageEditor from "./components/pageEditor/pageEditor";
 import SideBarElements from "./components/sideBarElements/sideBarElements";
-import "./editor.css";
 
 function Editor() {
   return (

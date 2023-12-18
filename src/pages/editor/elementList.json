@@ -1,0 +1,33 @@
+[
+  {
+    "id": 3,
+    "title": "Heading",
+    "icon": "mgc_text_2_line",
+    "type": "heading"
+  },
+  {
+    "id": 1,
+    "title": "Text",
+    "icon": "mgc_textbox_line",
+    "type": "text"
+  },
+  {
+    "id": 2,
+    "title": "Button",
+    "icon": "mgc_bling_line",
+    "type": "button"
+  },
+
+  {
+    "id": 5,
+    "title": "Image",
+    "icon": "mgc_pic_line",
+    "type": "image"
+  },
+  {
+    "id": 6,
+    "title": "Video",
+    "icon": "mgc_video_line",
+    "type": "video"
+  }
+]

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import "./themeSystem.css";
 import "./icons/mingcute/MingCute.css";
 import Editor from "./pages/editor/editor";
 import reportWebVitals from "./reportWebVitals";

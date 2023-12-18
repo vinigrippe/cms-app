@@ -1,0 +1,76 @@
+input[type="text"] {
+  width: calc(100% - 1em - 4px);
+  border-radius: 0.6em;
+  background-color: WHITE;
+  color: theme("colors.slate.500");
+  border: 2px solid theme("colors.slate.200");
+  padding: 0.25rem 0.5rem;
+  transition: all 0.4s ease;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+}
+
+input[type="text"]:focus {
+  outline-offset: 1px;
+  outline: 2px solid theme("colors.blue.600");
+}
+
+button,
+[data-type="button-element"] {
+  border-radius: 0.6em;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 2px solid transparent;
+}
+
+[data-type="button-element"] {
+  background-color: theme("colors.white");
+  color: theme("colors.slate.600");
+  border-color: theme("colors.slate.200");
+}
+
+[data-type="button-element"]:hover {
+  background-color: theme("colors.white");
+  border-color: theme("colors.blue.600");
+}
+
+button[data-type="primary"] {
+  background-color: theme("colors.blue.600");
+  color: WHITE;
+}
+
+button[data-type="primary"]:hover {
+  background-color: theme("colors.blue.700");
+}
+
+button[data-type="ghost"] {
+  background-color: theme("colors.slate.200");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="ghost"]:hover {
+  background-color: theme("colors.slate.300");
+}
+
+button[data-type="dropdown"] {
+  background-color: theme("colors.white");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="dropdown"]:hover {
+  background-color: theme("colors.slate.100");
+}
+button[data-type="dropdown"][data-active="true"] {
+  background-color: theme("colors.slate.100");
+}
+
+button[data-color="danger"]:hover,
+button[data-color="danger"]:hover > span::before {
+  color: theme("colors.rose.600");
+  background-color: theme("colors.rose.50");
+}
