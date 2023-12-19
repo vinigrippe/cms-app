@@ -12,6 +12,24 @@
               "text": "Transformo negócios através da criação de marcas poderosas."
             },
             "style": "heading-three"
+          },
+          {
+            "id": "grid_b14hnbjsk_170285838348tt",
+            "boxes": [
+              {
+                "id": "box_8ucj5do2j_1702858488124tt",
+                "elements": [
+                  {
+                    "id": "heading_uxvay0i92_1702858493690tt",
+                    "type": "heading",
+                    "fields": {
+                      "text": "Transformo negócios através da criação de marcas poderosas."
+                    },
+                    "style": "heading-three"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -220,56 +238,6 @@
             "type": "line",
             "style": "",
             "fields": {}
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "grid_nkwhrgwty_1702858930786",
-    "boxes": [
-      {
-        "id": "box_0cwn2tup0_1702858930786",
-        "elements": [
-          {
-            "id": "heading_fzu7hihca_1702858935654",
-            "type": "heading"
-          },
-          {
-            "id": "text_r27uji9en_1702858951924",
-            "type": "text"
-          }
-        ]
-      },
-      {
-        "id": "box_fcm4nek8i_1702858960694",
-        "elements": [
-          {
-            "id": "heading_fzu7hihca_1702858935654",
-            "type": "heading"
-          },
-          {
-            "id": "text_r27uji9en_1702858951924",
-            "type": "text"
-          }
-        ]
-      },
-      {
-        "id": "box_vrawnp2mz_1702858963191",
-        "elements": [
-          {
-            "id": "heading_fzu7hihca_1702858935654",
-            "type": "heading",
-            "fields": {
-              "text": "Design de Mídias Sociais"
-            }
-          },
-          {
-            "id": "text_r27uji9en_1702858951924",
-            "type": "text",
-            "fields": {
-              "text": "Suas redes sociais devem ser tão impactante quanto o resto da sua marca.\n\nCriamos templates e destaques para o Instagram e outras plataformas, garantindo uma presença online coesa e alinhada com a identidade visual elaborada."
-            }
           }
         ]
       }

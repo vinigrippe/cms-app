@@ -1,14 +1,11 @@
 import { useContext, useLayoutEffect, useRef } from "react";
-import { getIndexes } from "../pageEditorService";
 import { PageEditorContext } from "../pageEditor";
 import { handleAutoResize } from "@/utils/functions";
+import { getElement } from "../pageEditorService";
 
 export const HeadingElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
-    gridElements,
-    id
-  );
+  const element = getElement(gridElements, id);
 
   const refText = useRef(null);
   const value = element.fields.text;
@@ -22,9 +19,7 @@ export const HeadingElement = ({ id }) => {
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
+        elementId: id,
         change: {
           field: "fields",
           value: { text: e.target.value || "" },

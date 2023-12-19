@@ -40,5 +40,20 @@
     "icon": "mgc_video_line",
     "type": "video",
     "style": ""
+  },
+
+  {
+    "id": 7,
+    "title": "Grid",
+    "icon": "mgc_layout_line",
+    "type": "grid",
+    "style": ""
+  },
+  {
+    "id": 8,
+    "title": "Box",
+    "icon": "mgc_square_line",
+    "type": "box",
+    "style": ""
   }
 ]

@@ -85,8 +85,8 @@ function PageEditor() {
           {gridElements.map((gridElement, gridIndex) => (
             <GridElement
               key={gridElement.id}
-              gridElement={gridElement}
-              gridIndex={gridIndex}
+              id={gridElement.id}
+              index={gridIndex}
             />
           ))}
 

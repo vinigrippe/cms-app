@@ -30,9 +30,7 @@ export const EditElement = () => {
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
+        elementId: element.id,
         change: {
           field: "style",
           value: style.class,

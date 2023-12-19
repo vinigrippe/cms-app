@@ -1,13 +1,10 @@
 import React, { useContext } from "react";
 import { PageEditorContext } from "../pageEditor";
-import { getIndexes } from "../pageEditorService";
+import { getElement } from "../pageEditorService";
 
 export const VideoElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
-    gridElements,
-    id
-  );
+  const element = getElement(gridElements, id);
 
   const selectedVideo = element.fields.src;
 
@@ -17,9 +14,7 @@ export const VideoElement = ({ id }) => {
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
+        elementId: id,
         change: {
           field: "fields",
           value: { src: url },

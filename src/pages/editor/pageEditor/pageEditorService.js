@@ -27,30 +27,40 @@ export function reducer(state, action) {
       });
 
     case "ADD_ELEMENT":
-      return state.map((grid, index) => {
-        if (index === action.payload.gridIndex) {
-          return {
-            ...grid,
-            boxes: grid.boxes.map((box, boxIndex) => {
-              if (boxIndex === action.payload.boxIndex) {
-                return {
-                  ...box,
-                  elements: [
-                    ...box.elements.slice(0, action.payload.elementIndex),
-                    action.payload.newElement,
-                    ...box.elements.slice(action.payload.elementIndex),
-                  ],
-                };
-              } else {
-                return box;
-              }
-            }),
-          };
-        } else {
-          return grid;
-        }
-      });
+      const replaceElement = (elements, newElement) => {
+        return elements.map((element) => {
+          if (element.id === action.payload.elementId) {
+            return newElement;
+          } else if (element.elements) {
+            return {
+              ...element,
+              elements: replaceElement(element.elements, newElement),
+            };
+          } else if (element.boxes) {
+            return {
+              ...element,
+              boxes: element.boxes.map((box) => ({
+                ...box,
+                elements: replaceElement(box.elements, newElement),
+              })),
+            };
+          } else {
+            return element;
+          }
+        });
+      };
 
+      return state.map((grid) => {
+        return {
+          ...grid,
+          boxes: grid.boxes.map((box) => {
+            return {
+              ...box,
+              elements: replaceElement(box.elements, action.payload.newElement),
+            };
+          }),
+        };
+      });
     case "CHANGE_ELEMENT":
       return state.map((grid, index) => {
         if (index === action.payload.gridIndex) {
@@ -82,34 +92,42 @@ export function reducer(state, action) {
       });
 
     case "UPDATE_ELEMENT":
-      return state.map((grid, index) => {
-        if (index === action.payload.gridIndex) {
-          return {
-            ...grid,
-            boxes: grid.boxes.map((box, boxIndex) => {
-              if (boxIndex === action.payload.boxIndex) {
-                return {
-                  ...box,
-                  elements: box.elements.map((element, elementIndex) => {
-                    if (elementIndex === action.payload.elementIndex) {
-                      const attr = action.payload.change;
-                      return {
-                        ...element,
-                        [attr.field]: attr.value,
-                      };
-                    } else {
-                      return element;
-                    }
-                  }),
-                };
-              } else {
-                return box;
-              }
-            }),
-          };
-        } else {
-          return grid;
-        }
+      const updateElement = (elements) => {
+        return elements.map((element) => {
+          if (element.id === action.payload.elementId) {
+            return {
+              ...element,
+              [action.payload.change.field]: action.payload.change.value,
+            };
+          } else if (element.elements) {
+            return {
+              ...element,
+              elements: updateElement(element.elements),
+            };
+          } else if (element.boxes) {
+            return {
+              ...element,
+              boxes: element.boxes.map((box) => ({
+                ...box,
+                elements: updateElement(box.elements),
+              })),
+            };
+          } else {
+            return element;
+          }
+        });
+      };
+
+      return state.map((grid) => {
+        return {
+          ...grid,
+          boxes: grid.boxes.map((box) => {
+            return {
+              ...box,
+              elements: updateElement(box.elements),
+            };
+          }),
+        };
       });
 
     case "DELETE_GRID":
@@ -246,4 +264,22 @@ export const getIndexes = (elements, elementId) => {
   const element = elements[gridIndex].boxes[boxIndex].elements[elementIndex];
 
   return { gridIndex, boxIndex, elementIndex, element };
+};
+
+export const getElement = (elements, elementId) => {
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (element.id === elementId) {
+      return element;
+    } else if (element.elements) {
+      const foundElement = getElement(element.elements, elementId);
+      if (foundElement) return foundElement;
+    } else if (element.boxes) {
+      for (let j = 0; j < element.boxes.length; j++) {
+        const box = element.boxes[j];
+        const foundElement = getElement(box.elements, elementId);
+        if (foundElement) return foundElement;
+      }
+    }
+  }
 };

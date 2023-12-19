@@ -1,13 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { getIndexes } from "../pageEditorService";
+import { getElement } from "../pageEditorService";
 import { PageEditorContext } from "../pageEditor";
 
 export const ButtonElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
-    gridElements,
-    id
-  );
+  const element = getElement(gridElements, id);
 
   const value = element.fields;
   const style = element.style;
@@ -19,9 +16,7 @@ export const ButtonElement = ({ id }) => {
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
+        elementId: id,
         change: {
           field: "fields",
           value: { [field]: e.target.value },

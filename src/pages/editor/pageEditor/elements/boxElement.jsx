@@ -12,9 +12,12 @@ import { TextElement } from "./textElement";
 import { ImageElement } from "./imageElement";
 import { VideoElement } from "./videoElement";
 import { LineElement } from "./lineElement";
+import { GridElement } from "./gridElement";
+import { getElement } from "../pageEditorService";
 
-export function BoxElement({ boxIndex, boxElement, gridIndex }) {
+export function BoxElement({ boxIndex, id }) {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const element = getElement(gridElements, id);
 
   const handleInsertBox = (order) => {
     const newBox = {
@@ -24,7 +27,7 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
 
     setGridElements({
       type: "ADD_BOX",
-      payload: { gridIndex: gridIndex, boxIndex: order, newBox },
+      payload: { elementId: id, boxIndex: order, newBox },
     });
   };
 
@@ -62,9 +65,8 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: boxElement.elements.length,
+        elementId: id,
+        elementIndex: element.elements.length,
         newElement,
       },
     });
@@ -76,8 +78,7 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
       setGridElements({
         type: "REORDER_ELEMENTS",
         payload: {
-          gridIndex: gridIndex,
-          boxIndex: boxIndex,
+          elementId: id,
           sourceIndex: result.source.index,
           destinationIndex: result.destination.index,
         },
@@ -107,12 +108,13 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
       >
-        {gridElements[gridIndex].boxes[boxIndex].elements.length === 0 ? (
+        {element.elements.length === 0 ? (
           <div
             data-element="box"
             className="w-full h-full border-2 border-dashed rounded-lg flex flex-col items-center justify-center p-5"
             onDragOver={(e) => handleDragOver(e)}
             onDragLeave={(e) => handleDragLeave(e)}
+            id={id}
           >
             <p>This is a box</p>
             <p className="text-slate-400">Drop elements on me</p>
@@ -126,49 +128,54 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
                   data-element="box"
-                  id={boxElement.id}
+                  id={id}
                   onDragOver={(e) => handleDragOver(e)}
                   onDragLeave={(e) => handleDragLeave(e)}
                   className="flex flex-col w-full h-full border-2 p-3 border-transparent border-dashed rounded-lg group-hover/box:border-slate-200"
                 >
-                  {gridElements[gridIndex].boxes[boxIndex].elements.map(
-                    (element, elementIndex) => (
-                      <Draggable
-                        key={element.id}
-                        draggableId={element.id.toString()}
-                        index={elementIndex}
-                      >
-                        {(provided, snapshot) => (
+                  {element.elements.map((element, elementIndex) => (
+                    <Draggable
+                      key={element.id}
+                      draggableId={element.id.toString()}
+                      index={elementIndex}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          {...provided.draggableProps}
+                          data-element="element"
+                          className="flex items-center gap-1 group/element w-full"
+                          id={element.id}
+                          ref={provided.innerRef}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
                           <div
-                            {...provided.draggableProps}
-                            data-element="element"
-                            className="flex items-center gap-1 group/element w-full"
-                            id={element.id}
-                            ref={provided.innerRef}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}
-                          >
-                            <div
-                              {...provided.dragHandleProps}
-                              className="mgc_dots_line text-lg opacity-0 group-hover/element:opacity-100 group-focus-within/element:opacity-100 transition-all"
-                            />
+                            {...provided.dragHandleProps}
+                            className="mgc_dots_line text-lg opacity-0 group-hover/element:opacity-100 group-focus-within/element:opacity-100 transition-all"
+                          />
+                          {
                             {
-                              {
-                                heading: <HeadingElement id={element.id} />,
-                                text: <TextElement id={element.id} />,
-                                button: <ButtonElement id={element.id} />,
-                                image: <ImageElement id={element.id} />,
-                                video: <VideoElement id={element.id} />,
-                                line: <LineElement id={element.id} />,
-                              }[element.type]
-                            }
-                          </div>
-                        )}
-                      </Draggable>
-                    )
-                  )}
+                              heading: <HeadingElement id={element.id} />,
+                              text: <TextElement id={element.id} />,
+                              button: <ButtonElement id={element.id} />,
+                              image: <ImageElement id={element.id} />,
+                              video: <VideoElement id={element.id} />,
+                              line: <LineElement id={element.id} />,
+                              grid: (
+                                <GridElement
+                                  id={element.id}
+                                  index={elementIndex}
+                                />
+                              ),
+                              box: <BoxElement id={element.id} />,
+                            }[element.type]
+                          }
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
                   {provided.placeholder}
                 </div>
               )}
