@@ -45,9 +45,13 @@ export function BoxElement({ boxIndex, boxElement, gridIndex }) {
     e.preventDefault();
 
     const droppedType = e.dataTransfer.getData("text");
+
     const elementAttributes = elementsList.find(
       (item) => item.type === droppedType
     );
+
+    if (!elementAttributes) return;
+
     const newElement = {
       id: generateId({ name: droppedType }),
       type: elementAttributes.type,

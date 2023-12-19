@@ -74,6 +74,7 @@ function PageEditor() {
         className="h-full flex flex-col w-full overflow-y-auto px-4 pt-4 pb-6 gap-5"
         id="page-editor"
         onContextMenu={(e) => handleContextMenu(e)}
+        onScroll={() => setDisplayContextMenu(false)}
       >
         <PageEditorContext.Provider
           value={{
