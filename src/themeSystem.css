@@ -68,6 +68,11 @@ button[data-type="dropdown"]:hover {
 button[data-type="dropdown"][data-active="true"] {
   background-color: theme("colors.slate.100");
 }
+button[data-type="dropdown"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 button[data-color="danger"]:hover,
 button[data-color="danger"]:hover > span::before {

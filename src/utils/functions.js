@@ -5,3 +5,14 @@ export const generateId = ({ name }) => {
 
   return randomId;
 };
+
+export const handleAutoResize = (refText) => {
+  const element = refText.current;
+
+  if (element) {
+    setTimeout(() => {
+      element.style.height = "auto";
+      element.style.height = element.scrollHeight + "px";
+    }, 200);
+  }
+};

@@ -1,20 +1,48 @@
-import { useState } from "react";
+import { useContext, useLayoutEffect, useRef } from "react";
+import { getIndexes } from "../pageEditorService";
+import { PageEditorContext } from "../pageEditor";
+import { handleAutoResize } from "@/utils/functions";
 
-export const HeadingElement = () => {
-  const [value, setValue] = useState("");
+export const HeadingElement = ({ id }) => {
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
+    gridElements,
+    id
+  );
+
+  const refText = useRef(null);
+  const value = element.fields.text;
+  const style = element.style;
+
+  useLayoutEffect(() => {
+    handleAutoResize(refText);
+  }, [style]);
+
+  const handleOnChange = (e) => {
+    setGridElements({
+      type: "UPDATE_ELEMENT",
+      payload: {
+        gridIndex: gridIndex,
+        boxIndex: boxIndex,
+        elementIndex: elementIndex,
+        change: {
+          field: "fields",
+          value: { text: e.target.value || "" },
+        },
+      },
+    });
+    handleAutoResize(refText);
+  };
 
   return (
     <span className="relative w-full leading-[0]">
       <textarea
-        onInput={(e) => {
-          e.target.style.height = "auto";
-          e.target.style.height = e.target.scrollHeight + "px";
-        }}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Type some fun text here"
+        ref={refText}
+        value={value || ""}
+        onChange={handleOnChange}
         data-type="heading"
-        data-style="heading-one"
+        data-style={style || "heading-one"}
+        placeholder="Type some fun text here"
         rows="1"
       />
     </span>

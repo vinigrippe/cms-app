@@ -1,38 +1,44 @@
 [
   {
-    "id": 3,
+    "id": 1,
     "title": "Heading",
     "icon": "mgc_text_2_line",
-    "type": "heading"
-  },
-  {
-    "id": 1,
-    "title": "Text",
-    "icon": "mgc_textbox_line",
-    "type": "text"
+    "type": "heading",
+    "style": "heading-one"
   },
   {
     "id": 2,
-    "title": "Button",
-    "icon": "mgc_bling_line",
-    "type": "button"
+    "title": "Text",
+    "icon": "mgc_textbox_line",
+    "type": "text",
+    "style": ""
   },
   {
     "id": 3,
+    "title": "Button",
+    "icon": "mgc_bling_line",
+    "type": "button",
+    "style": "primary-button"
+  },
+  {
+    "id": 4,
     "title": "Line",
     "icon": "mgc_spacing_vertical_line",
-    "type": "line"
+    "type": "line",
+    "style": ""
   },
   {
     "id": 5,
     "title": "Image",
     "icon": "mgc_pic_line",
-    "type": "image"
+    "type": "image",
+    "style": ""
   },
   {
     "id": 6,
     "title": "Video",
     "icon": "mgc_video_line",
-    "type": "video"
+    "type": "video",
+    "style": ""
   }
 ]

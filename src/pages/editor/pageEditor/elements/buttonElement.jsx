@@ -1,12 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { getIndexes } from "../pageEditorService";
+import { PageEditorContext } from "../pageEditor";
 
-export const ButtonElement = () => {
-  const refButtonEl = useRef(null);
+export const ButtonElement = ({ id }) => {
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
+    gridElements,
+    id
+  );
+
+  const value = element.fields;
+  const style = element.style;
 
   const [isFocused, setIsFocused] = useState(false);
+  const refButtonEl = useRef(null);
 
-  const [value, setValue] = useState("");
-  const [action, setAction] = useState("");
+  const handleOnChange = (e, field) => {
+    setGridElements({
+      type: "UPDATE_ELEMENT",
+      payload: {
+        gridIndex: gridIndex,
+        boxIndex: boxIndex,
+        elementIndex: elementIndex,
+        change: {
+          field: "fields",
+          value: { [field]: e.target.value },
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -23,12 +45,16 @@ export const ButtonElement = () => {
 
   return (
     <span ref={refButtonEl} className="w-full relative">
-      <label data-value={value} data-type="button" data-style="primary-button">
+      <label
+        data-value={value.text}
+        data-type="button"
+        data-style={style || "primary-button"}
+      >
         <input
           type="text"
           size="10"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={value.text}
+          onChange={(e) => handleOnChange(e, "text")}
           placeholder="Button"
           onClick={() => setIsFocused(true)}
         />
@@ -40,8 +66,8 @@ export const ButtonElement = () => {
             <p className="text-right">Action:</p>
             <input
               type="text"
-              value={action}
-              onChange={(e) => setAction(e.target.value)}
+              value={value.action}
+              onChange={(e) => handleOnChange(e, "action")}
               className="col-span-2"
             />
           </div>

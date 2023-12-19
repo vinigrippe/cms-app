@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { PageEditorContext } from "../pageEditor";
+import { getIndexes } from "../pageEditorService";
 
 export const VideoElement = ({ id }) => {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
+    gridElements,
+    id
+  );
 
-  const handleVideoSelect = (event) => {
-    const file = event.target.files[0];
-    setSelectedVideo(file);
+  const selectedVideo = element.fields.src;
+
+  const handleOnChange = (e) => {
+    const url = URL.createObjectURL(e.target.files[0]);
+
+    setGridElements({
+      type: "UPDATE_ELEMENT",
+      payload: {
+        gridIndex: gridIndex,
+        boxIndex: boxIndex,
+        elementIndex: elementIndex,
+        change: {
+          field: "fields",
+          value: { src: url },
+        },
+      },
+    });
   };
 
   return (
@@ -18,13 +38,13 @@ export const VideoElement = ({ id }) => {
           id={id + "_input"}
           type="file"
           accept="video/*"
-          onChange={handleVideoSelect}
+          onChange={handleOnChange}
           style={{ display: "none" }}
         />
 
         {selectedVideo && (
           <video
-            src={selectedVideo && URL.createObjectURL(selectedVideo)}
+            src={selectedVideo}
             alt="test"
             className="relative z-10 object-cover object-center w-full h-full group-hover/video:opacity-20 transition-all"
             controls

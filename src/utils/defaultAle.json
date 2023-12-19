@@ -7,7 +7,11 @@
         "elements": [
           {
             "id": "heading_uxvay0i92_1702858493690",
-            "type": "heading"
+            "type": "heading",
+            "fields": {
+              "text": "Transformo negócios através da criação de marcas poderosas."
+            },
+            "style": "heading-three"
           }
         ]
       },
@@ -16,11 +20,34 @@
         "elements": [
           {
             "id": "text_me1ei5bx7_1702858783912",
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "text": "Olá! 👋 Sou Alexandre Avelino, um designer brasileiro apaixonado por dar vida a marcas que não apenas se destacam, mas também contam histórias e criam conexões.\n\nMinha missão é ajudá-lo a transformar seus sonhos e valores em uma identidade visual única, combinando design minimalista com estratégias inteligentes para destacar sua marca em um mercado competitivo.\n"
+            }
           },
           {
             "id": "button_bwqkbeh60_1702858793041",
-            "type": "button"
+            "type": "button",
+            "fields": {
+              "text": "QUERO TRANSFORMAR MINHA MARCA",
+              "action": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grid_nhh6c086u_1702926938611",
+    "boxes": [
+      {
+        "id": "box_bm9gcpkt6_1702926938611",
+        "elements": [
+          {
+            "id": "line_n51q5ij7g_1702926940471",
+            "type": "line",
+            "style": "",
+            "fields": {}
           }
         ]
       }
@@ -34,7 +61,11 @@
         "elements": [
           {
             "id": "heading_30hfdy3e5_1702858814487",
-            "type": "heading"
+            "type": "heading",
+            "fields": {
+              "text": "PROJETOS RECENTES"
+            },
+            "style": "heading-two"
           }
         ]
       }
@@ -48,11 +79,17 @@
         "elements": [
           {
             "id": "image_kzcnq92w5_1702858834967",
-            "type": "image"
+            "type": "image",
+            "fields": {
+              "src": "blob:http://localhost:3000/9cf35369-9de1-4d04-9206-ad50477bda66"
+            }
           },
           {
             "id": "text_7bknonp2j_1702858836519",
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "text": "Next Energy"
+            }
           }
         ]
       },
@@ -61,11 +98,17 @@
         "elements": [
           {
             "id": "image_zz3ci4nxf_1702858865169",
-            "type": "image"
+            "type": "image",
+            "fields": {
+              "src": "blob:http://localhost:3000/8c164133-4679-4af0-9114-0cc84271d152"
+            }
           },
           {
             "id": "text_xjs4may9z_1702858871379",
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "text": "Pergamena"
+            }
           }
         ]
       }
@@ -79,17 +122,38 @@
         "elements": [
           {
             "id": "image_pdu7uawdk_1702859029070",
-            "type": "image"
+            "type": "image",
+            "fields": {
+              "src": "blob:http://localhost:3000/36608d4b-0678-4725-a78d-87fd241e22db"
+            }
           },
           {
             "id": "text_a0yo7le7m_1702859032443",
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "text": "Pergamena"
+            }
           }
         ]
       },
       {
-        "id": "box_wolr5dkkv_1702859024017",
-        "elements": []
+        "id": "box_gvpslpu3o_1702926690053",
+        "elements": [
+          {
+            "id": "image_szl4le2zu_1702926690053",
+            "type": "image",
+            "fields": {
+              "src": "blob:http://localhost:3000/171226ed-a8b8-478d-81ab-4242b2243a78"
+            }
+          },
+          {
+            "id": "text_ujscg5t2c_1702926690053",
+            "type": "text",
+            "fields": {
+              "text": "Next Energy"
+            }
+          }
+        ]
       }
     ]
   },
@@ -101,7 +165,27 @@
         "elements": [
           {
             "id": "button_2mojn7kbg_1702858881527",
-            "type": "button"
+            "type": "button",
+            "fields": {
+              "text": "VER TODOS OS PROJETOS ",
+              "action": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grid_sztfzduf2_1702926923157",
+    "boxes": [
+      {
+        "id": "box_rercbwb0j_1702926923157",
+        "elements": [
+          {
+            "id": "line_i44s5f2jh_1702926925223",
+            "type": "line",
+            "style": "",
+            "fields": {}
           }
         ]
       }
@@ -115,7 +199,27 @@
         "elements": [
           {
             "id": "heading_pgzk3avmv_1702858913514",
-            "type": "heading"
+            "type": "heading",
+            "fields": {
+              "text": "ESPECIALIDADES"
+            },
+            "style": "heading-two"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "grid_k8i9n2j4a_1702926930034",
+    "boxes": [
+      {
+        "id": "box_wiobzozyr_1702926930034",
+        "elements": [
+          {
+            "id": "line_4mu9qd67n_1702926931755",
+            "type": "line",
+            "style": "",
+            "fields": {}
           }
         ]
       }
@@ -155,11 +259,17 @@
         "elements": [
           {
             "id": "heading_fzu7hihca_1702858935654",
-            "type": "heading"
+            "type": "heading",
+            "fields": {
+              "text": "Design de Mídias Sociais"
+            }
           },
           {
             "id": "text_r27uji9en_1702858951924",
-            "type": "text"
+            "type": "text",
+            "fields": {
+              "text": "Suas redes sociais devem ser tão impactante quanto o resto da sua marca.\n\nCriamos templates e destaques para o Instagram e outras plataformas, garantindo uma presença online coesa e alinhada com a identidade visual elaborada."
+            }
           }
         ]
       }
@@ -170,7 +280,14 @@
     "boxes": [
       {
         "id": "box_la2sc7jvl_1702859096478",
-        "elements": []
+        "elements": [
+          {
+            "id": "line_t0scokp1w_1702926909511",
+            "type": "line",
+            "style": "",
+            "fields": {}
+          }
+        ]
       }
     ]
   }

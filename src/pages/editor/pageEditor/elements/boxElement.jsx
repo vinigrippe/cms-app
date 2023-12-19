@@ -1,12 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { DropComponent } from "@/utils/dropElement";
-
-import { BoxElementContext } from "./gridElement";
+import { PageEditorContext } from "../pageEditor";
 
 import elementsList from "@/utils/elementList.json";
 import { generateId } from "@/utils/functions";
-import { ContextMenu } from "../contextMenu/contextMenu";
 
 import { ButtonElement } from "./buttonElement";
 import { HeadingElement } from "./headingElement";
@@ -15,90 +13,31 @@ import { ImageElement } from "./imageElement";
 import { VideoElement } from "./videoElement";
 import { LineElement } from "./lineElement";
 
-export function BoxElement() {
-  const { gridIndex, gridElements, setGridElements, boxIndex, boxElement } =
-    useContext(BoxElementContext);
-
-  const [displayContextMenu, setDisplayContextMenu] = useState(false);
-  const [event, setEvent] = useState({ clientX: 0, clientY: 0 });
-  const [gridOnFocus, setGridOnFocus] = useState({
-    id: "",
-    element: null,
-  });
-  const [boxOnFocus, setBoxOnFocus] = useState(null);
-  const [elementOnFocus, setElementOnFocus] = useState({
-    id: "",
-    type: "",
-    element: null,
-    style: "",
-  });
+export function BoxElement({ boxIndex, boxElement, gridIndex }) {
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
 
   const handleInsertBox = (order) => {
-    const randomId = generateId({ name: "box" });
-    let cloneGridElements = [...gridElements];
-    const prevBoxElements = cloneGridElements[gridIndex].boxes;
-
     const newBox = {
-      id: randomId,
+      id: generateId({ name: "box" }),
       elements: [],
     };
 
-    prevBoxElements.splice(order, 0, newBox);
-
-    cloneGridElements[gridIndex] = {
-      ...cloneGridElements[gridIndex],
-      boxes: prevBoxElements,
-    };
-    setGridElements(cloneGridElements);
-  };
-
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-
-    setEvent({ clientX: e.clientX, clientY: e.clientY });
-    setDisplayContextMenu(true);
-    setElementOnFocus({ type: "", element: null, id: "", style: "" });
-    setBoxOnFocus(null);
-    setGridOnFocus({ element: null, id: "" });
-
-    const element = e.target?.closest("[data-type]");
-
-    if (
-      element &&
-      elementsList.find(
-        (item) => item.type === element?.getAttribute("data-type")
-      )
-    ) {
-      setElementOnFocus({
-        element: element,
-        type: element?.getAttribute("data-type"),
-        id: element.closest("[data-grid='element']").id,
-        style: element.getAttribute("data-style"),
-      });
-    }
-
-    const boxElement = e.target.closest("[data-grid='box']");
-
-    if (boxElement) {
-      setBoxOnFocus(boxElement);
-    }
-
-    const gridElement = e.target.closest("[data-grid='grid']");
-    if (gridElement) {
-      setGridOnFocus({ element: gridElement, id: gridElement.id });
-    }
+    setGridElements({
+      type: "ADD_BOX",
+      payload: { gridIndex: gridIndex, boxIndex: order, newBox },
+    });
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    const boxElement = e.target.closest("[data-grid='box']");
+    const boxElement = e.target.closest("[data-element='box']");
     boxElement?.classList?.remove("element-focused");
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
 
-    const boxElement = e.target.closest("[data-grid='box']");
+    const boxElement = e.target.closest("[data-element='box']");
     boxElement?.classList?.add("element-focused");
   };
 
@@ -106,51 +45,40 @@ export function BoxElement() {
     e.preventDefault();
 
     const droppedType = e.dataTransfer.getData("text");
-    const randomId = generateId({ name: droppedType });
+    const elementAttributes = elementsList.find(
+      (item) => item.type === droppedType
+    );
     const newElement = {
-      id: randomId,
-      type: droppedType,
+      id: generateId({ name: droppedType }),
+      type: elementAttributes.type,
+      style: elementAttributes.style,
+      fields: {},
     };
 
-    const cloneBoxElements = [...gridElements];
-    const prevBoxElement = cloneBoxElements[gridIndex].boxes[boxIndex];
-
-    cloneBoxElements[gridIndex].boxes[boxIndex] = {
-      ...prevBoxElement,
-      elements: [...prevBoxElement.elements, newElement],
-    };
-
-    setGridElements(cloneBoxElements);
+    setGridElements({
+      type: "ADD_ELEMENT",
+      payload: {
+        gridIndex: gridIndex,
+        boxIndex: boxIndex,
+        elementIndex: boxElement.elements.length,
+        newElement,
+      },
+    });
     handleDragLeave(e);
   };
 
   const handleDragEnd = (result) => {
-    if (!result.destination) {
-      return;
+    if (result.destination) {
+      setGridElements({
+        type: "REORDER_ELEMENTS",
+        payload: {
+          gridIndex: gridIndex,
+          boxIndex: boxIndex,
+          sourceIndex: result.source.index,
+          destinationIndex: result.destination.index,
+        },
+      });
     }
-
-    const reorder = (list, startIndex, endIndex) => {
-      const result = Array.from(list);
-      const [removed] = result.splice(startIndex, 1);
-      result.splice(endIndex, 0, removed);
-
-      return result;
-    };
-
-    const items = reorder(
-      boxElement.elements,
-      result.source.index,
-      result.destination.index
-    );
-
-    const cloneBoxElements = [...gridElements];
-    const prevBoxElement = cloneBoxElements[gridIndex].boxes[boxIndex];
-    cloneBoxElements[gridIndex].boxes[boxIndex] = {
-      ...prevBoxElement,
-      elements: items,
-    };
-
-    setGridElements(cloneBoxElements);
   };
 
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -171,15 +99,13 @@ export function BoxElement() {
   return (
     <>
       <div
-        id={boxElement.id}
         className="h-full relative group/box"
-        onContextMenu={(e) => handleContextMenu(e)}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
       >
         {gridElements[gridIndex].boxes[boxIndex].elements.length === 0 ? (
           <div
-            data-grid="box"
+            data-element="box"
             className="w-full h-full border-2 border-dashed rounded-lg flex flex-col items-center justify-center p-5"
             onDragOver={(e) => handleDragOver(e)}
             onDragLeave={(e) => handleDragLeave(e)}
@@ -195,22 +121,23 @@ export function BoxElement() {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
-                  data-grid="box"
+                  data-element="box"
+                  id={boxElement.id}
                   onDragOver={(e) => handleDragOver(e)}
                   onDragLeave={(e) => handleDragLeave(e)}
                   className="flex flex-col w-full h-full border-2 p-3 border-transparent border-dashed rounded-lg group-hover/box:border-slate-200"
                 >
                   {gridElements[gridIndex].boxes[boxIndex].elements.map(
-                    (element, index) => (
+                    (element, elementIndex) => (
                       <Draggable
                         key={element.id}
                         draggableId={element.id.toString()}
-                        index={index}
+                        index={elementIndex}
                       >
                         {(provided, snapshot) => (
                           <div
                             {...provided.draggableProps}
-                            data-grid="element"
+                            data-element="element"
                             className="flex items-center gap-1 group/element w-full"
                             id={element.id}
                             ref={provided.innerRef}
@@ -225,12 +152,12 @@ export function BoxElement() {
                             />
                             {
                               {
-                                heading: <HeadingElement />,
-                                text: <TextElement />,
-                                button: <ButtonElement />,
+                                heading: <HeadingElement id={element.id} />,
+                                text: <TextElement id={element.id} />,
+                                button: <ButtonElement id={element.id} />,
                                 image: <ImageElement id={element.id} />,
                                 video: <VideoElement id={element.id} />,
-                                line: <LineElement />,
+                                line: <LineElement id={element.id} />,
                               }[element.type]
                             }
                           </div>
@@ -257,16 +184,6 @@ export function BoxElement() {
           <span className="mgc_add_fill before:!text-white text-[10px]" />
         </div>
       </div>
-
-      {displayContextMenu && (
-        <ContextMenu
-          onClose={() => setDisplayContextMenu(false)}
-          event={event}
-          elementOnFocus={elementOnFocus}
-          boxOnFocus={boxOnFocus}
-          gridOnFocus={gridOnFocus}
-        />
-      )}
     </>
   );
 }

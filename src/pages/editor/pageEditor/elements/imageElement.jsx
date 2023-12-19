@@ -1,11 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { PageEditorContext } from "../pageEditor";
+import { getIndexes } from "../pageEditorService";
 
 export const ImageElement = ({ id }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
+    gridElements,
+    id
+  );
 
-  const handleImageSelect = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(file);
+  const selectedImage = element.fields.src;
+
+  const handleOnChange = (e) => {
+    const url = URL.createObjectURL(e.target.files[0]);
+
+    setGridElements({
+      type: "UPDATE_ELEMENT",
+      payload: {
+        gridIndex: gridIndex,
+        boxIndex: boxIndex,
+        elementIndex: elementIndex,
+        change: {
+          field: "fields",
+          value: { src: url },
+        },
+      },
+    });
   };
 
   return (
@@ -18,16 +38,18 @@ export const ImageElement = ({ id }) => {
           id={id + "_input"}
           type="file"
           accept="image/*"
-          onChange={handleImageSelect}
+          onChange={handleOnChange}
           style={{ display: "none" }}
         />
+
         {selectedImage && (
           <img
-            src={selectedImage && URL.createObjectURL(selectedImage)}
+            src={selectedImage}
             alt="test"
             className="relative z-10 object-cover object-center w-full h-full group-hover/image:opacity-20 transition-all"
           />
         )}
+
         <div className="absolute top-0 left-0 flex items-center justify-center gap-2 flex-col w-full h-full bg-slate-100 px-5 py-8 cursor-pointer hover:bg-slate-200 transition-all">
           <span className="mgc_pic_line text-lg before:!text-blue-600" />
           {!selectedImage ? (

@@ -1,58 +1,46 @@
-import { createContext } from "react";
-
+import { useContext } from "react";
 import { BoxElement } from "./boxElement";
 import { generateId } from "@/utils/functions";
+import { PageEditorContext } from "../pageEditor";
 
-export const BoxElementContext = createContext();
+export function GridElement({ gridIndex, gridElement }) {
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
 
-export function GridElement({
-  gridIndex,
-  gridElement,
-  gridElements,
-  setGridElements,
-}) {
   const handleInsertGrid = (order) => {
-    const randomGridId = generateId({ name: "grid" });
-    const randomBoxId = generateId({ name: "box" });
-    const cloneGridElements = [...gridElements];
-
     const newGrid = {
-      id: randomGridId,
+      id: generateId({ name: "grid" }),
       boxes: [
         {
-          id: randomBoxId,
+          id: generateId({ name: "box" }),
           elements: [],
         },
       ],
     };
 
-    cloneGridElements.splice(order, 0, newGrid);
-    setGridElements(cloneGridElements);
+    setGridElements({
+      type: "ADD_GRID",
+      payload: { gridIndex: order, newGrid },
+    });
   };
 
   if (gridElements[gridIndex].boxes.length > 0)
     return (
-      <div className="relative group/grid" id={gridElement.id}>
+      <div className="relative group/grid">
         <div
+          id={gridElement.id}
           className="grid grid-cols-2 w-full gap-4"
-          data-grid="grid"
+          data-element="grid"
           style={{
             gridTemplateColumns: `repeat(${gridElements[gridIndex].boxes.length}, minmax(0, 1fr))`,
           }}
         >
           {gridElements[gridIndex].boxes.map((boxElement, boxIndex) => (
-            <BoxElementContext.Provider
+            <BoxElement
               key={boxElement.id}
-              value={{
-                gridIndex,
-                gridElements,
-                setGridElements,
-                boxIndex,
-                boxElement,
-              }}
-            >
-              <BoxElement />
-            </BoxElementContext.Provider>
+              boxIndex={boxIndex}
+              boxElement={boxElement}
+              gridIndex={gridIndex}
+            />
           ))}
         </div>
         <div className="absolute bottom-0 -mb-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 opacity-0 group-hover/grid:opacity-100 transition-all">
