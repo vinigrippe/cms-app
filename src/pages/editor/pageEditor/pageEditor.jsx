@@ -93,10 +93,10 @@ function PageEditor() {
             <ContextMenu
               isOpen={displayContextMenu}
               onClose={() => setDisplayContextMenu(false)}
-              event={event}
               elementOnFocus={elementOnFocus}
               boxOnFocus={boxOnFocus}
               gridOnFocus={gridOnFocus}
+              event={event}
             />
           )}
         </PageEditorContext.Provider>

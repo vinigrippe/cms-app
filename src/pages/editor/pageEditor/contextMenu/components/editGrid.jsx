@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { PageEditorContext } from "../../pageEditor";
 import { generateId } from "@/utils/functions";
+import { MenuContext } from "../contextMenu";
 
-export const EditGrid = ({ gridIndex, gridOnFocus, onClose }) => {
+export const EditGrid = () => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, gridOnFocus, onClose } = useContext(MenuContext);
 
   const handleDuplicateGrid = () => {
     const newGrid = {

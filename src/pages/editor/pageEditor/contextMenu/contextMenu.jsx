@@ -1,10 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { PageEditorContext } from "../pageEditor";
 
 import { EditElement } from "./components/editElement";
 import { EditBox } from "./components/editBox";
 import { EditGrid } from "./components/editGrid";
 import { NewElement } from "./components/newElement";
+
+export const MenuContext = createContext();
 
 export function ContextMenu({
   event,
@@ -93,59 +95,42 @@ export function ContextMenu({
   }, [event, isOpen]);
 
   return (
-    <div
-      ref={refContextMenuEl}
-      className="fixed z-[20] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col"
-      style={{
-        left: `${posContextMenu.x}px`,
-        top: `${posContextMenu.y}px`,
-        opacity: posContextMenu.x !== 0 && posContextMenu.y !== 0 ? 100 : 0,
+    <MenuContext.Provider
+      value={{
+        onClose,
+        subMenu,
+        setSubMenu,
+        posSubMenu: !posContextMenu.boundary ? "left-[100%]" : "right-[100%]",
+
+        elementOnFocus,
+        elementIndex,
+        element,
+
+        boxOnFocus,
+        boxIndex,
+        boxElement,
+
+        gridOnFocus,
+        gridIndex,
       }}
-      onContextMenu={(e) => e.preventDefault()}
     >
-      <NewElement
-        elementIndex={elementIndex}
-        gridIndex={gridIndex}
-        boxIndex={boxIndex}
-        boxElement={boxElement}
-        posSubMenu={!posContextMenu.boundary ? "left-[100%]" : "right-[100%]"}
-        subMenu={subMenu}
-        setSubMenu={setSubMenu}
-        onClose={onClose}
-      />
-
-      <div className="border-b w-full pt-1 mb-1"></div>
-
-      {!!elementOnFocus && (
-        <EditElement
-          element={element}
-          subMenu={subMenu}
-          setSubMenu={setSubMenu}
-          posSubMenu={!posContextMenu.boundary ? "left-[100%]" : "right-[100%]"}
-          elementOnFocus={elementOnFocus}
-          onClose={onClose}
-          gridIndex={gridIndex}
-          boxIndex={boxIndex}
-          elementIndex={elementIndex}
-          boxElement={boxElement}
-        />
+      {(!!boxOnFocus || !!gridOnFocus || !!elementOnFocus) && (
+        <div
+          ref={refContextMenuEl}
+          className="fixed z-[20] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col"
+          style={{
+            left: `${posContextMenu.x}px`,
+            top: `${posContextMenu.y}px`,
+            opacity: posContextMenu.x !== 0 && posContextMenu.y !== 0 ? 100 : 0,
+          }}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          {!!boxOnFocus && <NewElement />}
+          {!!elementOnFocus && <EditElement />}
+          {!!boxOnFocus && <EditBox />}
+          {!!gridOnFocus && <EditGrid />}
+        </div>
       )}
-
-      <EditBox
-        gridIndex={gridIndex}
-        boxIndex={boxIndex}
-        boxElement={boxElement}
-        boxOnFocus={boxOnFocus}
-        onClose={onClose}
-      />
-
-      <div className="border-b w-full pt-1 mb-1"></div>
-
-      <EditGrid
-        gridIndex={gridIndex}
-        gridOnFocus={gridOnFocus}
-        onClose={onClose}
-      />
-    </div>
+    </MenuContext.Provider>
   );
 }

@@ -4,19 +4,21 @@ import { generateId } from "@/utils/functions";
 
 import designSystem from "@/utils/designSystem.json";
 import elementList from "@/utils/elementList.json";
+import { MenuContext } from "../contextMenu";
 
-export const EditElement = ({
-  element,
-  boxElement,
-  elementOnFocus,
-  gridIndex,
-  boxIndex,
-  elementIndex,
-  onClose,
-  posSubMenu,
-  subMenu,
-  setSubMenu,
-}) => {
+export const EditElement = () => {
+  const {
+    element,
+    boxElement,
+    elementOnFocus,
+    gridIndex,
+    boxIndex,
+    elementIndex,
+    onClose,
+    subMenu,
+    setSubMenu,
+    posSubMenu,
+  } = useContext(MenuContext);
   const { setGridElements } = useContext(PageEditorContext);
 
   const designSystemByType = designSystem.find(

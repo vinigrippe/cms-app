@@ -1,15 +1,12 @@
 import { useContext } from "react";
 import { PageEditorContext } from "../../pageEditor";
 import { generateId } from "@/utils/functions";
+import { MenuContext } from "../contextMenu";
 
-export const EditBox = ({
-  gridIndex,
-  boxIndex,
-  boxElement,
-  boxOnFocus,
-  onClose,
-}) => {
+export const EditBox = () => {
   const { setGridElements } = useContext(PageEditorContext);
+  const { gridIndex, boxIndex, boxElement, boxOnFocus, onClose } =
+    useContext(MenuContext);
 
   const handleDeleteBox = () => {
     setGridElements({
@@ -65,6 +62,7 @@ export const EditBox = ({
           <p className="text-right">Delete Box</p>
         </button>
       </div>
+      <div className="border-b w-full pt-1 mb-1"></div>
     </>
   );
 };
