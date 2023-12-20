@@ -28,16 +28,16 @@ export function ContextMenu({
   const gridIndex = gridElements.findIndex(
     (item) => item.id === gridOnFocus?.id
   );
-  const boxIndex = gridElements[gridIndex]?.boxes.findIndex(
+  const boxIndex = gridElements[gridIndex]?.elements.findIndex(
     (item) => item.id === boxOnFocus?.id
   );
-  const elementIndex = gridElements[gridIndex]?.boxes[
+  const elementIndex = gridElements[gridIndex]?.elements[
     boxIndex
   ]?.elements.findIndex((item) => item.id === elementOnFocus?.id);
 
   const element =
-    gridElements[gridIndex]?.boxes[boxIndex]?.elements[elementIndex] ?? {};
-  const boxElement = gridElements[gridIndex]?.boxes[boxIndex] ?? {};
+    gridElements[gridIndex]?.elements[boxIndex]?.elements[elementIndex] ?? {};
+  const boxElement = gridElements[gridIndex]?.elements[boxIndex] ?? {};
 
   useEffect(() => {
     const handleClickOutside = (event) => {

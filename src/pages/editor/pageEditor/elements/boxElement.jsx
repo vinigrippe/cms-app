@@ -48,6 +48,9 @@ export function BoxElement({ boxIndex, id }) {
     e.preventDefault();
 
     const droppedType = e.dataTransfer.getData("text");
+    const boxId = e.target.closest("[data-element='box']").id;
+
+    if (boxId !== id) return;
 
     const elementAttributes = elementsList.find(
       (item) => item.type === droppedType
@@ -59,14 +62,24 @@ export function BoxElement({ boxIndex, id }) {
       id: generateId({ name: droppedType }),
       type: elementAttributes.type,
       style: elementAttributes.style,
-      fields: {},
     };
+
+    if (elementAttributes.type === "grid") {
+      newElement.elements = [
+        {
+          id: generateId({ name: "box" }),
+          type: "box",
+          elements: [],
+        },
+      ];
+    } else {
+      newElement.fields = {};
+    }
 
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        elementId: id,
-        elementIndex: element.elements.length,
+        elementId: boxId,
         newElement,
       },
     });
@@ -108,7 +121,7 @@ export function BoxElement({ boxIndex, id }) {
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
       >
-        {element.elements.length === 0 ? (
+        {element.elements?.length === 0 ? (
           <div
             data-element="box"
             className="w-full h-full border-2 border-dashed rounded-lg flex flex-col items-center justify-center p-5"
@@ -133,7 +146,7 @@ export function BoxElement({ boxIndex, id }) {
                   onDragLeave={(e) => handleDragLeave(e)}
                   className="flex flex-col w-full h-full border-2 p-3 border-transparent border-dashed rounded-lg group-hover/box:border-slate-200"
                 >
-                  {element.elements.map((element, elementIndex) => (
+                  {element.elements?.map((element, elementIndex) => (
                     <Draggable
                       key={element.id}
                       draggableId={element.id.toString()}

@@ -10,7 +10,7 @@ export const EditGrid = () => {
   const handleDuplicateGrid = () => {
     const newGrid = {
       id: generateId({ name: "grid" }),
-      boxes: gridElements[gridIndex].boxes.map((box) => ({
+      elements: gridElements[gridIndex].elements.map((box) => ({
         id: generateId({ name: "box" }),
         elements: box.elements.map((element) => ({
           id: generateId({ name: element.type }),

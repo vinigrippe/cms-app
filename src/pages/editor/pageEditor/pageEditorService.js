@@ -15,10 +15,10 @@ export function reducer(state, action) {
         if (index === action.payload.gridIndex) {
           return {
             ...grid,
-            boxes: [
-              ...grid.boxes.slice(0, action.payload.boxIndex),
+            elements: [
+              ...grid.elements.slice(0, action.payload.boxIndex),
               action.payload.newBox,
-              ...grid.boxes.slice(action.payload.boxIndex),
+              ...grid.elements.slice(action.payload.boxIndex),
             ],
           };
         } else {
@@ -27,22 +27,20 @@ export function reducer(state, action) {
       });
 
     case "ADD_ELEMENT":
-      const replaceElement = (elements, newElement) => {
+      const newElement = action.payload.newElement;
+      const elementId = action.payload.elementId;
+
+      const replaceElement = (elements) => {
         return elements.map((element) => {
-          if (element.id === action.payload.elementId) {
-            return newElement;
+          if (element.id === elementId) {
+            return {
+              ...element,
+              elements: [...element.elements, newElement],
+            };
           } else if (element.elements) {
             return {
               ...element,
-              elements: replaceElement(element.elements, newElement),
-            };
-          } else if (element.boxes) {
-            return {
-              ...element,
-              boxes: element.boxes.map((box) => ({
-                ...box,
-                elements: replaceElement(box.elements, newElement),
-              })),
+              elements: replaceElement(element.elements),
             };
           } else {
             return element;
@@ -50,23 +48,19 @@ export function reducer(state, action) {
         });
       };
 
-      return state.map((grid) => {
+      return state.map((element) => {
         return {
-          ...grid,
-          boxes: grid.boxes.map((box) => {
-            return {
-              ...box,
-              elements: replaceElement(box.elements, action.payload.newElement),
-            };
-          }),
+          ...element,
+          elements: replaceElement(element.elements),
         };
       });
+
     case "CHANGE_ELEMENT":
       return state.map((grid, index) => {
         if (index === action.payload.gridIndex) {
           return {
             ...grid,
-            boxes: grid.boxes.map((box, boxIndex) => {
+            elements: grid.elements.map((box, boxIndex) => {
               if (boxIndex === action.payload.boxIndex) {
                 return {
                   ...box,
@@ -104,10 +98,10 @@ export function reducer(state, action) {
               ...element,
               elements: updateElement(element.elements),
             };
-          } else if (element.boxes) {
+          } else if (element.elements) {
             return {
               ...element,
-              boxes: element.boxes.map((box) => ({
+              elements: element.elements.map((box) => ({
                 ...box,
                 elements: updateElement(box.elements),
               })),
@@ -121,7 +115,7 @@ export function reducer(state, action) {
       return state.map((grid) => {
         return {
           ...grid,
-          boxes: grid.boxes.map((box) => {
+          elements: grid.elements.map((box) => {
             return {
               ...box,
               elements: updateElement(box.elements),
@@ -138,7 +132,7 @@ export function reducer(state, action) {
         if (index === action.payload.gridIndex) {
           return {
             ...grid,
-            boxes: grid.boxes.filter(
+            elements: grid.elements.filter(
               (_, boxIndex) => boxIndex !== action.payload.boxIndex
             ),
           };
@@ -152,7 +146,7 @@ export function reducer(state, action) {
         if (index === action.payload.gridIndex) {
           return {
             ...grid,
-            boxes: grid.boxes.map((box, boxIndex) => {
+            elements: grid.elements.map((box, boxIndex) => {
               if (boxIndex === action.payload.boxIndex) {
                 return {
                   ...box,
@@ -176,7 +170,7 @@ export function reducer(state, action) {
         if (gridIdx === action.payload.gridIndex) {
           return {
             ...grid,
-            boxes: grid.boxes.map((box, boxIdx) => {
+            elements: grid.elements.map((box, boxIdx) => {
               if (boxIdx === action.payload.boxIndex) {
                 return {
                   ...box,
@@ -209,63 +203,6 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-export const getElementIndex = (elements, elementId) => {
-  let elementIndex;
-
-  elements.forEach((item) => {
-    item.boxes.forEach((box) => {
-      box.elements.forEach((element, index) => {
-        if (element.id === elementId) {
-          elementIndex = index;
-        }
-      });
-    });
-  });
-
-  return elementIndex;
-};
-
-export const getBoxIndex = (elements, elementId) => {
-  let boxIndex;
-
-  elements.forEach((item) => {
-    item.boxes.forEach((box, index) => {
-      box.elements.forEach((element) => {
-        if (element.id === elementId) {
-          boxIndex = index;
-        }
-      });
-    });
-  });
-
-  return boxIndex;
-};
-
-export const getGridIndex = (elements, elementId) => {
-  let gridIndex;
-
-  elements.forEach((item, index) => {
-    if (
-      item.boxes.some((box) =>
-        box.elements.some((element) => element.id === elementId)
-      )
-    ) {
-      gridIndex = index;
-    }
-  });
-
-  return gridIndex;
-};
-
-export const getIndexes = (elements, elementId) => {
-  const gridIndex = getGridIndex(elements, elementId);
-  const boxIndex = getBoxIndex(elements, elementId);
-  const elementIndex = getElementIndex(elements, elementId);
-  const element = elements[gridIndex].boxes[boxIndex].elements[elementIndex];
-
-  return { gridIndex, boxIndex, elementIndex, element };
-};
-
 export const getElement = (elements, elementId) => {
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
@@ -274,9 +211,9 @@ export const getElement = (elements, elementId) => {
     } else if (element.elements) {
       const foundElement = getElement(element.elements, elementId);
       if (foundElement) return foundElement;
-    } else if (element.boxes) {
-      for (let j = 0; j < element.boxes.length; j++) {
-        const box = element.boxes[j];
+    } else if (element.elements) {
+      for (let j = 0; j < element.elements.length; j++) {
+        const box = element.elements[j];
         const foundElement = getElement(box.elements, elementId);
         if (foundElement) return foundElement;
       }

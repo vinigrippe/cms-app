@@ -1,9 +1,11 @@
 [
   {
     "id": "grid_b14hnbjsk_1702858383487",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_8ucj5do2j_1702858488124",
+        "type": "box",
         "elements": [
           {
             "id": "heading_uxvay0i92_1702858493690",
@@ -14,13 +16,15 @@
             "style": "heading-three"
           },
           {
-            "id": "grid_b14hnbjsk_170285838348tt",
-            "boxes": [
+            "id": "grid_teteteb14hnbjsk_170285838348tt",
+            "type": "grid",
+            "elements": [
               {
-                "id": "box_8ucj5do2j_1702858488124tt",
+                "id": "box_tetete8ucj5do2j_1702858488124tt",
+                "type": "box",
                 "elements": [
                   {
-                    "id": "heading_uxvay0i92_1702858493690tt",
+                    "id": "heading_teteteuxvay0i92_1702858493690tt",
                     "type": "heading",
                     "fields": {
                       "text": "Transformo negócios através da criação de marcas poderosas."
@@ -35,6 +39,7 @@
       },
       {
         "id": "box_8cemiidoa_1702858491922",
+        "type": "box",
         "elements": [
           {
             "id": "text_me1ei5bx7_1702858783912",
@@ -57,9 +62,11 @@
   },
   {
     "id": "grid_nhh6c086u_1702926938611",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_bm9gcpkt6_1702926938611",
+        "type": "box",
         "elements": [
           {
             "id": "line_n51q5ij7g_1702926940471",
@@ -73,9 +80,11 @@
   },
   {
     "id": "grid_fnsrg6uuh_1702858812854",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_f14in3szi_1702858812854",
+        "type": "box",
         "elements": [
           {
             "id": "heading_30hfdy3e5_1702858814487",
@@ -91,9 +100,11 @@
   },
   {
     "id": "grid_7uwazjmc2_1702858828593",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_oqxlhkpdd_1702858828593",
+        "type": "box",
         "elements": [
           {
             "id": "image_kzcnq92w5_1702858834967",
@@ -113,6 +124,7 @@
       },
       {
         "id": "box_sh32kz0jj_1702858859564",
+        "type": "box",
         "elements": [
           {
             "id": "image_zz3ci4nxf_1702858865169",
@@ -134,9 +146,11 @@
   },
   {
     "id": "grid_cc279nhvs_1702859024017",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_2ujotvh1v_1702859026975",
+        "type": "box",
         "elements": [
           {
             "id": "image_pdu7uawdk_1702859029070",
@@ -156,6 +170,7 @@
       },
       {
         "id": "box_gvpslpu3o_1702926690053",
+        "type": "box",
         "elements": [
           {
             "id": "image_szl4le2zu_1702926690053",
@@ -177,9 +192,11 @@
   },
   {
     "id": "grid_m0h1w43ou_1702858877656",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_pd03ptdk7_1702858877656",
+        "type": "box",
         "elements": [
           {
             "id": "button_2mojn7kbg_1702858881527",
@@ -195,9 +212,11 @@
   },
   {
     "id": "grid_sztfzduf2_1702926923157",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_rercbwb0j_1702926923157",
+        "type": "box",
         "elements": [
           {
             "id": "line_i44s5f2jh_1702926925223",
@@ -211,9 +230,11 @@
   },
   {
     "id": "grid_d2010bn7d_1702858892797",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_fqw7vf29t_1702858892797",
+        "type": "box",
         "elements": [
           {
             "id": "heading_pgzk3avmv_1702858913514",
@@ -229,9 +250,11 @@
   },
   {
     "id": "grid_k8i9n2j4a_1702926930034",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_wiobzozyr_1702926930034",
+        "type": "box",
         "elements": [
           {
             "id": "line_4mu9qd67n_1702926931755",
@@ -245,9 +268,11 @@
   },
   {
     "id": "grid_ebfic4xsc_1702859096478",
-    "boxes": [
+    "type": "grid",
+    "elements": [
       {
         "id": "box_la2sc7jvl_1702859096478",
+        "type": "box",
         "elements": [
           {
             "id": "line_t0scokp1w_1702926909511",

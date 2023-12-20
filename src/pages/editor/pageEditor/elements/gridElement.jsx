@@ -8,12 +8,16 @@ export function GridElement({ id, index }) {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
   const element = getElement(gridElements, id);
 
+  console.log(element);
+
   const handleInsertGrid = (order) => {
     const newGrid = {
       id: generateId({ name: "grid" }),
-      boxes: [
+      type: "grid",
+      elements: [
         {
           id: generateId({ name: "box" }),
+          type: "box",
           elements: [],
         },
       ],
@@ -25,18 +29,18 @@ export function GridElement({ id, index }) {
     });
   };
 
-  if (element.boxes.length > 0)
+  if (element.elements.length > 0)
     return (
-      <div className="relative group/grid">
+      <div className="relative group/grid w-full">
         <div
           id={id}
           className="grid grid-cols-2 w-full gap-4"
           data-element="grid"
           style={{
-            gridTemplateColumns: `repeat(${element.boxes.length}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${element.elements.length}, minmax(0, 1fr))`,
           }}
         >
-          {element.boxes.map((boxElement, boxIndex) => (
+          {element.elements.map((boxElement) => (
             <BoxElement key={boxElement.id} id={boxElement.id} />
           ))}
         </div>

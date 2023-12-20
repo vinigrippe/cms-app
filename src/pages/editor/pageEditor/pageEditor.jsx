@@ -23,7 +23,7 @@ function PageEditor() {
     const defaultGrid = [
       {
         id: generateId({ name: "grid" }),
-        boxes: [
+        elements: [
           {
             id: generateId({ name: "box" }),
             elements: [],
