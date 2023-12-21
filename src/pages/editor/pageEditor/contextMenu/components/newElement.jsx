@@ -2,36 +2,41 @@ import { useContext } from "react";
 import { PageEditorContext } from "../../pageEditor";
 
 import { generateId } from "@/utils/functions";
-import elementList from "@/utils/elementList.json";
+import elementsList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
 
 export const NewElement = () => {
   const { setGridElements } = useContext(PageEditorContext);
-  const {
-    elementIndex,
-    gridIndex,
-    boxIndex,
-    boxElement,
-    subMenu,
-    setSubMenu,
-    posSubMenu,
-    onClose,
-  } = useContext(MenuContext);
+  const { boxOnFocus, subMenu, setSubMenu, posSubMenu, onClose } =
+    useContext(MenuContext);
 
   const handleInsertElement = ({ type }) => {
+    const elementAttributes = elementsList.find((item) => item.type === type);
+
+    if (!elementAttributes) return;
+
     const newElement = {
       id: generateId({ name: type }),
-      type: type,
-      style: "",
-      fields: {},
+      type: elementAttributes.type,
+      style: elementAttributes.style,
     };
+
+    if (elementAttributes.type === "grid") {
+      newElement.elements = [
+        {
+          id: generateId({ name: "box" }),
+          type: "box",
+          elements: [],
+        },
+      ];
+    } else {
+      newElement.fields = {};
+    }
 
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex + 1 ?? boxElement.elements.length,
+        elementId: boxOnFocus?.id,
         newElement,
       },
     });
@@ -59,7 +64,7 @@ export const NewElement = () => {
           <div
             className={`absolute top-0  ${posSubMenu} z-[30] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col`}
           >
-            {elementList.map((elementItem) => (
+            {elementsList.map((elementItem) => (
               <button
                 key={elementItem.type}
                 data-type="dropdown"

@@ -1,4 +1,38 @@
 export function reducer(state, action) {
+  const newElement = action.payload.newElement;
+  const elementId = action.payload.elementId;
+  const gridElement = getGrid(state, elementId);
+  const boxIndex = action.payload.boxIndex;
+
+  const handleInsertElement = (id) => {
+    const replaceElement = (elements) => {
+      return elements.map((element) => {
+        if (element.id === id) {
+          console.log(boxIndex);
+          return {
+            ...element,
+            elements:
+              boxIndex !== null && boxIndex !== undefined
+                ? [
+                    ...element.elements.slice(0, boxIndex),
+                    newElement,
+                    ...element.elements.slice(boxIndex),
+                  ]
+                : [...element.elements, newElement],
+          };
+        } else if (element.elements) {
+          return {
+            ...element,
+            elements: replaceElement(element.elements),
+          };
+        } else {
+          return element;
+        }
+      });
+    };
+    return [...replaceElement(state)];
+  };
+
   switch (action.type) {
     case "SET_GRID":
       return action.payload;
@@ -11,49 +45,10 @@ export function reducer(state, action) {
       ];
 
     case "ADD_BOX":
-      return state.map((grid, index) => {
-        if (index === action.payload.gridIndex) {
-          return {
-            ...grid,
-            elements: [
-              ...grid.elements.slice(0, action.payload.boxIndex),
-              action.payload.newBox,
-              ...grid.elements.slice(action.payload.boxIndex),
-            ],
-          };
-        } else {
-          return grid;
-        }
-      });
+      return handleInsertElement(gridElement.id);
 
     case "ADD_ELEMENT":
-      const newElement = action.payload.newElement;
-      const elementId = action.payload.elementId;
-
-      const replaceElement = (elements) => {
-        return elements.map((element) => {
-          if (element.id === elementId) {
-            return {
-              ...element,
-              elements: [...element.elements, newElement],
-            };
-          } else if (element.elements) {
-            return {
-              ...element,
-              elements: replaceElement(element.elements),
-            };
-          } else {
-            return element;
-          }
-        });
-      };
-
-      return state.map((element) => {
-        return {
-          ...element,
-          elements: replaceElement(element.elements),
-        };
-      });
+      return handleInsertElement(elementId);
 
     case "CHANGE_ELEMENT":
       return state.map((grid, index) => {
@@ -216,6 +211,24 @@ export const getElement = (elements, elementId) => {
         const box = element.elements[j];
         const foundElement = getElement(box.elements, elementId);
         if (foundElement) return foundElement;
+      }
+    }
+  }
+};
+
+export const getGrid = (elements, elementId) => {
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].id === elementId) {
+      return null; // this is the root element
+    } else if (elements[i].elements) {
+      for (let j = 0; j < elements[i].elements.length; j++) {
+        if (elements[i].elements[j].id === elementId) {
+          return elements[i];
+        }
+        const foundId = getGrid(elements[i].elements, elementId);
+        if (foundId) {
+          return foundId; // found the parent in a deeper level
+        }
       }
     }
   }

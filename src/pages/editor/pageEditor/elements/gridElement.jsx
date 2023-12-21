@@ -8,8 +8,6 @@ export function GridElement({ id, index }) {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
   const element = getElement(gridElements, id);
 
-  console.log(element);
-
   const handleInsertGrid = (order) => {
     const newGrid = {
       id: generateId({ name: "grid" }),
@@ -40,8 +38,12 @@ export function GridElement({ id, index }) {
             gridTemplateColumns: `repeat(${element.elements.length}, minmax(0, 1fr))`,
           }}
         >
-          {element.elements.map((boxElement) => (
-            <BoxElement key={boxElement.id} id={boxElement.id} />
+          {element.elements.map((boxElement, boxIndex) => (
+            <BoxElement
+              key={boxElement.id}
+              id={boxElement.id}
+              boxIndex={boxIndex}
+            />
           ))}
         </div>
         <div className="absolute bottom-0 -mb-4 left-1/2 -translate-x-1/2 flex items-center justify-center gap-2 opacity-0 group-hover/grid:opacity-100 transition-all">

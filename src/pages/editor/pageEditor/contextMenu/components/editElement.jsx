@@ -5,6 +5,7 @@ import { generateId } from "@/utils/functions";
 import designSystem from "@/utils/designSystem.json";
 import elementList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
+import { getGrid } from "../../pageEditorService";
 
 export const EditElement = () => {
   const {
@@ -19,7 +20,7 @@ export const EditElement = () => {
     setSubMenu,
     posSubMenu,
   } = useContext(MenuContext);
-  const { setGridElements } = useContext(PageEditorContext);
+  const { gridElements, setGridElements } = useContext(PageEditorContext);
 
   const designSystemByType = designSystem.find(
     (item) => item.type === element.type
@@ -41,24 +42,35 @@ export const EditElement = () => {
   };
 
   const handleDuplicateElement = () => {
-    const elementType = element.type;
+    const gridElement = getGrid(gridElements, element.id);
 
     const newElement = {
-      id: generateId({ name: elementType }),
-      type: elementType,
-      style: "",
-      fields: {},
+      id: generateId({ name: element.type }),
+      type: element.type,
+      style: element.style,
     };
+
+    if (element.type === "grid") {
+      newElement.elements = [
+        {
+          id: generateId({ name: "box" }),
+          type: "box",
+          elements: [],
+        },
+      ];
+    } else {
+      newElement.fields = {};
+    }
 
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex + 1 ?? boxElement.elements.length,
+        elementId: gridElement?.id,
+        boxIndex: elementIndex + 1 ?? boxElement.elements.length,
         newElement,
       },
     });
+
     onClose();
   };
 

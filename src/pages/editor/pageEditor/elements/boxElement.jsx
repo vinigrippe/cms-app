@@ -20,14 +20,15 @@ export function BoxElement({ boxIndex, id }) {
   const element = getElement(gridElements, id);
 
   const handleInsertBox = (order) => {
-    const newBox = {
+    const newElement = {
       id: generateId({ name: "box" }),
+      type: "box",
       elements: [],
     };
 
     setGridElements({
       type: "ADD_BOX",
-      payload: { elementId: id, boxIndex: order, newBox },
+      payload: { elementId: element.id, boxIndex: order, newElement },
     });
   };
 
@@ -182,7 +183,12 @@ export function BoxElement({ boxIndex, id }) {
                                   index={elementIndex}
                                 />
                               ),
-                              box: <BoxElement id={element.id} />,
+                              box: (
+                                <BoxElement
+                                  id={element.id}
+                                  boxIndex={elementIndex}
+                                />
+                              ),
                             }[element.type]
                           }
                         </div>
@@ -203,7 +209,7 @@ export function BoxElement({ boxIndex, id }) {
         </div>
         <div
           className="rounded-full bg-slate-200 flex items-center justify-center min-w-[24px] h-[24px] absolute top-1/2 -right-[10px] -mt-3 opacity-0 group-hover/box:opacity-100 transition-all cursor-pointer hover:bg-blue-600"
-          onClick={() => handleInsertBox(boxIndex + 2)}
+          onClick={() => handleInsertBox(boxIndex + 1)}
         >
           <span className="mgc_add_fill before:!text-white text-[10px]" />
         </div>
