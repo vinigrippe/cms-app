@@ -1,0 +1,11 @@
+[data-component="select"] {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  width: inherit;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.6em;
+}
+[data-component="select"]:focus-within,
+[data-component="select"][data-active="true"] {
+  /* outline-color: theme("colors.teal.500"); */
+}

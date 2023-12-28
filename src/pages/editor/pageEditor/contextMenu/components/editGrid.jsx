@@ -1,63 +1,88 @@
-import { useContext } from "react";
-import { PageEditorContext } from "../../pageEditor";
-import { generateId } from "@/utils/functions";
+import { useContext, useState } from "react";
+import { PageEditorContext } from "../../../editor";
 import { MenuContext } from "../contextMenu";
 
+import { generateId } from "@/utils/functions";
+import { getElement } from "../../pageEditorFunctions";
+
+import { Button } from "../../../../../components/button/button";
+import { SubMenu } from "@/components/dropdown/dropdown";
+
 export const EditGrid = () => {
-  const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { gridIndex, gridOnFocus, onClose } = useContext(MenuContext);
+  const [subMenu, setSubMenu] = useState("");
+  const { gridElements, setGridElements, elementOnFocus } =
+    useContext(PageEditorContext);
+  const { onClose, posSubMenu } = useContext(MenuContext);
 
   const handleDuplicateGrid = () => {
-    const newGrid = {
+    const { element, index } = getElement(
+      gridElements.elements,
+      elementOnFocus?.grid?.id
+    );
+
+    const newElement = {
       id: generateId({ name: "grid" }),
-      elements: gridElements[gridIndex].elements.map((box) => ({
-        id: generateId({ name: "box" }),
-        elements: box.elements.map((element) => ({
-          id: generateId({ name: element.type }),
-          type: element.type,
-        })),
-      })),
+      type: "grid",
+      elements: element.elements || [],
     };
 
     setGridElements({
-      type: "ADD_GRID",
-      payload: { gridIndex: gridIndex + 1, newGrid },
+      type: "ADD_ELEMENT",
+      payload: {
+        elementType: "grid",
+        elementId: elementOnFocus?.grid?.id,
+        elementIndex: index + 1,
+        newElement,
+      },
     });
     onClose();
   };
 
   const handleDeleteGrid = () => {
     setGridElements({
-      type: "DELETE_GRID",
-      payload: { gridIndex: gridIndex },
+      type: "DELETE_ELEMENT",
+      payload: {
+        elementId: elementOnFocus?.grid?.id,
+      },
     });
     onClose();
   };
 
   return (
-    <>
-      <div
-        onMouseEnter={() => gridOnFocus?.classList?.add("element-focused")}
-        onMouseLeave={() => gridOnFocus?.classList?.remove("element-focused")}
+    <SubMenu.Trigger
+      onClose={() => setSubMenu(false)}
+      onMouseEnter={() =>
+        elementOnFocus?.grid?.classList?.add("element-focused")
+      }
+      onMouseLeave={() =>
+        elementOnFocus?.grid?.classList?.remove("element-focused")
+      }
+    >
+      <Button
+        type="dropdown"
+        isActive={subMenu}
+        icon="columns_2"
+        iconRight="right"
+        onClick={() => setSubMenu(!subMenu)}
       >
-        <button
-          data-type="dropdown"
-          className="flex gap-2 items-center w-[-webkit-fill-available]"
-          onClick={handleDuplicateGrid}
-        >
-          <span className="mgc_copy_3_line" />
-          <p>Duplicate Grid</p>
-        </button>
-        <button
-          data-type="dropdown"
-          data-color="danger"
-          className="flex gap-2 items-center w-[-webkit-fill-available]"
-          onClick={handleDeleteGrid}
-        >
-          <span className="mgc_folder_minus_line" />
-          <p className="text-right">Delete Grid</p>
-        </button>
-      </div>
-    </>
+        Grid Options
+      </Button>
+
+      {subMenu && (
+        <SubMenu.Popup position={{ x: posSubMenu }}>
+          <Button type="dropdown" icon="copy_3" onClick={handleDuplicateGrid}>
+            Duplicate Grid
+          </Button>
+          <Button
+            type="dropdown"
+            color="danger"
+            icon="delete_2"
+            onClick={handleDeleteGrid}
+          >
+            Delete Grid
+          </Button>
+        </SubMenu.Popup>
+      )}
+    </SubMenu.Trigger>
   );
 };

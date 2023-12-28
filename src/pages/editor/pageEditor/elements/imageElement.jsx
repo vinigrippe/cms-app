@@ -1,30 +1,53 @@
 import React, { useContext } from "react";
-import { PageEditorContext } from "../pageEditor";
-import { getElement } from "../pageEditorService";
+import { PageEditorContext } from "../../editor";
+import { getElement } from "../pageEditorFunctions";
+import api from "@/utils/api";
 
 export const ImageElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const element = getElement(gridElements, id);
+  const { element } = getElement(gridElements.elements, id);
   const selectedImage = element.fields.src;
 
-  const handleOnChange = (e) => {
-    const url = URL.createObjectURL(e.target.files[0]);
+  const handleOnChange = async (e) => {
+    const image = await handleUploadFile(e.target.files[0]);
+
+    const updatedElement = {
+      ...element,
+      fields: { src: image.url || "" },
+    };
 
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
         elementId: id,
-        change: {
-          field: "fields",
-          value: { src: url },
-        },
+        newElement: updatedElement,
       },
     });
   };
 
+  const handleUploadFile = async (img) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", img);
+      formData.append("alt", "");
+
+      const response = await api.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   return (
     <figure
-      className="relative h-[200px] w-full group/image rounded-lg overflow-hidden"
+      className={`
+      relative ${
+        selectedImage ? "h-full" : "h-[200px]"
+      } w-full group/image rounded-[inherit] overflow-hidden`}
       data-type="image"
     >
       <label htmlFor={id + "_input"} className="cursor-pointer">

@@ -1,0 +1,15 @@
+input[type="range"] {
+  width: 100%;
+  outline: none;
+  position: relative;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: theme("colors.teal.500");
+  cursor: pointer;
+  border-radius: 50%;
+}
