@@ -1,0 +1,118 @@
+button {
+  border-radius: 0.6em;
+  padding: 0.5rem;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 2px solid transparent;
+  width: inherit;
+  line-height: 1;
+}
+
+button[data-type="primary"] {
+  background-color: theme("colors.teal.600");
+  color: WHITE;
+}
+
+button[data-type="primary"] > span::before {
+  color: WHITE;
+}
+
+button[data-type="primary"]:hover {
+  background-color: theme("colors.teal.700");
+}
+button[data-type="primary"][aria-disabled="true"] {
+  opacity: 0.8;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button[data-type="ghost"] {
+  background-color: theme("colors.slate.200");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="ghost"]:hover {
+  background-color: theme("colors.slate.300");
+}
+
+button[data-type="ghost"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button[data-type="dropdown"] {
+  background-color: theme("colors.white");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="dropdown"]:hover {
+  background-color: theme("colors.slate.100");
+}
+button[data-type="dropdown"][data-active="true"] {
+  background-color: theme("colors.slate.100");
+}
+button[data-type="dropdown"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button[data-type="dropdown"][data-color="danger"]:hover,
+button[data-type="dropdown"][data-color="danger"]:hover > span::before {
+  color: theme("colors.rose.600");
+  background-color: theme("colors.rose.50");
+}
+
+button[data-type="flat"] {
+  background-color: theme("colors.white");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="flat"]:hover {
+  background-color: theme("colors.slate.100");
+}
+button[data-type="flat"][data-active="true"] {
+  background-color: theme("colors.teal.50");
+}
+button[data-type="flat"][data-active="true"] > span::before {
+  color: theme("colors.teal.500");
+}
+
+button[data-type="flat"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button[data-type="link"] {
+  padding: 0;
+  color: theme("colors.slate.600");
+}
+
+button[data-type="link"][data-active="true"] {
+  background-color: theme("colors.teal.50");
+}
+button[data-type="link"][data-active="true"] > span::before {
+  color: theme("colors.teal.500");
+}
+
+button[data-type="link"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+button[data-type="link"][data-color="danger"]:hover,
+button[data-type="link"][data-color="danger"]:hover > span::before {
+  color: theme("colors.rose.600");
+}
+
+button[data-size="small"] {
+  padding: 0.35rem;
+  font-size: 0.8rem;
+  border-radius: 0.5em;
+}

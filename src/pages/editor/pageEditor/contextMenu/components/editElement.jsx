@@ -1,64 +1,60 @@
-import { useContext } from "react";
-import { PageEditorContext } from "../../pageEditor";
+import { useContext, useState } from "react";
+import { PageEditorContext } from "../../../editor";
 import { generateId } from "@/utils/functions";
 
 import designSystem from "@/utils/designSystem.json";
 import elementList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
+import { getElement, getParentElement } from "../../pageEditorFunctions";
+
+import { Button } from "@/components/button/button";
+import { SubMenu } from "@/components/dropdown/dropdown";
 
 export const EditElement = () => {
+  const [subMenuOptions, setSubMenuOptions] = useState("");
+  const [subMenuChange, setSubMenuChange] = useState(false);
+  const { onClose, posSubMenu } = useContext(MenuContext);
   const {
-    element,
-    boxElement,
+    copyPaste,
+    setCopyPaste,
+    gridElements,
+    setGridElements,
     elementOnFocus,
-    gridIndex,
-    boxIndex,
-    elementIndex,
-    onClose,
-    subMenu,
-    setSubMenu,
-    posSubMenu,
-  } = useContext(MenuContext);
-  const { setGridElements } = useContext(PageEditorContext);
-
-  const designSystemByType = designSystem.find(
-    (item) => item.type === element.type
+  } = useContext(PageEditorContext);
+  const { element, index } = getElement(
+    gridElements.elements,
+    elementOnFocus?.element?.id
   );
 
-  const handleChangeStyle = (style) => {
-    elementOnFocus.setAttribute("data-style", style.class);
-    setGridElements({
-      type: "UPDATE_ELEMENT",
-      payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
-        change: {
-          field: "style",
-          value: style.class,
-        },
-      },
-    });
-    onClose();
-  };
-
   const handleDuplicateElement = () => {
-    const elementType = element.type;
-
+    const { parentElement } = getParentElement(
+      gridElements.elements,
+      element.id
+    );
     const newElement = {
-      id: generateId({ name: elementType }),
-      type: elementType,
-      style: "",
-      fields: {},
+      id: generateId({ name: element.type }),
+      type: element.type,
+      style: element.style,
     };
+    if (element.type === "grid") {
+      newElement.elements = [
+        {
+          id: generateId({ name: "box" }),
+          type: "box",
+          elements: [],
+        },
+      ];
+    } else {
+      newElement.fields = {};
+    }
 
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex + 1 ?? boxElement.elements.length,
-        newElement,
+        elementType: element.type,
+        elementId: parentElement?.id,
+        elementIndex: index + 1,
+        newElement: newElement,
       },
     });
     onClose();
@@ -68,121 +64,135 @@ export const EditElement = () => {
     setGridElements({
       type: "DELETE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
+        elementId: elementOnFocus?.element?.id,
       },
     });
     onClose();
   };
 
   const handleChangeElement = ({ type }) => {
+    const newTypeElement = designSystem.find((item) => item.type === type) ?? {
+      styles: [],
+    };
+
     const updatedElement = {
-      id: element.id,
+      ...element,
+      id: generateId({ name: type }),
       type: type,
+      style: newTypeElement.styles[0]?.class ?? "",
     };
 
     setGridElements({
-      type: "CHANGE_ELEMENT",
+      type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
-        updatedElement: updatedElement,
+        elementId: elementOnFocus?.element?.id,
+        newElement: updatedElement,
       },
     });
     onClose();
   };
 
+  const handleCopyElement = () => {
+    setCopyPaste(element);
+    onClose();
+  };
+
+  const handlePasteElement = () => {
+    if (!copyPaste) return;
+
+    const newElement = {
+      ...copyPaste,
+      id: generateId({ name: copyPaste.type }),
+    };
+
+    setGridElements({
+      type: "ADD_ELEMENT",
+      payload: {
+        elementType: copyPaste.type,
+        elementId: elementOnFocus?.box?.id,
+        elementIndex: index + 1,
+        newElement,
+      },
+    });
+
+    onClose();
+  };
+
   return (
     <>
-      <div className="relative">
-        <button
-          data-type="dropdown"
-          data-active={subMenu === "change" ? "true" : "false"}
+      <Button type="dropdown" icon="copy_2" onClick={handleCopyElement}>
+        Copy
+      </Button>
+      <Button
+        type="dropdown"
+        icon="documents"
+        isDisabled={!copyPaste}
+        onClick={handlePasteElement}
+      >
+        Paste
+      </Button>
+
+      <div className="border-b w-full pt-1 mb-1"></div>
+
+      <SubMenu.Trigger onClose={() => setSubMenuChange(false)}>
+        <Button
+          type="dropdown"
+          isActive={subMenuChange}
           className="flex gap-2 justify-between w-[-webkit-fill-available]"
-          onClick={() => setSubMenu(subMenu === "change" ? "" : "change")}
+          onClick={() => setSubMenuChange(!subMenuChange)}
+          icon="transfer"
+          iconRight="right"
         >
-          <div className="flex gap-2 items-center">
-            <span className="mgc_transfer_line" />
-            <p>Change Element</p>
-          </div>
-          <span className="mgc_right_line" />
-        </button>
+          Change Element
+        </Button>
 
-        {subMenu === "change" && (
-          <div
-            className={`absolute top-0 ${posSubMenu} z-[30] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col`}
-          >
+        {subMenuChange && (
+          <SubMenu.Popup position={{ x: posSubMenu }}>
             {elementList.map((elementItem) => (
-              <button
+              <Button
                 key={elementItem.type}
-                data-type="dropdown"
-                className="flex gap-2 items-center"
+                type="dropdown"
+                icon={elementItem.icon}
                 onClick={() => handleChangeElement({ type: elementItem.type })}
-                aria-disabled={elementItem.type === element.type}
+                isDisabled={elementItem.type === element.type}
               >
-                <span className={elementItem.icon} />
-                <p>{elementItem.title}</p>
-              </button>
+                {elementItem.title}
+              </Button>
             ))}
-          </div>
+          </SubMenu.Popup>
         )}
-      </div>
-      {designSystemByType?.styles?.length > 0 && (
-        <div className="relative">
-          <button
-            data-type="dropdown"
-            data-active={subMenu === "style" ? "true" : "false"}
-            className="flex gap-2 justify-between w-[-webkit-fill-available]"
-            onClick={() => setSubMenu(subMenu === "style" ? "" : "style")}
-          >
-            <div className="flex gap-2 items-center">
-              <span className="mgc_paint_brush_line" />
-              <p>Edit Style</p>
-            </div>
-            <span className="mgc_right_line" />
-          </button>
+      </SubMenu.Trigger>
 
-          {subMenu === "style" && (
-            <div
-              className={`absolute top-0  ${posSubMenu} z-[30] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col`}
+      <SubMenu.Trigger onClose={() => setSubMenuOptions(false)}>
+        <Button
+          type="dropdown"
+          isActive={subMenuOptions ? true : false}
+          icon="textbox"
+          iconRight="right"
+          onClick={() => setSubMenuOptions(!subMenuOptions)}
+        >
+          Element Options
+        </Button>
+        {subMenuOptions && (
+          <SubMenu.Popup position={{ x: posSubMenu }}>
+            <Button
+              type="dropdown"
+              icon="copy_3"
+              onClick={handleDuplicateElement}
             >
-              {designSystemByType.styles.map((itemStyle) => (
-                <button
-                  key={itemStyle.id}
-                  data-active={
-                    element.style === itemStyle.class ? "true" : "false"
-                  }
-                  data-type="dropdown"
-                  className="flex gap-2 items-center"
-                  onClick={() => handleChangeStyle(itemStyle)}
-                  aria-disabled={element.style === itemStyle.class}
-                >
-                  <p>{itemStyle.name}</p>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-      <button
-        data-type="dropdown"
-        className="flex gap-2 items-center"
-        onClick={handleDuplicateElement}
-      >
-        <span className="mgc_copy_2_line" />
-        <p>Duplicate Element</p>
-      </button>
-      <button
-        data-type="dropdown"
-        data-color="danger"
-        className="flex gap-2 items-center"
-        onClick={handleDeleteElement}
-      >
-        <span className="mgc_delete_2_line" />
-        <p>Delete Element</p>
-      </button>
+              Duplicate
+            </Button>
+            <Button
+              type="dropdown"
+              color="danger"
+              icon="delete_2"
+              onClick={handleDeleteElement}
+            >
+              Delete
+            </Button>
+          </SubMenu.Popup>
+        )}
+      </SubMenu.Trigger>
 
       <div className="border-b w-full pt-1 mb-1"></div>
     </>

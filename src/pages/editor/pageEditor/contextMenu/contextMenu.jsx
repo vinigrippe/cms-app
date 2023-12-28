@@ -1,43 +1,21 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { PageEditorContext } from "../pageEditor";
 
 import { EditElement } from "./components/editElement";
 import { EditBox } from "./components/editBox";
 import { EditGrid } from "./components/editGrid";
 import { NewElement } from "./components/newElement";
+import { PageEditorContext } from "../../editor";
 
 export const MenuContext = createContext();
 
-export function ContextMenu({
-  event,
-  elementOnFocus,
-  boxOnFocus,
-  gridOnFocus,
-  isOpen,
-  onClose,
-}) {
+export function ContextMenu({ event, isOpen, onClose }) {
   const refContextMenuEl = useRef(null);
-  const { gridElements } = useContext(PageEditorContext);
-  const [subMenu, setSubMenu] = useState("");
   const [posContextMenu, setPosContextMenu] = useState({
     x: 0,
     y: 0,
     boundary: false,
   });
-
-  const gridIndex = gridElements.findIndex(
-    (item) => item.id === gridOnFocus?.id
-  );
-  const boxIndex = gridElements[gridIndex]?.boxes.findIndex(
-    (item) => item.id === boxOnFocus?.id
-  );
-  const elementIndex = gridElements[gridIndex]?.boxes[
-    boxIndex
-  ]?.elements.findIndex((item) => item.id === elementOnFocus?.id);
-
-  const element =
-    gridElements[gridIndex]?.boxes[boxIndex]?.elements[elementIndex] ?? {};
-  const boxElement = gridElements[gridIndex]?.boxes[boxIndex] ?? {};
+  const { elementOnFocus } = useContext(PageEditorContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -56,7 +34,9 @@ export function ContextMenu({
   }, [onClose, refContextMenuEl]);
 
   useEffect(() => {
-    const elementParent = elementOnFocus?.closest("[data-element='element']");
+    const elementParent = elementOnFocus?.element?.closest(
+      "[data-element='element']"
+    );
 
     if (elementParent) {
       elementParent?.classList?.add("element-focused");
@@ -98,37 +78,25 @@ export function ContextMenu({
     <MenuContext.Provider
       value={{
         onClose,
-        subMenu,
-        setSubMenu,
         posSubMenu: !posContextMenu.boundary ? "left-[100%]" : "right-[100%]",
-
-        elementOnFocus,
-        elementIndex,
-        element,
-
-        boxOnFocus,
-        boxIndex,
-        boxElement,
-
-        gridOnFocus,
-        gridIndex,
       }}
     >
-      {(!!boxOnFocus || !!gridOnFocus || !!elementOnFocus) && (
+      {!!elementOnFocus && (
         <div
           ref={refContextMenuEl}
-          className="fixed z-[20] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col"
+          className="fixed z-[50] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col"
           style={{
             left: `${posContextMenu.x}px`,
             top: `${posContextMenu.y}px`,
             opacity: posContextMenu.x !== 0 && posContextMenu.y !== 0 ? 100 : 0,
           }}
           onContextMenu={(e) => e.preventDefault()}
+          onClick={(e) => e.stopPropagation()}
         >
-          {!!boxOnFocus && <NewElement />}
-          {!!elementOnFocus && <EditElement />}
-          {!!boxOnFocus && <EditBox />}
-          {!!gridOnFocus && <EditGrid />}
+          {!!elementOnFocus?.box && <NewElement />}
+          {!!elementOnFocus?.element && <EditElement />}
+          {!!elementOnFocus?.box && <EditBox />}
+          {!!elementOnFocus?.grid && <EditGrid />}
         </div>
       )}
     </MenuContext.Provider>

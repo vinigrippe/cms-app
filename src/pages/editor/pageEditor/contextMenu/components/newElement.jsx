@@ -1,37 +1,45 @@
-import { useContext } from "react";
-import { PageEditorContext } from "../../pageEditor";
+import { useContext, useState } from "react";
+import { PageEditorContext } from "../../../editor";
 
 import { generateId } from "@/utils/functions";
-import elementList from "@/utils/elementList.json";
+import elementsList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
+import { Button } from "@/components/button/button";
+import { SubMenu } from "@/components/dropdown/dropdown";
 
 export const NewElement = () => {
-  const { setGridElements } = useContext(PageEditorContext);
-  const {
-    elementIndex,
-    gridIndex,
-    boxIndex,
-    boxElement,
-    subMenu,
-    setSubMenu,
-    posSubMenu,
-    onClose,
-  } = useContext(MenuContext);
+  const { setGridElements, elementOnFocus } = useContext(PageEditorContext);
+  const { posSubMenu, onClose } = useContext(MenuContext);
+  const [subMenu, setSubMenu] = useState("");
 
   const handleInsertElement = ({ type }) => {
+    const elementAttributes = elementsList.find((item) => item.type === type);
+
+    if (!elementAttributes) return;
+
     const newElement = {
       id: generateId({ name: type }),
-      type: type,
-      style: "",
-      fields: {},
+      type: elementAttributes.type,
+      style: elementAttributes.style,
     };
+
+    if (elementAttributes.type === "grid") {
+      newElement.elements = [
+        {
+          id: generateId({ name: "box" }),
+          type: "box",
+          elements: [],
+        },
+      ];
+    } else {
+      newElement.fields = {};
+    }
 
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex + 1 ?? boxElement.elements.length,
+        elementType: elementAttributes.type,
+        elementId: elementOnFocus.box?.id,
         newElement,
       },
     });
@@ -41,38 +49,33 @@ export const NewElement = () => {
 
   return (
     <>
-      <div className="relative">
-        <button
-          data-type="dropdown"
-          data-active={subMenu === "new" ? "true" : "false"}
-          className="flex gap-2 justify-between w-[-webkit-fill-available]"
+      <SubMenu.Trigger onClose={() => setSubMenu("")}>
+        <Button
+          type="dropdown"
+          isActive={subMenu === "new" ? "true" : "false"}
+          icon="add"
+          iconRight="right"
           onClick={() => setSubMenu(subMenu === "new" ? "" : "new")}
         >
-          <div className="flex gap-2 items-center">
-            <span className="mgc_add_line" />
-            <p>Add New Element</p>
-          </div>
-          <span className="mgc_right_line" />
-        </button>
+          Add New Element
+        </Button>
 
         {subMenu === "new" && (
-          <div
-            className={`absolute top-0  ${posSubMenu} z-[30] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col`}
-          >
-            {elementList.map((elementItem) => (
-              <button
+          <SubMenu.Popup position={{ x: posSubMenu }}>
+            {elementsList.map((elementItem) => (
+              <Button
                 key={elementItem.type}
-                data-type="dropdown"
-                className="flex gap-2 items-center"
+                type="dropdown"
                 onClick={() => handleInsertElement({ type: elementItem.type })}
+                icon={elementItem.icon}
               >
-                <span className={elementItem.icon} />
-                <p>{elementItem.title}</p>
-              </button>
+                {elementItem.title}
+              </Button>
             ))}
-          </div>
+          </SubMenu.Popup>
         )}
-      </div>
+      </SubMenu.Trigger>
+
       <div className="border-b w-full pt-1 mb-1"></div>
     </>
   );

@@ -2,43 +2,60 @@
   {
     "id": 1,
     "title": "Heading",
-    "icon": "mgc_text_2_line",
+    "icon": "text_2",
     "type": "heading",
-    "style": "heading-one"
+    "style": "heading-one",
+    "classes": ["bold", "italic", "underline", "color", "text-align"],
+    "link": ""
   },
   {
     "id": 2,
     "title": "Text",
-    "icon": "mgc_textbox_line",
+    "icon": "textbox",
     "type": "text",
     "style": ""
   },
   {
     "id": 3,
     "title": "Button",
-    "icon": "mgc_bling_line",
+    "icon": "bling",
     "type": "button",
     "style": "primary-button"
   },
   {
     "id": 4,
     "title": "Line",
-    "icon": "mgc_spacing_vertical_line",
+    "icon": "spacing_vertical",
     "type": "line",
     "style": ""
   },
   {
     "id": 5,
     "title": "Image",
-    "icon": "mgc_pic_line",
+    "icon": "pic",
     "type": "image",
     "style": ""
   },
   {
     "id": 6,
     "title": "Video",
-    "icon": "mgc_video_line",
+    "icon": "video",
     "type": "video",
+    "style": ""
+  },
+
+  {
+    "id": 7,
+    "title": "Grid",
+    "icon": "layout",
+    "type": "grid",
+    "style": ""
+  },
+  {
+    "id": 8,
+    "title": "Box",
+    "icon": "square",
+    "type": "box",
     "style": ""
   }
 ]

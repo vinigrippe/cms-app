@@ -1,36 +1,53 @@
 import React, { useContext } from "react";
-import { PageEditorContext } from "../pageEditor";
-import { getIndexes } from "../pageEditorService";
+import { PageEditorContext } from "../../editor";
+import { getElement } from "../pageEditorFunctions";
+import api from "@/utils/api";
 
 export const VideoElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { gridIndex, boxIndex, elementIndex, element } = getIndexes(
-    gridElements,
-    id
-  );
-
+  const { element } = getElement(gridElements.elements, id);
   const selectedVideo = element.fields.src;
 
-  const handleOnChange = (e) => {
-    const url = URL.createObjectURL(e.target.files[0]);
+  const handleOnChange = async (e) => {
+    const video = await handleUploadFile(e.target.files[0]);
+
+    const updatedElement = {
+      ...element,
+      fields: { src: video.url || "" },
+    };
 
     setGridElements({
       type: "UPDATE_ELEMENT",
       payload: {
-        gridIndex: gridIndex,
-        boxIndex: boxIndex,
-        elementIndex: elementIndex,
-        change: {
-          field: "fields",
-          value: { src: url },
-        },
+        elementId: id,
+        newElement: updatedElement,
       },
     });
   };
 
+  const handleUploadFile = async (video) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", video);
+      formData.append("alt", "");
+
+      const response = await api.post("/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   return (
     <figure
-      className="relative h-[200px] w-full group/image rounded-lg overflow-hidden"
+      className={`
+      relative ${
+        selectedVideo ? "h-full" : "h-[200px]"
+      } w-full group/image rounded-[inherit] overflow-hidden`}
       data-type="video"
     >
       <label htmlFor={id + "_input"} className="cursor-pointer">
