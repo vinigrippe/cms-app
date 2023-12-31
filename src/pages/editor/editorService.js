@@ -8,6 +8,7 @@ export function elementsReducer(state, action) {
     elementIndex,
     loadHistory,
     loadElements,
+    asElement,
   } = action.payload;
   const { elements, history, historyPointer } = state;
   const { parentElement } = getParentElement(state.elements, elementId);
@@ -25,7 +26,7 @@ export function elementsReducer(state, action) {
       switch (elementType) {
         case "grid":
         case "box":
-          if (parentElement) {
+          if (asElement && parentElement) {
             newElements = handleInsertElement(
               elements,
               parentElement.id,
@@ -33,11 +34,12 @@ export function elementsReducer(state, action) {
               newElement
             );
           } else {
-            newElements = [
-              ...elements.slice(0, elementIndex),
-              newElement,
-              ...elements.slice(elementIndex),
-            ];
+            newElements = handleInsertElement(
+              elements,
+              elementId,
+              elementIndex,
+              newElement
+            );
           }
           break;
 

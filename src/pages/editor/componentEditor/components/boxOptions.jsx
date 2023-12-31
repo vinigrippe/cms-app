@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { PageEditorContext } from "../editor";
-import { getElement } from "../pageEditor/pageEditorFunctions";
+import { PageEditorContext } from "../../editor";
+import { getElement } from "../../pageEditor/pageEditorFunctions";
 
 import { Button } from "@/components/button/button";
 import { Select } from "@/components/select/select";
+import { Input } from "@/components/input/input";
 
 const BoxOptions = () => {
   const { gridElements, setGridElements, elementOnFocus } =
@@ -36,15 +37,82 @@ const BoxOptions = () => {
   if (elementBox)
     return (
       <div className="flex flex-col gap-3">
-        <p className="font-medium bg-sky-100 outline-2 outline-sky-500 outline-dashed py-1 px-2 rounded-md">
-          Box Options
-        </p>
         <div className="flex flex-col gap-2 pb-2">
+          <div className="flex flex-col gap-1">
+            <p className="text-xs font-semibold">Vertical Alignment</p>
+            <div className="flex gap-2 justify-between">
+              <Button
+                icon="align_left_2"
+                type="flat"
+                size="small"
+                isActive={
+                  elementBox?.classes?.justifyContent === "flex-start" ||
+                  !elementBox?.classes?.justifyContent
+                }
+                onClick={() =>
+                  handleChangeClass(elementBox, "justifyContent", "flex-start")
+                }
+              />
+              <Button
+                icon="align_horizontal_center"
+                type="flat"
+                size="small"
+                isActive={elementBox?.classes?.justifyContent === "center"}
+                onClick={() =>
+                  handleChangeClass(elementBox, "justifyContent", "center")
+                }
+              />
+              <Button
+                icon="align_right_2"
+                type="flat"
+                size="small"
+                isActive={elementBox?.classes?.justifyContent === "flex-end"}
+                onClick={() =>
+                  handleChangeClass(elementBox, "justifyContent", "flex-end")
+                }
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-xs font-semibold">Horizontal Alignment</p>
+            <div className="flex gap-2 justify-between">
+              <Button
+                icon="align_top"
+                type="flat"
+                size="small"
+                isActive={
+                  elementBox?.classes?.alignItems === "flex-start" ||
+                  !elementBox?.classes?.alignItems
+                }
+                onClick={() =>
+                  handleChangeClass(elementBox, "alignItems", "flex-start")
+                }
+              />
+              <Button
+                icon="align_vertical_center"
+                type="flat"
+                size="small"
+                isActive={elementBox?.classes?.alignItems === "center"}
+                onClick={() =>
+                  handleChangeClass(elementBox, "alignItems", "center")
+                }
+              />
+              <Button
+                icon="align_bottom"
+                type="flat"
+                size="small"
+                isActive={elementBox?.classes?.alignItems === "flex-end"}
+                onClick={() =>
+                  handleChangeClass(elementBox, "alignItems", "flex-end")
+                }
+              />
+            </div>
+          </div>
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
               <p className="text-xs font-semibold">Padding</p>
               <div className="flex flex-col gap-1 items-center">
-                <input
+                <Input
                   type="number"
                   className="!w-[16px] text-center"
                   onFocus={() => setPaddingFocus("top")}
@@ -56,7 +124,7 @@ const BoxOptions = () => {
                 />
 
                 <div className="flex flex-row gap-2 items-center">
-                  <input
+                  <Input
                     type="number"
                     className="!w-[16px] text-center"
                     onFocus={() => setPaddingFocus("left")}
@@ -92,7 +160,7 @@ const BoxOptions = () => {
                       }`}
                     />
                   </div>
-                  <input
+                  <Input
                     type="number"
                     className="!w-[16px] text-center"
                     onFocus={() => setPaddingFocus("right")}
@@ -108,7 +176,7 @@ const BoxOptions = () => {
                   />
                 </div>
 
-                <input
+                <Input
                   type="number"
                   className="!w-[16px] text-center"
                   onFocus={() => setPaddingFocus("bottom")}
@@ -186,7 +254,7 @@ const BoxOptions = () => {
                   }
                 />
               </div>
-              <input
+              <Input
                 type="number"
                 className="!w-[16px] text-center"
                 onChange={(e) =>
@@ -220,24 +288,32 @@ const BoxOptions = () => {
                   Dashed
                 </Select.Option>
               </Select>
-              <input
-                type="color"
-                id="format-borderColor"
-                name="format-borderColor"
-                value={elementBox?.classes?.borderColor ?? "#000000"}
-                onInput={(e) => {
-                  handleChangeClass(elementBox, "borderColor", e.target.value);
-                }}
-              />
-              <Button
-                icon="palette"
-                type="flat"
-                size="small"
-                onClick={() => {
-                  const color = document.getElementById("format-borderColor");
-                  color.click();
-                }}
-              />
+              <div className="relative">
+                <Input
+                  type="color"
+                  id="format-bordercolor-box"
+                  name="format-bordercolor-box"
+                  value={elementBox?.classes?.borderColor ?? "#000000"}
+                  onInput={(e) => {
+                    handleChangeClass(
+                      elementBox,
+                      "borderColor",
+                      e.target.value
+                    );
+                  }}
+                />
+                <Button
+                  icon="palette"
+                  type="flat"
+                  size="small"
+                  onClick={() => {
+                    const color = document.getElementById(
+                      "format-bordercolor-box"
+                    );
+                    color.click();
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-1">
@@ -248,7 +324,7 @@ const BoxOptions = () => {
                 <div className="bg-sky-500 py-[5px] w-full"></div>
                 <div className="bg-slate-100 py-[3px] w-full"></div>
               </div>
-              <input
+              <Input
                 type="number"
                 className="!w-[16px] text-center"
                 onChange={(e) =>

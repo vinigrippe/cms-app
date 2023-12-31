@@ -5,13 +5,13 @@ export const Button = ({
   isActive,
   isDisabled,
   isLoading,
-  onClick,
   type,
   color,
   size,
   icon,
   iconRight,
   children,
+  ...props
 }) => {
   let loadingColor = "#475569";
 
@@ -21,12 +21,13 @@ export const Button = ({
 
   return (
     <button
+      data-component="button"
       data-type={type || "primary"}
-      onClick={onClick}
       aria-disabled={isDisabled}
       data-color={color}
       data-active={isActive}
       data-size={size}
+      {...props}
     >
       {isLoading ? (
         <LoadingIcon size="13" color={loadingColor} />

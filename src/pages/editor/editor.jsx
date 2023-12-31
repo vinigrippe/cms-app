@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { elementsReducer } from "./editorService";
 import api from "@/utils/api";
@@ -9,13 +10,14 @@ import TreeWalkerElements from "./treeWalkerElements/treeWalkerElements";
 
 export const PageEditorContext = createContext();
 
-function Editor() {
-  const pageId = 4;
+export function Editor() {
+  const { pageId } = useParams();
   const [gridElements, setGridElements] = useReducer(elementsReducer, {
     elements: [],
     history: [],
     historyPointer: 1,
   });
+  const [designSystem, setDesignSystem] = useState([]);
   const [isLoading, setIsLoading] = useState("load");
   const [copyPaste, setCopyPaste] = useState(null);
   const [showTreeWalker, setShowTreeWalker] = useState(false);
@@ -26,24 +28,28 @@ function Editor() {
   });
 
   useEffect(() => {
-    handleLoadPage();
+    setIsLoading("load");
+    Promise.all([handleLoadPage(), handleLoadDesignSystem()]).then(() => {
+      setIsLoading("");
+    });
   }, []);
 
-  const handleLoadPage = async () => {
-    setIsLoading("load");
+  const handleLoadDesignSystem = async () => {
+    await api.get("/design_system").then((response) => {
+      setDesignSystem(response.data);
+    });
+  };
 
-    await api
-      .get("/pages/" + pageId)
-      .then((response) => {
-        setGridElements({
-          type: "SET_GRID",
-          payload: {
-            loadElements: JSON.parse(response.data.elements),
-            loadHistory: [JSON.parse(response.data.elements)],
-          },
-        });
-      })
-      .finally(() => setIsLoading(""));
+  const handleLoadPage = async () => {
+    await api.get("/pages/" + pageId).then((response) => {
+      setGridElements({
+        type: "SET_GRID",
+        payload: {
+          loadElements: response.data.elements,
+          loadHistory: [response.data.elements],
+        },
+      });
+    });
   };
 
   return (
@@ -59,6 +65,7 @@ function Editor() {
         setElementOnFocus,
         showTreeWalker,
         setShowTreeWalker,
+        designSystem,
       }}
     >
       <div className="h-[100vh] max-h-[100vh] min-h-[100vh] flex">
@@ -69,5 +76,3 @@ function Editor() {
     </PageEditorContext.Provider>
   );
 }
-
-export default Editor;

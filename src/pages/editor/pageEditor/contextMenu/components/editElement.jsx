@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { PageEditorContext } from "../../../editor";
 import { generateId } from "@/utils/functions";
 
-import designSystem from "@/utils/designSystem.json";
 import elementList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
 import { getElement, getParentElement } from "../../pageEditorFunctions";
@@ -11,7 +10,6 @@ import { Button } from "@/components/button/button";
 import { SubMenu } from "@/components/dropdown/dropdown";
 
 export const EditElement = () => {
-  const [subMenuOptions, setSubMenuOptions] = useState("");
   const [subMenuChange, setSubMenuChange] = useState(false);
   const { onClose, posSubMenu } = useContext(MenuContext);
   const {
@@ -20,6 +18,7 @@ export const EditElement = () => {
     gridElements,
     setGridElements,
     elementOnFocus,
+    designSystem,
   } = useContext(PageEditorContext);
   const { element, index } = getElement(
     gridElements.elements,
@@ -79,7 +78,7 @@ export const EditElement = () => {
       ...element,
       id: generateId({ name: type }),
       type: type,
-      style: newTypeElement.styles[0]?.class ?? "",
+      style: newTypeElement.styles[0]?.style_id ?? "",
     };
 
     setGridElements({
@@ -134,6 +133,18 @@ export const EditElement = () => {
 
       <div className="border-b w-full pt-1 mb-1"></div>
 
+      <Button type="dropdown" icon="copy_3" onClick={handleDuplicateElement}>
+        Duplicate
+      </Button>
+      <Button
+        type="dropdown"
+        color="danger"
+        icon="delete_2"
+        onClick={handleDeleteElement}
+      >
+        Delete
+      </Button>
+
       <SubMenu.Trigger onClose={() => setSubMenuChange(false)}>
         <Button
           type="dropdown"
@@ -159,37 +170,6 @@ export const EditElement = () => {
                 {elementItem.title}
               </Button>
             ))}
-          </SubMenu.Popup>
-        )}
-      </SubMenu.Trigger>
-
-      <SubMenu.Trigger onClose={() => setSubMenuOptions(false)}>
-        <Button
-          type="dropdown"
-          isActive={subMenuOptions ? true : false}
-          icon="textbox"
-          iconRight="right"
-          onClick={() => setSubMenuOptions(!subMenuOptions)}
-        >
-          Element Options
-        </Button>
-        {subMenuOptions && (
-          <SubMenu.Popup position={{ x: posSubMenu }}>
-            <Button
-              type="dropdown"
-              icon="copy_3"
-              onClick={handleDuplicateElement}
-            >
-              Duplicate
-            </Button>
-            <Button
-              type="dropdown"
-              color="danger"
-              icon="delete_2"
-              onClick={handleDeleteElement}
-            >
-              Delete
-            </Button>
           </SubMenu.Popup>
         )}
       </SubMenu.Trigger>

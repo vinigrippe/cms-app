@@ -23,19 +23,15 @@ export const Select = ({ isDisabled, value, id, children }) => {
   return (
     <div
       data-component="select"
-      id={id}
       data-active={showSelect}
+      aria-disabled={isDisabled}
       ref={refSelectEl}
+      id={id}
     >
-      <Button
-        onClick={() => setShowSelect(!showSelect)}
-        type="flat"
-        iconRight="down"
-        isActive={showSelect}
-        isDisabled={isDisabled}
-      >
-        {value}
-      </Button>
+      <div className="select-button" onClick={() => setShowSelect(!showSelect)}>
+        <span>{value}</span>
+        <span className="mgc_down_line"></span>
+      </div>
 
       {showSelect && (
         <div className="absolute z-[20] w-[-webkit-fill-available] mx-1 left-0 mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 flex flex-col">
