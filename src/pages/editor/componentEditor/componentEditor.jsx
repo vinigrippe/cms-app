@@ -1,30 +1,55 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PageEditorContext } from "../editor";
 
 import { Button } from "@/components/button/button";
-import BoxOptions from "./boxOptions";
-import GridOptions from "./gridOptions";
-import ElementOptions from "./elementOptions";
+import BoxOptions from "./components/boxOptions";
+import GridOptions from "./components/gridOptions";
+import ElementOptions from "./components/elementOptions";
 import { getElement } from "../pageEditor/pageEditorFunctions";
 
 const ComponentEditor = () => {
   const { showTreeWalker, setShowTreeWalker, gridElements, elementOnFocus } =
     useContext(PageEditorContext);
+  const [isTabFocused, setIsTabFocused] = useState(false);
+
+  const navigate = useNavigate();
 
   const { element } = getElement(
     gridElements.elements,
     elementOnFocus?.grid?.id
   );
 
+  useEffect(() => {
+    if (elementOnFocus?.element) {
+      setIsTabFocused("element");
+    } else if (elementOnFocus?.box) {
+      setIsTabFocused("box");
+    } else if (elementOnFocus?.grid) {
+      setIsTabFocused("grid");
+    }
+  }, [elementOnFocus]);
+
   return (
     <div
-      className="relative min-w-[220px] max-w-[220px] bg-white/75 rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between gap-5 overflow-y-auto"
+      className="relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
       onFocus={(e) => {
         e.stopPropagation();
         e.preventDefault();
       }}
     >
-      <div className="flex flex-col gap-5 px-3 pt-3">
+      <div className="flex flex-col gap-5 px-3 pt-3 h-full overflow-y-auto">
+        <div className="pb-2 pt-0 border-b">
+          <Button
+            type="flat"
+            icon="arrow_left"
+            onClick={() => {
+              navigate("/pages");
+            }}
+          >
+            Back to Pages
+          </Button>
+        </div>
         {!element ? (
           <div className="flex flex-col gap-3 text-slate-400 items-center justify-center h-full">
             <span className="mgc_edit_3_line before:!text-slate-400 text-lg"></span>
@@ -33,10 +58,58 @@ const ComponentEditor = () => {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-6">
-            <ElementOptions />
-            <BoxOptions />
-            <GridOptions />
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-2">
+              {elementOnFocus.element && (
+                <p
+                  className={`
+                w-full text-center cursor-pointer font-medium outline-teal-500 outline-1 py-1 px-2 rounded-md
+                ${
+                  isTabFocused === "element"
+                    ? "bg-teal-500 outline text-white"
+                    : "bg-teal-50 outline-dashed text-teal-500"
+                }
+                `}
+                  onClick={() => setIsTabFocused("element")}
+                >
+                  Element
+                </p>
+              )}
+
+              {elementOnFocus.box && (
+                <p
+                  className={`
+                w-full text-center cursor-pointer font-medium outline-blue-500 outline-1 py-1 px-2 rounded-md
+                ${
+                  isTabFocused === "box"
+                    ? "bg-blue-500 outline text-white"
+                    : "bg-blue-100 outline-dashed text-sky-500"
+                }
+                `}
+                  onClick={() => setIsTabFocused("box")}
+                >
+                  Box
+                </p>
+              )}
+              {elementOnFocus.grid && (
+                <p
+                  className={`
+                w-full text-center cursor-pointer font-medium outline-violet-500 outline-1 py-1 px-2 rounded-md
+                ${
+                  isTabFocused === "grid"
+                    ? "bg-violet-500 outline text-white"
+                    : "bg-violet-100 outline-dashed text-violet-500"
+                }
+                `}
+                  onClick={() => setIsTabFocused("grid")}
+                >
+                  Grid
+                </p>
+              )}
+            </div>
+            {isTabFocused === "element" && <ElementOptions />}
+            {isTabFocused === "box" && <BoxOptions />}
+            {isTabFocused === "grid" && <GridOptions />}
           </div>
         )}
       </div>

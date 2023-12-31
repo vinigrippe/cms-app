@@ -1,16 +1,17 @@
 import { useContext, useRef, useLayoutEffect, useState } from "react";
 import { PageEditorContext } from "../../editor";
-import { getElement } from "../pageEditorFunctions";
+import { getElement, getStyle } from "../pageEditorFunctions";
 import { handleAutoResize } from "@/utils/functions";
 
 export const TextElement = ({ id }) => {
-  const { gridElements, setGridElements } = useContext(PageEditorContext);
-  const { element } = getElement(gridElements.elements, id);
-  const [isDragging, setIsDragging] = useState(false);
-
+  const { gridElements, setGridElements, designSystem } =
+    useContext(PageEditorContext);
   const refText = useRef(null);
+
+  const { element } = getElement(gridElements.elements, id);
   const value = element.fields.text;
-  const style = element.style;
+  const styleId = element.style || "paragraph";
+  const { style } = getStyle(designSystem, "paragraph", styleId);
 
   useLayoutEffect(() => {
     handleAutoResize(refText);
@@ -33,28 +34,15 @@ export const TextElement = ({ id }) => {
   };
 
   return (
-    <span
-      className={`relative w-full leading-[0] rounded-lg ${
-        isDragging
-          ? "outline-2 outline-blue-600 outline-dotted outline-offset-2 shadow-[0_0_0_5px_#dbeafe]"
-          : ""
-      }`}
-      onDoubleClick={() => {
-        setIsDragging(!isDragging);
-      }}
-      onMouseLeave={() => {
-        setIsDragging(false);
-      }}
-    >
+    <span className={`relative w-full leading-[0] rounded-lg`}>
       <textarea
         ref={refText}
         value={value || ""}
         onChange={handleOnChange}
         data-type="text"
-        data-style={style || "text"}
+        style={style}
         placeholder="Type some fun text here"
         rows="1"
-        className={isDragging ? "!pointer-events-none" : ""}
       />
     </span>
   );

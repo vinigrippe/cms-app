@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ContextMenu } from "./contextMenu/contextMenu";
 import { PageEditorContext } from "../editor";
 import elementsList from "@/utils/elementList.json";
@@ -12,7 +13,7 @@ import { LoadingIcon } from "../../../icons/loading";
 import "./pageEditor.css";
 
 function PageEditor() {
-  const pageId = 4;
+  const { pageId } = useParams();
   const {
     gridElements,
     setGridElements,
@@ -73,12 +74,7 @@ function PageEditor() {
     await api
       .post("/pages", {
         pageId: pageId,
-        title: "home",
-        url: "/home",
-        status: "active",
-        userId: 1,
         elements: gridElements.elements,
-        history: gridElements.history,
       })
       .finally(() => setIsLoading(""));
   };
@@ -160,7 +156,7 @@ function PageEditor() {
 
       <div
         id="page-editor"
-        className="relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto"
+        className="relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto flex flex-col gap-[10px] z-40"
         onContextMenu={(e) => handleContextMenu(e)}
         onClick={(e) => handleElementOnFocus(e)}
         onScroll={() => setDisplayContextMenu(false)}

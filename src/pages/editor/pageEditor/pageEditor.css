@@ -1,38 +1,52 @@
+#page-editor [data-element="element"],
+#page-editor [data-element="box"],
+#page-editor [data-element="grid"],
 #page-editor .element-focused {
   border-radius: 0.25rem/0.05rem;
+  outline-offset: 0px;
+  outline-width: 1px;
+  outline-style: dashed;
+  outline-color: transparent;
+  transition: 200ms all ease;
 }
 
-#page-editor .element-focused[data-element="element"] {
+#page-editor .element-focused[data-element="element"],
+#page-editor [data-element="element"]:focus-within {
   outline-color: theme("colors.teal.500");
   outline-offset: 0px;
-  outline-width: 2px;
-  outline-style: dashed;
 }
 
-#page-editor .element-focused[data-element="element"].hover {
-  background-color: theme("colors.teal.50");
-}
-
-#page-editor .element-focused[data-element="box"] {
+#page-editor .element-focused[data-element="box"],
+#page-editor [data-element="box"]:focus-within {
   outline-color: theme("colors.sky.400");
-  outline-offset: 3px;
-  outline-width: 2px;
-  outline-style: dashed;
+  outline-offset: 0px;
 }
 
-#page-editor .element-focused[data-element="box"].hover {
-  background-color: theme("colors.sky.50");
-}
-
-#page-editor .element-focused[data-element="grid"] {
+#page-editor .element-focused[data-element="grid"],
+#page-editor [data-element="grid"]:focus-within {
   outline-color: theme("colors.violet.400");
-  outline-offset: 6px;
-  outline-width: 2px;
-  outline-style: dashed;
+  outline-offset: 0px;
 }
 
-#page-editor .element-focused[data-element="grid"].hover {
-  background-color: theme("colors.violet.50");
+#page-editor .padding-view {
+  outline-width: 1px;
+  outline-style: dashed;
+  outline-offset: 0px;
+}
+
+#page-editor .padding-view.element {
+  outline-color: theme("colors.teal.500");
+  background-color: theme("colors.teal.100");
+}
+
+#page-editor .padding-view.box {
+  outline-color: theme("colors.sky.400");
+  background-color: theme("colors.sky.100");
+}
+
+#page-editor .padding-view.grid {
+  outline-color: theme("colors.violet.400");
+  background-color: theme("colors.violet.100");
 }
 
 #page-editor [data-type="line"] {
@@ -42,56 +56,10 @@
   border-bottom: 1px solid theme("colors.slate.600");
 }
 
-#page-editor textarea {
-  outline: none;
-  all: unset;
-  width: 100%;
-  overflow: hidden;
-  resize: none;
-  border-radius: 0.09em;
-  transition: all 0.2s ease-in-out;
-  line-height: normal;
-  margin: 0 !important;
-  padding: 0 !important;
-  box-sizing: unset;
-  outline-offset: 4px;
-  outline: 2px solid transparent !important;
-}
-
-#page-editor textarea[data-type="heading"] {
-  position: relative;
-  font-weight: 600;
-}
-
-#page-editor textarea[data-type="heading"]:focus-within {
-  outline: 2px solid theme("colors.teal.500") !important;
-}
-
-#page-editor textarea[data-type="heading"][data-style="heading-one"] {
-  font-size: 1.7em;
-}
-
-#page-editor textarea[data-type="heading"][data-style="heading-two"] {
-  font-size: 2.8em;
-}
-
-#page-editor textarea[data-type="heading"][data-style="heading-three"] {
-  font-size: 4em;
-  font-weight: 700;
-}
-
-#page-editor textarea[data-type="text"] {
-  font-size: 1.2em;
-  font-weight: 400;
-}
-
 #page-editor [data-type="button"] {
   display: inline-grid;
   vertical-align: top;
   align-items: center;
-  position: relative;
-  padding: 0.7em 1.3em;
-  border-radius: 0.6em;
 }
 
 #page-editor [data-type="button"] input {
@@ -120,28 +88,25 @@
   white-space: pre-wrap;
 }
 
-#page-editor [data-type="button"][data-style="primary-button"] {
-  background-color: black;
+#page-editor textarea {
+  outline: none;
+  all: unset;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  border-radius: 0.09em;
+  transition: all 0.2s ease-in-out;
+  line-height: normal;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: unset;
+  outline-offset: 4px;
+  outline: 2px solid transparent !important;
 }
 
-#page-editor [data-type="button"][data-style="primary-button"] input {
-  color: theme("colors.white");
-}
-
-#page-editor [data-type="button"][data-style="primary-button"]:hover {
-  background-color: theme("colors.green.500");
-}
-
-#page-editor [data-type="button"][data-style="secondary-button"] {
-  background-color: theme("colors.green.500");
-}
-
-#page-editor [data-type="button"][data-style="secondary-button"] input {
-  color: theme("colors.white");
-}
-
-#page-editor [data-type="button"][data-style="secondary-button"]:hover {
-  background-color: theme("colors.black");
+#page-editor textarea[data-type="heading"] {
+  position: relative;
+  font-weight: 600;
 }
 
 #page-editor [data-element="element"] {

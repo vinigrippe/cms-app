@@ -39,3 +39,13 @@ export const getParentElement = (elements, elementId) => {
   }
   return { parentElement: null, parentIndex: null };
 };
+
+export const getStyle = (designSystem, elementName, styleId) => {
+  const styles = designSystem.find((i) => i.type === elementName);
+  if (!styles) return { style: null };
+
+  const styleInline = styles.styles.find((s) => s.style_id === styleId);
+  if (!styleInline) return { style: null };
+
+  return { style: styleInline.style };
+};

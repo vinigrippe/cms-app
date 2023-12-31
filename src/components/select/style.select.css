@@ -1,11 +1,33 @@
 [data-component="select"] {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
   width: inherit;
-  transition: all 0.2s ease-in-out;
-  border-radius: 0.6em;
+  position: relative;
 }
-[data-component="select"]:focus-within,
-[data-component="select"][data-active="true"] {
-  /* outline-color: theme("colors.teal.500"); */
+
+[data-component="select"] .select-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  width: inherit;
+  border-radius: 0.6em;
+  border: 2px solid theme("colors.slate.200");
+  background-color: theme("colors.white");
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+  transition: all 0.2s ease-in-out;
+}
+
+[data-component="select"][aria-disabled="true"] .select-button {
+  background-color: theme("colors.slate.100");
+  color: theme("colors.slate.400");
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+[data-component="select"]:focus-within .select-button,
+[data-component="select"][data-active="true"] .select-button {
+  outline-color: theme("colors.teal.500");
 }

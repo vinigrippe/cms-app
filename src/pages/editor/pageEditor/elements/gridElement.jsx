@@ -3,6 +3,7 @@ import { BoxElement } from "./boxElement";
 import { generateId } from "@/utils/functions";
 import { PageEditorContext } from "../../editor";
 import { getElement } from "../pageEditorFunctions";
+import { PaddingView } from "./components/paddingView";
 
 export function GridElement({ id, index }) {
   const { gridElements, setGridElements, elementOnFocus } =
@@ -39,10 +40,10 @@ export function GridElement({ id, index }) {
 
   if (element.elements.length > 0)
     return (
-      <div className={`relative w-full group/grid`}>
+      <div className="group/grid">
         <div
           id={id}
-          className={`grid grid-cols-2 w-full ${
+          className={`relative w-full grid ${
             elementOnFocus?.grid?.id === id ? "element-focused" : ""
           }`}
           data-element="grid"
@@ -57,23 +58,26 @@ export function GridElement({ id, index }) {
             borderRight: element?.classes?.borderRight ? borderStyle : "none",
             borderBottom: element?.classes?.borderBottom ? borderStyle : "none",
             gap: element?.classes?.gap + "px" || "0px",
+            position: element?.classes?.position || "relative",
+            zIndex: element?.classes?.zIndex || 0,
+            backgroundColor: element?.classes?.backgroundColor || "transparent",
+            top: element?.classes?.position === "sticky" ? -12 : 0,
           }}
         >
           {element.elements.map((boxElement, boxIndex) => (
-            <BoxElement
-              key={boxElement.id}
-              id={boxElement.id}
-              boxIndex={boxIndex}
-            />
+            <>
+              <BoxElement key={boxElement.id} id={boxElement.id} />
+            </>
           ))}
-        </div>
-        <div className="absolute bg-red bottom-0 -mb-[12px] w-full flex items-center justify-center gap-2 group-hover/grid:opacity-100 opacity-0">
-          <div
-            className={`rounded-full bg-slate-200 flex items-center justify-center min-w-[24px] h-[24px] transition-all cursor-pointer hover:bg-blue-600`}
-            onClick={() => handleInsertGrid(index + 1)}
-          >
-            <span className="mgc_add_fill before:!text-white text-[10px] transition-all" />
-          </div>
+          {elementOnFocus?.grid?.id === id && (
+            <PaddingView
+              element="grid"
+              pt={element?.classes?.paddingTop}
+              pr={element?.classes?.paddingRight}
+              pl={element?.classes?.paddingLeft}
+              pb={element?.classes?.paddingBottom}
+            />
+          )}
         </div>
       </div>
     );

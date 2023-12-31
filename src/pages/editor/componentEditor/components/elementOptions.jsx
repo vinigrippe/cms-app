@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import { PageEditorContext } from "../editor";
-import { getElement } from "../pageEditor/pageEditorFunctions";
+import { PageEditorContext } from "../../editor";
+import { getElement } from "../../pageEditor/pageEditorFunctions";
 
 import { Button } from "@/components/button/button";
 import { Checkbox } from "@/components/checkbox/checkbox";
 import { Range } from "@/components/range/range";
-
-import designSystem from "@/utils/designSystem.json";
+import { Select } from "../../../../components/select/select";
+import { Input } from "@/components/input/input";
 
 const ElementOptions = () => {
-  const { gridElements, setGridElements, elementOnFocus } =
+  const { gridElements, setGridElements, elementOnFocus, designSystem } =
     useContext(PageEditorContext);
   const [paddingFocus, setPaddingFocus] = useState("");
 
@@ -45,7 +45,7 @@ const ElementOptions = () => {
   const handleChangeStyle = (style) => {
     const updatedElement = {
       ...element,
-      style: style.class,
+      style: style.style_id,
     };
 
     setGridElements({
@@ -60,9 +60,6 @@ const ElementOptions = () => {
   if (element)
     return (
       <div className="flex flex-col gap-3">
-        <p className="font-medium bg-teal-50 outline-2 outline-teal-500 outline-dashed  py-1 px-2 rounded-md">
-          Element Options
-        </p>
         <div className="grid grid-cols-1 gap-2 items-center justify-center">
           {element.type === "image" || element.type === "video" ? (
             <div className="flex flex-col gap-2 py-2">
@@ -78,7 +75,7 @@ const ElementOptions = () => {
                     }
                     value={element?.classes?.borderRadius ?? 0}
                   />
-                  <input
+                  <Input
                     type="number"
                     onChange={(e) =>
                       handleChangeClass(element, "borderRadius", e.target.value)
@@ -100,7 +97,7 @@ const ElementOptions = () => {
                     }
                     value={element?.classes?.height}
                   />
-                  <input
+                  <Input
                     type="text"
                     onChange={(e) =>
                       handleChangeClass(element, "height", e.target.value)
@@ -122,7 +119,7 @@ const ElementOptions = () => {
                     }
                     value={element?.classes?.width}
                   />
-                  <input
+                  <Input
                     type="text"
                     onChange={(e) =>
                       handleChangeClass(element, "width", e.target.value)
@@ -152,100 +149,68 @@ const ElementOptions = () => {
               </div>
             </div>
           ) : (
-            <>
-              <div className="flex flex-col gap-1">
-                <p className="text-xs font-semibold">Formatting</p>
-                <div className="flex gap-1 justify-between">
-                  <Button
-                    icon="bold"
-                    type="flat"
-                    size="small"
-                    isActive={element?.classes?.bold}
-                    onClick={() =>
-                      handleChangeClass(
-                        element,
-                        "bold",
-                        !element?.classes?.bold
-                      )
-                    }
+            <div className="flex flex-col gap-1">
+              <p className="text-xs font-semibold">Formatting</p>
+              <div className="flex gap-1 justify-between">
+                <Button
+                  icon="bold"
+                  type="flat"
+                  size="small"
+                  isActive={element?.classes?.bold}
+                  onClick={() =>
+                    handleChangeClass(element, "bold", !element?.classes?.bold)
+                  }
+                />
+                <Button
+                  icon="italic"
+                  type="flat"
+                  size="small"
+                  isActive={element?.classes?.italic}
+                  onClick={() =>
+                    handleChangeClass(
+                      element,
+                      "italic",
+                      !element?.classes?.italic
+                    )
+                  }
+                />
+                <Button
+                  icon="underline"
+                  type="flat"
+                  size="small"
+                  isActive={element?.classes?.underline}
+                  onClick={() =>
+                    handleChangeClass(
+                      element,
+                      "underline",
+                      !element?.classes?.underline
+                    )
+                  }
+                />
+                <div className="relative">
+                  <Input
+                    type="color"
+                    id="format-bordercolor-element"
+                    name="format-bordercolor-element"
+                    value={element?.classes?.color ?? "#000000"}
+                    onInput={(e) => {
+                      handleChangeClass(element, "color", e.target.value);
+                    }}
                   />
                   <Button
-                    icon="italic"
+                    icon="palette"
                     type="flat"
                     size="small"
-                    isActive={element?.classes?.italic}
-                    onClick={() =>
-                      handleChangeClass(
-                        element,
-                        "italic",
-                        !element?.classes?.italic
-                      )
-                    }
+                    onClick={() => {
+                      const color = document.getElementById(
+                        "format-bordercolor-element"
+                      );
+                      color.click();
+                    }}
                   />
-                  <Button
-                    icon="underline"
-                    type="flat"
-                    size="small"
-                    isActive={element?.classes?.underline}
-                    onClick={() =>
-                      handleChangeClass(
-                        element,
-                        "underline",
-                        !element?.classes?.underline
-                      )
-                    }
-                  />
-                  <div className="relative">
-                    <input
-                      type="color"
-                      id="format-color"
-                      name="format-color"
-                      value={element?.classes?.color ?? "#000000"}
-                      onInput={(e) => {
-                        handleChangeClass(element, "color", e.target.value);
-                      }}
-                    />
-                    <Button
-                      icon="palette"
-                      type="flat"
-                      size="small"
-                      onClick={() => {
-                        const color = document.getElementById("format-color");
-                        color.click();
-                      }}
-                    />
-                  </div>
-                  {/* <div className="relative"> */}
-                  {/* <Button
-                      icon="link"
-                      type="flat"
-                      size="small"
-                      isActive={
-                        element?.link ? true : false || subMenu === "link"
-                      }
-                      onClick={() => {
-                        setSubMenu(subMenu === "link" ? "" : "link");
-                      }}
-                    />
-
-                    {subMenu === "link" && (
-                      <div
-                        className={`absolute top-0 ${posSubMenu} z-[30] mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 min-w-[150px] flex flex-col`}
-                      >
-                        <input
-                          type="text"
-                          placeholder="https://"
-                          onChange={(e) => {
-                            handleChangeClass("link", e.target.value);
-                          }}
-                          value={element?.link ?? ""}
-                        />
-                      </div>
-                    )} */}
-                  {/* </div> */}
                 </div>
               </div>
-            </>
+            </div>
           )}
           <div className="flex flex-col gap-1">
             <p className="text-xs font-semibold">Alignment</p>
@@ -291,7 +256,7 @@ const ElementOptions = () => {
             <div className="flex flex-col gap-1">
               <p className="text-xs font-semibold">Padding</p>
               <div className="flex flex-col gap-1 items-center">
-                <input
+                <Input
                   type="number"
                   className="!w-[16px] text-center"
                   onFocus={() => setPaddingFocus("top")}
@@ -303,7 +268,7 @@ const ElementOptions = () => {
                 />
 
                 <div className="flex flex-row gap-2 items-center">
-                  <input
+                  <Input
                     type="number"
                     className="!w-[16px] text-center"
                     onFocus={() => setPaddingFocus("left")}
@@ -335,7 +300,7 @@ const ElementOptions = () => {
                       }`}
                     />
                   </div>
-                  <input
+                  <Input
                     type="number"
                     className="!w-[16px] text-center"
                     onFocus={() => setPaddingFocus("right")}
@@ -347,7 +312,7 @@ const ElementOptions = () => {
                   />
                 </div>
 
-                <input
+                <Input
                   type="number"
                   className="!w-[16px] text-center"
                   onFocus={() => setPaddingFocus("bottom")}
@@ -362,48 +327,73 @@ const ElementOptions = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            {designSystemByType?.styles?.length > 0 && (
-              <>
-                <p className="text-xs font-semibold">Style</p>
-                {designSystemByType.styles.map((itemStyle) => (
-                  <Button
-                    key={itemStyle.id}
-                    active={
-                      element?.style === itemStyle?.class ? "true" : "false"
-                    }
-                    type="dropdown"
-                    onClick={() => handleChangeStyle(itemStyle)}
-                    isDisabled={element?.style === itemStyle?.class}
-                  >
-                    <p>{itemStyle?.name}</p>
-                  </Button>
-                ))}
-              </>
-            )}
+            <p className="text-xs font-semibold">Link</p>
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="https://"
+                onChange={(e) => {
+                  handleChangeClass("link", e.target.value);
+                }}
+                value={element?.link ?? ""}
+              />
+            </div>
           </div>
+
+          {designSystemByType?.styles?.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold">Style</p>
+              <div className="w-[-webkit-fill-available]">
+                <Select
+                  value={
+                    designSystemByType?.styles?.find(
+                      (i) => element?.style === i.style_id
+                    )?.style_name
+                  }
+                >
+                  {designSystemByType?.styles?.map((itemStyle) => (
+                    <Select.Option
+                      key={itemStyle.id}
+                      isActive={
+                        element?.style === itemStyle?.style_id ? true : false
+                      }
+                      onClick={() => handleChangeStyle(itemStyle)}
+                      isDisabled={element?.style === itemStyle?.style_id}
+                    >
+                      <p>{itemStyle?.style_name}</p>
+                    </Select.Option>
+                  ))}
+                </Select>
+              </div>
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <p className="text-xs font-semibold">Animation</p>
-            <Button
-              type="dropdown"
-              isActive={element?.classes?.hover === "" ? true : false}
-              onClick={() => handleChangeClass("hover", "")}
-            >
-              None
-            </Button>
-            <Button
-              type="dropdown"
-              isActive={element?.classes?.hover === "scale" ? true : false}
-              onClick={() => handleChangeClass("hover", "scale")}
-            >
-              Scale
-            </Button>
-            <Button
-              type="dropdown"
-              isActive={element?.classes?.hover === "fade" ? true : false}
-              onClick={() => handleChangeClass("hover", "fade")}
-            >
-              Fade
-            </Button>
+            <div className="w-[-webkit-fill-available]">
+              <Select value={element?.classes?.hover ?? "None"}>
+                <Select.Option
+                  isActive={element?.classes?.hover === "" ? true : false}
+                  onClick={() => handleChangeClass("hover", "")}
+                  isDisabled={element?.classes?.hover === ""}
+                >
+                  None
+                </Select.Option>
+                <Select.Option
+                  isActive={element?.classes?.hover === "scale" ? true : false}
+                  onClick={() => handleChangeClass("hover", "scale")}
+                  isDisabled={element?.classes?.hover === "scale"}
+                >
+                  Scale
+                </Select.Option>
+                <Select.Option
+                  isActive={element?.classes?.hover === "fade" ? true : false}
+                  onClick={() => handleChangeClass("hover", "fade")}
+                  isDisabled={element?.classes?.hover === "fade"}
+                >
+                  Fade
+                </Select.Option>
+              </Select>
+            </div>
           </div>
         </div>
       </div>

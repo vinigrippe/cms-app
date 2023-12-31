@@ -1,4 +1,4 @@
-button {
+button[data-component="button"] {
   border-radius: 0.6em;
   padding: 0.5rem;
   transition: all 0.4s ease;
@@ -10,11 +10,13 @@ button {
   border: 2px solid transparent;
   width: inherit;
   line-height: 1;
+  white-space: pre;
 }
 
 button[data-type="primary"] {
-  background-color: theme("colors.teal.600");
+  background-color: theme("colors.teal.500");
   color: WHITE;
+  box-shadow: 0 0 0 0px theme("colors.teal.100");
 }
 
 button[data-type="primary"] > span::before {
@@ -22,7 +24,8 @@ button[data-type="primary"] > span::before {
 }
 
 button[data-type="primary"]:hover {
-  background-color: theme("colors.teal.700");
+  background-color: theme("colors.teal.600");
+  box-shadow: 0 0 0 2px theme("colors.teal.100");
 }
 button[data-type="primary"][aria-disabled="true"] {
   opacity: 0.8;

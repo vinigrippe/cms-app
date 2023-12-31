@@ -1,19 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import "./themeSystem.css";
-import "./icons/mingcute/MingCute.css";
-import Editor from "./pages/editor/editor";
+import { RoutePages } from "./pages/routes";
 import reportWebVitals from "./reportWebVitals";
+
+import "./icons/mingcute/MingCute.css";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Editor />
+    <RoutePages />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

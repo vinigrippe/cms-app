@@ -38,6 +38,7 @@ export const NewElement = () => {
     setGridElements({
       type: "ADD_ELEMENT",
       payload: {
+        asElement: false,
         elementType: elementAttributes.type,
         elementId: elementOnFocus.box?.id,
         newElement,
