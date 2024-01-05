@@ -61,7 +61,7 @@ export const Pages = () => {
                 <a href={`/editor/${page.id}`}>
                   <div
                     key={page.id}
-                    className="animate-entrance-bottom col-span-1 rounded-lg cursor-pointer shadow-xl border bg-white flex flex-col p-2 gap-2"
+                    className="animate-entrance-bottom col-span-1 rounded-lg cursor-pointer border-slate-150 border bg-white flex flex-col p-2 gap-2"
                   >
                     <div className="rounded-lg bg-slate-200 w-full h-[150px]"></div>
                     <div className="flex flex-col">
