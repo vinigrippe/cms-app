@@ -1,7 +1,7 @@
 import { useContext, useLayoutEffect, useRef } from "react";
 import { PageEditorContext } from "../../editor";
 import { handleAutoResize } from "@/utils/functions";
-import { getElement, getStyle } from "../pageEditorFunctions";
+import { getElement, getStyle } from "../../editorFunctions";
 
 export const HeadingElement = ({ id }) => {
   const { gridElements, setGridElements, designSystem } =
@@ -34,7 +34,7 @@ export const HeadingElement = ({ id }) => {
   };
 
   return (
-    <span className={`relative w-full leading-[0] rounded-lg `}>
+    <span className={`relative w-full leading-[0] rounded-lg`}>
       <textarea
         ref={refText}
         value={value || ""}

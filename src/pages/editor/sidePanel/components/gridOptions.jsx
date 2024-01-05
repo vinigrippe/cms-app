@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { PageEditorContext } from "../../editor";
-import { getElement } from "../../pageEditor/pageEditorFunctions";
+import { getElement } from "../../editorFunctions";
 import { generateId } from "@/utils/functions";
 
 import { Button } from "@/components/button/button";
@@ -48,7 +48,6 @@ const GridOptions = () => {
         elementType: "box",
         elementId: elementGrid.id,
         elementIndex: order,
-        asElement: true,
         newElement,
       },
     });

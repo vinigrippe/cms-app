@@ -1,6 +1,6 @@
 import { useContext, useRef, useLayoutEffect, useState } from "react";
 import { PageEditorContext } from "../../editor";
-import { getElement, getStyle } from "../pageEditorFunctions";
+import { getElement, getStyle } from "../../editorFunctions";
 import { handleAutoResize } from "@/utils/functions";
 
 export const TextElement = ({ id }) => {

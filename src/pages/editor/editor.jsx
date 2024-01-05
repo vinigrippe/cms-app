@@ -2,11 +2,13 @@ import { createContext, useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { elementsReducer } from "./editorService";
+import { generateId } from "@/utils/functions";
 import api from "@/utils/api";
 
 import PageEditor from "./pageEditor/pageEditor";
-import ComponentEditor from "./componentEditor/componentEditor";
-import TreeWalkerElements from "./treeWalkerElements/treeWalkerElements";
+import { SidePanel } from "./sidePanel/sidePanel";
+import { TreePanel } from "./treePanel/treePanel";
+import { TopPanel } from "./topPanel/topPanel";
 
 export const PageEditorContext = createContext();
 
@@ -42,11 +44,28 @@ export function Editor() {
 
   const handleLoadPage = async () => {
     await api.get("/pages/" + pageId).then((response) => {
+      const elements = response.data.elements;
+
+      if (elements.length === 0) {
+        const newElement = {
+          id: generateId({ name: "grid" }),
+          type: "grid",
+          elements: [
+            {
+              id: generateId({ name: "box" }),
+              type: "box",
+              elements: [],
+            },
+          ],
+        };
+        elements.push(newElement);
+      }
+
       setGridElements({
         type: "SET_GRID",
         payload: {
-          loadElements: response.data.elements,
-          loadHistory: [response.data.elements],
+          loadElements: elements,
+          loadHistory: [elements],
         },
       });
     });
@@ -69,9 +88,12 @@ export function Editor() {
       }}
     >
       <div className="h-[100vh] max-h-[100vh] min-h-[100vh] flex">
-        <ComponentEditor />
-        <PageEditor />
-        {showTreeWalker && <TreeWalkerElements />}
+        <SidePanel />
+        <div className={`relative h-[100vh] w-full flex flex-col mr-2`}>
+          <TopPanel />
+          <PageEditor />
+        </div>
+        {showTreeWalker && <TreePanel />}
       </div>
     </PageEditorContext.Provider>
   );

@@ -4,7 +4,7 @@ import { generateId } from "@/utils/functions";
 
 import elementList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
-import { getElement, getParentElement } from "../../pageEditorFunctions";
+import { getElement, getParentElement } from "../../../editorFunctions";
 
 import { Button } from "@/components/button/button";
 import { SubMenu } from "@/components/dropdown/dropdown";

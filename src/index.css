@@ -17,6 +17,10 @@ body {
   font-size: 1em;
 }
 
+/*  ------------  */
+/*   RESET CSS    */
+/*  ------------  */
+
 input,
 textarea,
 button {
@@ -36,4 +40,66 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/*  ------------  */
+/*   ANIMATIONS   */
+/*  ------------  */
+
+.animate-entrance-fade {
+  animation: entrance-fade 600ms ease-in-out;
+}
+
+.animate-entrance-top {
+  animation: entrance-top 400ms ease-in-out;
+}
+
+.animate-entrance-bottom {
+  animation: entrance-bottom 600ms ease-in-out;
+}
+
+.animate-entrance-left {
+  animation: entrance-left 400ms ease-in-out;
+}
+
+@keyframes entrance-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes entrance-top {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes entrance-bottom {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes entrance-left {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
 }

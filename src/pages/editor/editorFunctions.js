@@ -1,3 +1,11 @@
+export const generateId = ({ name }) => {
+  const randomNumber = Math.random().toString(36).substr(2, 9);
+  const dateTime = new Date().getTime();
+  const randomId = `${name}_${randomNumber}_${dateTime}`;
+
+  return randomId;
+};
+
 export const getElement = (elements, elementId) => {
   for (let i = 0; i < elements.length; i++) {
     const elementComponent = elements[i];

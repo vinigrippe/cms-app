@@ -52,7 +52,7 @@ export const Pages = () => {
             <p>Deers are working hard to bring you your pages!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-3 gap-4">
             {pageList
               .filter((page) =>
                 page.title.toLowerCase().includes(searchInput.toLowerCase())
@@ -61,7 +61,7 @@ export const Pages = () => {
                 <a href={`/editor/${page.id}`}>
                   <div
                     key={page.id}
-                    className="col-span-1 rounded-lg cursor-pointer backdrop-blur-xl shadow-xl border bg-white/75 flex flex-col p-2 gap-2"
+                    className="animate-entrance-bottom col-span-1 rounded-lg cursor-pointer shadow-xl border bg-white flex flex-col p-2 gap-2"
                   >
                     <div className="rounded-lg bg-slate-200 w-full h-[150px]"></div>
                     <div className="flex flex-col">

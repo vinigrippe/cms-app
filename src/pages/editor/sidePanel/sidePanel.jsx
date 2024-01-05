@@ -6,9 +6,9 @@ import { Button } from "@/components/button/button";
 import BoxOptions from "./components/boxOptions";
 import GridOptions from "./components/gridOptions";
 import ElementOptions from "./components/elementOptions";
-import { getElement } from "../pageEditor/pageEditorFunctions";
+import { getElement } from "../editorFunctions";
 
-const ComponentEditor = () => {
+export const SidePanel = () => {
   const { showTreeWalker, setShowTreeWalker, gridElements, elementOnFocus } =
     useContext(PageEditorContext);
   const [isTabFocused, setIsTabFocused] = useState(false);
@@ -32,7 +32,7 @@ const ComponentEditor = () => {
 
   return (
     <div
-      className="relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
+      className="animate-entrance-left relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
       onFocus={(e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -126,5 +126,3 @@ const ComponentEditor = () => {
     </div>
   );
 };
-
-export default ComponentEditor;

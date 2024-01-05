@@ -7,8 +7,9 @@ export const RoutePages = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/pages" element={<Pages />} />
         <Route exact path="/" element={<Pages />} />
+        <Route exact path="*" element={<Pages />} />
+        <Route exact path="/pages" element={<Pages />} />
         <Route exact path="/editor/:pageId" element={<Editor />} />
       </Routes>
     </Router>

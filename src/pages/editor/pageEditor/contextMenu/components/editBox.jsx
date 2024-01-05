@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { generateId } from "@/utils/functions";
 import { PageEditorContext } from "../../../editor";
 import { MenuContext } from "../contextMenu";
-import { getElement } from "../../pageEditorFunctions";
+import { getElement } from "../../../editorFunctions";
 
 import { Button } from "@/components/button/button";
 import { SubMenu } from "@/components/dropdown/dropdown";

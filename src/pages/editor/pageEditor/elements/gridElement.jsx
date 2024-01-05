@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { BoxElement } from "./boxElement";
 import { generateId } from "@/utils/functions";
 import { PageEditorContext } from "../../editor";
-import { getElement } from "../pageEditorFunctions";
+import { getElement } from "../../editorFunctions";
 import { PaddingView } from "./components/paddingView";
+import { Button } from "../../../../components/button/button";
 
 export function GridElement({ id, index }) {
   const { gridElements, setGridElements, elementOnFocus } =
@@ -24,60 +25,63 @@ export function GridElement({ id, index }) {
     };
 
     setGridElements({
-      type: "ADD_ELEMENT",
+      type: "ADD_GRID",
       payload: {
-        elementId: element.id,
-        elementType: "grid",
         elementIndex: order,
         newElement,
       },
     });
   };
-
   const borderStyle = `${element?.classes?.borderWidth || "0"}px ${
     element?.classes?.borderStyle || "solid"
   } ${element?.classes?.borderColor || "#000000"}`;
 
   if (element.elements.length > 0)
     return (
-      <div className="group/grid">
-        <div
-          id={id}
-          className={`relative w-full grid ${
-            elementOnFocus?.grid?.id === id ? "element-focused" : ""
-          }`}
-          data-element="grid"
-          style={{
-            gridTemplateColumns: `repeat(${element.elements.length}, minmax(0, 1fr))`,
-            paddingTop: element?.classes?.paddingTop + "px" || "0px",
-            paddingBottom: element?.classes?.paddingBottom + "px" || "0px",
-            paddingLeft: element?.classes?.paddingLeft + "px" || "0px",
-            paddingRight: element?.classes?.paddingRight + "px" || "0px",
-            borderTop: element?.classes?.borderTop ? borderStyle : "none",
-            borderLeft: element?.classes?.borderLeft ? borderStyle : "none",
-            borderRight: element?.classes?.borderRight ? borderStyle : "none",
-            borderBottom: element?.classes?.borderBottom ? borderStyle : "none",
-            gap: element?.classes?.gap + "px" || "0px",
-            position: element?.classes?.position || "relative",
-            zIndex: element?.classes?.zIndex || 0,
-            backgroundColor: element?.classes?.backgroundColor || "transparent",
-            top: element?.classes?.position === "sticky" ? -12 : 0,
-          }}
-        >
-          {element.elements.map((boxElement, boxIndex) => (
-            <>
-              <BoxElement key={boxElement.id} id={boxElement.id} />
-            </>
-          ))}
-          {elementOnFocus?.grid?.id === id && (
-            <PaddingView
-              element="grid"
-              pt={element?.classes?.paddingTop}
-              pr={element?.classes?.paddingRight}
-              pl={element?.classes?.paddingLeft}
-              pb={element?.classes?.paddingBottom}
-            />
-          )}
+      <div
+        id={id}
+        className={`group/grid animate-entrance-fade relative w-full grid ${
+          elementOnFocus?.grid?.id === id ? "element-focused" : ""
+        }`}
+        data-element="grid"
+        style={{
+          gridTemplateColumns: `repeat(${element.elements.length}, minmax(0, 1fr))`,
+          paddingTop: element?.classes?.paddingTop + "px" || "0px",
+          paddingBottom: element?.classes?.paddingBottom + "px" || "0px",
+          paddingLeft: element?.classes?.paddingLeft + "px" || "0px",
+          paddingRight: element?.classes?.paddingRight + "px" || "0px",
+          borderTop: element?.classes?.borderTop ? borderStyle : "none",
+          borderLeft: element?.classes?.borderLeft ? borderStyle : "none",
+          borderRight: element?.classes?.borderRight ? borderStyle : "none",
+          borderBottom: element?.classes?.borderBottom ? borderStyle : "none",
+          gap: element?.classes?.gap + "px" || "0px",
+          position: element?.classes?.position || "relative",
+          zIndex: element?.classes?.zIndex || 0,
+          backgroundColor: element?.classes?.backgroundColor || "transparent",
+          top: element?.classes?.position === "sticky" ? -12 : 0,
+        }}
+      >
+        {element.elements.map((boxElement) => (
+          <BoxElement key={boxElement.id} id={boxElement.id} />
+        ))}
+        {elementOnFocus?.grid?.id === id && (
+          <PaddingView
+            element="grid"
+            pt={element?.classes?.paddingTop}
+            pr={element?.classes?.paddingRight}
+            pl={element?.classes?.paddingLeft}
+            pb={element?.classes?.paddingBottom}
+          />
+        )}
+        <div className="absolute z-40 -bottom-[12px] left-1/2 -translate-x-1/2 opacity-0 group-hover/grid:opacity-100">
+          <Button
+            type="ghost"
+            size="small"
+            icon="add"
+            onClick={() => handleInsertGrid(index + 1)}
+          >
+            Add Grid
+          </Button>
         </div>
       </div>
     );

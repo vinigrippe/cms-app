@@ -116,6 +116,10 @@ button[data-type="link"][data-color="danger"]:hover > span::before {
 
 button[data-size="small"] {
   padding: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   border-radius: 0.5em;
+}
+
+button[data-size="small"] > span[class^="mgc_"] {
+  font-size: 0.7rem;
 }

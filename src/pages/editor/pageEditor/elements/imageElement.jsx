@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { PageEditorContext } from "../../editor";
-import { getElement } from "../pageEditorFunctions";
+import { getElement } from "../../editorFunctions";
 import api from "@/utils/api";
 
 export const ImageElement = ({ id }) => {

@@ -11,7 +11,7 @@ import { ImageElement } from "./imageElement";
 import { VideoElement } from "./videoElement";
 import { LineElement } from "./lineElement";
 import { GridElement } from "./gridElement";
-import { getElement } from "../pageEditorFunctions";
+import { getElement } from "../../editorFunctions";
 import { PaddingView } from "./components/paddingView";
 
 export function BoxElement({ id }) {
@@ -21,6 +21,7 @@ export function BoxElement({ id }) {
 
   const handleDragLeave = (e) => {
     e.preventDefault();
+
     const boxElement = e.target.closest("[data-element='box']");
     boxElement?.classList?.remove("element-focused");
   };
@@ -82,19 +83,19 @@ export function BoxElement({ id }) {
   return (
     <>
       <div
-        className="h-full w-full relative group/box"
+        className="h-full w-full relative group/box animate-entrance-fade"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
       >
         {element.elements?.length === 0 ? (
           <div
             data-element="box"
-            className="w-full h-full outline-1 outline-slate-200 outline-dashed rounded-md flex flex-col items-center justify-center p-5"
+            className="w-full h-full border border-dashed border-slate-300 bg-slate-50/20 rounded-lg flex flex-col items-center justify-center p-5"
             onDragOver={(e) => handleDragOver(e)}
             onDragLeave={(e) => handleDragLeave(e)}
             id={id}
           >
-            <p>This is a box</p>
+            <p className="text-slate-500">This is a box</p>
             <p className="text-slate-400">Drop elements on me</p>
           </div>
         ) : (

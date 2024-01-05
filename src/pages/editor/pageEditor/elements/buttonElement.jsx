@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { getElement, getStyle } from "../pageEditorFunctions";
+import { getElement, getStyle } from "../../editorFunctions";
 import { PageEditorContext } from "../../editor";
 
 export const ButtonElement = ({ id }) => {

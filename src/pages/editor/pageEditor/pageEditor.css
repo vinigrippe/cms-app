@@ -2,7 +2,6 @@
 #page-editor [data-element="box"],
 #page-editor [data-element="grid"],
 #page-editor .element-focused {
-  border-radius: 0.25rem/0.05rem;
   outline-offset: 0px;
   outline-width: 1px;
   outline-style: dashed;

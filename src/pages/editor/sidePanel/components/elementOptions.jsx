@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { PageEditorContext } from "../../editor";
-import { getElement } from "../../pageEditor/pageEditorFunctions";
+import { getElement } from "../../editorFunctions";
 
 import { Button } from "@/components/button/button";
 import { Checkbox } from "@/components/checkbox/checkbox";

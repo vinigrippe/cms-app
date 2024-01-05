@@ -1,15 +1,8 @@
-import { getParentElement } from "./pageEditor/pageEditorFunctions";
+import { getParentElement } from "./editorFunctions";
 
 export function elementsReducer(state, action) {
-  const {
-    newElement,
-    elementId,
-    elementType,
-    elementIndex,
-    loadHistory,
-    loadElements,
-    asElement,
-  } = action.payload;
+  const { newElement, elementId, elementIndex, loadHistory, loadElements } =
+    action.payload;
   const { elements, history, historyPointer } = state;
   const { parentElement } = getParentElement(state.elements, elementId);
   let newElements, newHistoryPointer;
@@ -23,35 +16,30 @@ export function elementsReducer(state, action) {
       };
 
     case "ADD_ELEMENT":
-      switch (elementType) {
-        case "grid":
-        case "box":
-          if (asElement && parentElement) {
-            newElements = handleInsertElement(
-              elements,
-              parentElement.id,
-              elementIndex,
-              newElement
-            );
-          } else {
-            newElements = handleInsertElement(
-              elements,
-              elementId,
-              elementIndex,
-              newElement
-            );
-          }
-          break;
+      newElements = handleInsertElement(
+        elements,
+        elementId,
+        elementIndex,
+        newElement
+      );
 
-        default:
-          newElements = handleInsertElement(
-            elements,
-            elementId,
-            elementIndex,
-            newElement
-          );
-          break;
+      return {
+        historyPointer: history.length,
+        history: handleStoreHistory(history, newElements),
+        elements: newElements,
+      };
+
+    case "ADD_GRID":
+      if (elementIndex) {
+        newElements = [
+          ...elements.slice(0, elementIndex),
+          newElement,
+          ...elements.slice(elementIndex),
+        ];
+      } else {
+        newElements = [...elements, newElement];
       }
+
       return {
         historyPointer: history.length,
         history: handleStoreHistory(history, newElements),

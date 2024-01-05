@@ -1,20 +1,21 @@
 import React, { useContext, useState } from "react";
+
 import { PageEditorContext } from "../editor";
 import elementList from "@/utils/elementList";
 import { Button } from "../../../components/button/button";
 
-const TreeWalkerElements = () => {
+export const TreePanel = () => {
   const { gridElements } = useContext(PageEditorContext);
   const [isFocused, setIsFocused] = useState("");
 
   return (
-    <div className="min-w-[200px] p-4 bg-slate-100 border-l-2 border-slate-200 flex flex-col gap-5 overflow-y-auto">
+    <div className="min-w-[200px] p-4 bg-slate-100 border-l flex flex-col gap-5 overflow-y-auto">
       <div className="flex flex-col gap-3">
-        <p className="font-medium">TreeWalker</p>
+        <p className="font-medium">Tree Elements</p>
         <div className="flex  flex-col gap-2">
           {gridElements.elements.map((element) => {
             return (
-              <TreeWalkerElement
+              <TreeElement
                 element={element}
                 level={0}
                 key={element.id}
@@ -29,7 +30,7 @@ const TreeWalkerElements = () => {
   );
 };
 
-const TreeWalkerElement = ({ element, level, isFocused, setIsFocused }) => {
+const TreeElement = ({ element, level, isFocused, setIsFocused }) => {
   const { setGridElements, setElementOnFocus } = useContext(PageEditorContext);
   const elementInfo = elementList.find((item) => item.type === element.type);
 
@@ -103,7 +104,7 @@ const TreeWalkerElement = ({ element, level, isFocused, setIsFocused }) => {
         </div>
       </div>
       {element.elements?.map((element) => (
-        <TreeWalkerElement
+        <TreeElement
           element={element}
           level={level + 1}
           key={element.id}
@@ -114,5 +115,3 @@ const TreeWalkerElement = ({ element, level, isFocused, setIsFocused }) => {
     </div>
   );
 };
-
-export default TreeWalkerElements;
