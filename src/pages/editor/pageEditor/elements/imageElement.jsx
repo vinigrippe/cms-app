@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { PageEditorContext } from "../../editor";
 import { getElement } from "../../editorFunctions";
-import api from "@/utils/api";
+import upload from "@/services/upload";
 
 export const ImageElement = ({ id }) => {
   const { gridElements, setGridElements } = useContext(PageEditorContext);
@@ -26,20 +26,12 @@ export const ImageElement = ({ id }) => {
   };
 
   const handleUploadFile = async (img) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", img);
-      formData.append("alt", "");
+    const response = await upload({
+      file: img,
+      name: img.name,
+    });
 
-      const response = await api.post("/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
+    return response;
   };
 
   return (
