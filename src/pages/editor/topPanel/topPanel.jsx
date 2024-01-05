@@ -30,8 +30,8 @@ export const TopPanel = () => {
     setIsLoading("save");
 
     await api
-      .post("/pages", {
-        pageId: pageId,
+      .post("/page", {
+        id: pageId,
         elements: gridElements.elements,
       })
       .finally(() => setIsLoading(""));

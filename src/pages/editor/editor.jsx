@@ -37,13 +37,13 @@ export function Editor() {
   }, []);
 
   const handleLoadDesignSystem = async () => {
-    await api.get("/design_system").then((response) => {
+    await api.get("design").then((response) => {
       setDesignSystem(response.data);
     });
   };
 
   const handleLoadPage = async () => {
-    await api.get("/pages/" + pageId).then((response) => {
+    await api.get("/page/" + pageId).then((response) => {
       const elements = response.data.elements;
 
       if (elements.length === 0) {
