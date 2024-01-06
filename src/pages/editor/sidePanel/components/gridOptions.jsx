@@ -70,7 +70,10 @@ const GridOptions = () => {
           <div className="flex flex-row gap-2 items-center">
             <div className="flex flex-row gap-1 bg-slate-100 border p-1 rounded-md overflow-hidden">
               {elementGrid?.elements.map((elBox) => (
-                <div className="bg-violet-500 p-[3px] rounded w-full group/columnbox">
+                <div
+                  className="bg-violet-500 p-[3px] rounded w-full group/columnbox"
+                  key={elBox.id}
+                >
                   <span className="group-hover/columnbox:opacity-100 opacity-0">
                     <Button
                       type="link"

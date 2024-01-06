@@ -2,7 +2,7 @@ import { getParentElement } from "./editorFunctions";
 
 export function elementsReducer(state, action) {
   const { newElement, elementId, elementIndex, loadHistory, loadElements } =
-    action.payload;
+    action.payload || {};
   const { elements, history, historyPointer } = state;
   const { parentElement } = getParentElement(state.elements, elementId);
   let newElements, newHistoryPointer;
@@ -10,6 +10,7 @@ export function elementsReducer(state, action) {
   switch (action.type) {
     case "SET_GRID":
       return {
+        ...state,
         elements: loadElements,
         history: loadHistory,
         historyPointer: loadHistory.length,
@@ -24,7 +25,9 @@ export function elementsReducer(state, action) {
       );
 
       return {
+        ...state,
         historyPointer: history.length,
+        isSaved: false,
         history: handleStoreHistory(history, newElements),
         elements: newElements,
       };
@@ -41,7 +44,9 @@ export function elementsReducer(state, action) {
       }
 
       return {
+        ...state,
         historyPointer: history.length,
+        isSaved: false,
         history: handleStoreHistory(history, newElements),
         elements: newElements,
       };
@@ -53,7 +58,9 @@ export function elementsReducer(state, action) {
         elementId
       );
       return {
+        ...state,
         historyPointer: history.length,
+        isSaved: false,
         history: handleStoreHistory(history, newElements),
         elements: newElements.filter(Boolean),
       };
@@ -61,7 +68,9 @@ export function elementsReducer(state, action) {
     case "UPDATE_ELEMENT":
       newElements = handleUpdateElement(elements, elementId, newElement);
       return {
+        ...state,
         historyPointer: history.length,
+        isSaved: false,
         history: handleStoreHistory(history, newElements),
         elements: newElements,
       };
@@ -92,7 +101,9 @@ export function elementsReducer(state, action) {
       newElements = [...reorderElement(elements)];
 
       return {
+        ...state,
         historyPointer: history.length,
+        isSaved: false,
         history: handleStoreHistory(history, newElements),
         elements: newElements,
       };
@@ -102,8 +113,9 @@ export function elementsReducer(state, action) {
       const newHistoryUndo = history[newHistoryPointer];
 
       return {
+        ...state,
         historyPointer: newHistoryPointer,
-        history: history,
+        isSaved: false,
         elements: newHistoryUndo,
       };
 
@@ -112,9 +124,16 @@ export function elementsReducer(state, action) {
       let newHistoryRedo = history[newHistoryPointer];
 
       return {
-        history: history,
+        ...state,
         historyPointer: newHistoryPointer,
+        isSaved: false,
         elements: newHistoryRedo,
+      };
+
+    case "SAVE":
+      return {
+        ...state,
+        isSaved: true,
       };
 
     default:

@@ -19,11 +19,11 @@ export const TopPanel = () => {
   };
 
   const handleUndo = () => {
-    setGridElements({ type: "UNDO", payload: {} });
+    setGridElements({ type: "UNDO" });
   };
 
   const handleRedo = () => {
-    setGridElements({ type: "REDO", payload: {} });
+    setGridElements({ type: "REDO" });
   };
 
   const handleSavePage = async () => {
@@ -34,10 +34,13 @@ export const TopPanel = () => {
         id: pageId,
         elements: gridElements.elements,
       })
+      .then(() => {
+        setGridElements({ type: "SAVE" });
+      })
       .finally(() => setIsLoading(""));
   };
   return (
-    <div className="animate-entrance-top z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between gap-2">
+    <div className="animate-entrance-fade z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between gap-2">
       <div className="flex justify-end gap-2">
         <SubMenu.Trigger onClose={() => setDisplayMenuElements(false)}>
           <Button
@@ -68,6 +71,7 @@ export const TopPanel = () => {
                     onDragStart={(e) => handleDragStart(e, itemEl)}
                     draggable="true"
                     className="w-[-webkit-fill-available]"
+                    key={itemEl.type}
                   >
                     <Button icon={itemEl.icon} type="dropdown">
                       {itemEl.title}
@@ -97,15 +101,14 @@ export const TopPanel = () => {
         ></Button>
       </div>
       <div className="flex justify-end gap-2">
-        <Button type="flat">Cancel</Button>
         <Button type="ghost">Preview</Button>
         <Button
           type="primary"
           onClick={handleSavePage}
           isLoading={isLoading === "save"}
-          isDisabled={isLoading === "save"}
+          isDisabled={isLoading === "save" || gridElements.isSaved}
         >
-          Save
+          {!gridElements.isSaved ? "Save" : "Saved"}
         </Button>
       </div>
     </div>

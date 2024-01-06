@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { PageEditorContext } from "../../editor";
 import { getElement } from "../../editorFunctions";
+import upload from "@/services/upload";
 
 import { Button } from "@/components/button/button";
 import { Checkbox } from "@/components/checkbox/checkbox";
@@ -12,6 +13,7 @@ const ElementOptions = () => {
   const { gridElements, setGridElements, elementOnFocus, designSystem } =
     useContext(PageEditorContext);
   const [paddingFocus, setPaddingFocus] = useState("");
+  const [isLoading, setIsLoading] = useState("");
 
   const { element } = getElement(
     gridElements.elements,
@@ -57,12 +59,98 @@ const ElementOptions = () => {
     });
   };
 
+  const handleOnChange = async (e) => {
+    const media = await handleUploadFile(e.target.files[0]);
+
+    const updatedElement = {
+      ...element,
+      fields: { src: media.url || "" },
+    };
+
+    setGridElements({
+      type: "UPDATE_ELEMENT",
+      payload: {
+        elementId: element.id,
+        newElement: updatedElement,
+      },
+    });
+  };
+
+  const handleUploadFile = async (media) => {
+    setIsLoading("upload");
+    const response = (await upload({
+      file: media,
+      name: media.name,
+    })) || { url: "" };
+
+    setIsLoading("");
+    return response;
+  };
+
   if (element)
     return (
       <div className="flex flex-col gap-3">
         <div className="grid grid-cols-1 gap-2 items-center justify-center">
           {element.type === "image" || element.type === "video" ? (
-            <div className="flex flex-col gap-2 py-2">
+            <div className="flex flex-col gap-3 py-2">
+              <div className="flex flex-col gap-2">
+                <p className="text-xs font-semibold">Upload Media</p>
+                <div className="w-[-webkit-fill-available]">
+                  <label
+                    htmlFor={element.id + "_media_input"}
+                    className="cursor-pointer"
+                  >
+                    <input
+                      id={element.id + "_media_input"}
+                      type="file"
+                      accept={element.type === "image" ? "image/*" : "video/*"}
+                      onChange={handleOnChange}
+                      style={{ display: "none" }}
+                    />
+                    <div className="flex gap-2 flex-col w-full bg-slate-100 border border-dashed px-2 py-2 cursor-pointer rounded-md">
+                      {element.fields.src && (
+                        <>
+                          {element.type === "image" ? (
+                            <img
+                              src={element.fields.src}
+                              alt="test"
+                              className="object-cover object-center h-14 w-full rounded-md"
+                            />
+                          ) : (
+                            <video
+                              src={element.fields.src}
+                              alt=""
+                              className="object-cover object-center h-14 w-full rounded-md"
+                              controls={false}
+                            />
+                          )}
+                        </>
+                      )}
+
+                      <div className="flex items-center justify-center gap-2">
+                        <Button
+                          icon="pic"
+                          type="flat"
+                          size="small"
+                          className="text-center"
+                          isLoading={isLoading === "upload"}
+                          onClick={() => {
+                            document
+                              .getElementById(element.id + "_media_input")
+                              .click();
+                          }}
+                        >
+                          Select{" "}
+                          <strong>
+                            {element.type === "image" ? "Image" : "Video"}
+                          </strong>{" "}
+                          to this element
+                        </Button>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
               <div className="flex flex-col gap-1">
                 <p className="text-xs font-semibold">Radius</p>
                 <div className="flex items-center gap-2 -my-2">
@@ -147,6 +235,39 @@ const ElementOptions = () => {
                   </Checkbox>
                 </div>
               </div>
+              {element.type === "image" && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs font-semibold">Object Fit</p>
+                  <div className="w-[-webkit-fill-available]">
+                    <Select value={element?.classes?.objectFit ?? "cover"}>
+                      <Select.Option
+                        isActive={
+                          element?.classes?.objectFit === "cover" ? true : false
+                        }
+                        onClick={() =>
+                          handleChangeClass(element, "objectFit", "cover")
+                        }
+                        isDisabled={element?.classes?.objectFit === ""}
+                      >
+                        Cover
+                      </Select.Option>
+                      <Select.Option
+                        isActive={
+                          element?.classes?.objectFit === "contain"
+                            ? true
+                            : false
+                        }
+                        onClick={() =>
+                          handleChangeClass(element, "objectFit", "contain")
+                        }
+                        isDisabled={element?.classes?.objectFit === ""}
+                      >
+                        Contain
+                      </Select.Option>
+                    </Select>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col gap-1">

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import { PageEditorContext } from "../../editor";
 
 import elementsList from "@/utils/elementList.json";
@@ -124,7 +124,7 @@ export function BoxElement({ id }) {
             }}
           >
             {element.elements?.map((component, elementIndex) => (
-              <>
+              <Fragment key={component.id}>
                 <div
                   data-element="element"
                   className={`relative flex items-center gap-1 group/element w-full max-w-full ${
@@ -153,7 +153,6 @@ export function BoxElement({ id }) {
                       component?.classes?.paddingRight + "px" || "0px",
                   }}
                   id={component.id}
-                  key={component.id}
                 >
                   {
                     {
@@ -192,7 +191,7 @@ export function BoxElement({ id }) {
                       }}
                     />
                   )}
-              </>
+              </Fragment>
             ))}
 
             {elementOnFocus?.box?.id === id && (

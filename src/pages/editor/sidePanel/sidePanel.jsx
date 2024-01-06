@@ -32,14 +32,14 @@ export const SidePanel = () => {
 
   return (
     <div
-      className="animate-entrance-left relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
+      className="animate-entrance-fade relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
       onFocus={(e) => {
         e.stopPropagation();
         e.preventDefault();
       }}
     >
-      <div className="flex flex-col gap-5 px-3 pt-3 h-full overflow-y-auto">
-        <div className="pb-2 pt-0 border-b">
+      <div className="flex flex-col gap-5 px-3 py-3 h-full overflow-y-auto">
+        <div className="flex justify-between pb-2 pt-0 border-b">
           <Button
             type="flat"
             icon="arrow_left"
@@ -49,6 +49,7 @@ export const SidePanel = () => {
           >
             Back to Pages
           </Button>
+          <Button icon="settings_4" type="flat" />
         </div>
         {!element ? (
           <div className="flex flex-col gap-3 text-slate-400 items-center justify-center h-full">
