@@ -2,7 +2,7 @@ import "./style.range.css";
 
 export const Range = ({ isDisabled, value, onChange, id, min, max }) => {
   return (
-    <div className="relative leading-none">
+    <div className="relative leading-none w-full">
       <input
         type="range"
         data-component="range"

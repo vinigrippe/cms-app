@@ -51,7 +51,7 @@ function PageEditor() {
   return (
     <div
       id="page-editor"
-      className="relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto flex flex-col z-40"
+      className="animate-entrance-fade relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto flex flex-col z-40"
       onContextMenu={(e) => handleContextMenu(e)}
       onClick={(e) => handleElementOnFocus(e)}
       onScroll={() => setDisplayContextMenu(false)}
@@ -60,7 +60,7 @@ function PageEditor() {
       }}
     >
       {isLoading === "load" ? (
-        <div className="animate-entrance-fade absolute top-0 right-0 flex items-center justify-center w-full h-full z-50 backdrop-blur-xl">
+        <div className="absolute top-0 right-0 flex items-center justify-center w-full h-full z-50 backdrop-blur-xl">
           <div className="w-full h-full bg-slate-100 absolute" />
           <div className="flex items-center gap-2 flex-col z-40">
             <LoadingIcon size="40" color="#0d9488" />

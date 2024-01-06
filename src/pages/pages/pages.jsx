@@ -58,11 +58,8 @@ export const Pages = () => {
                 page.title.toLowerCase().includes(searchInput.toLowerCase())
               )
               .map((page) => (
-                <a href={`/editor/${page.id}`}>
-                  <div
-                    key={page.id}
-                    className="animate-entrance-bottom col-span-1 rounded-lg cursor-pointer border-slate-150 border bg-white flex flex-col p-2 gap-2"
-                  >
+                <a href={`/editor/${page.id}`} key={page.id}>
+                  <div className="animate-entrance-fade col-span-1 rounded-lg cursor-pointer border-slate-150 border bg-white flex flex-col p-2 gap-2">
                     <div className="rounded-lg bg-slate-200 w-full h-[150px]"></div>
                     <div className="flex flex-col">
                       <div className="flex gap-2 justify-between">

@@ -18,6 +18,7 @@ export function Editor() {
     elements: [],
     history: [],
     historyPointer: 1,
+    isSaved: true,
   });
   const [designSystem, setDesignSystem] = useState([]);
   const [isLoading, setIsLoading] = useState("load");

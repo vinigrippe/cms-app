@@ -72,7 +72,7 @@ button[data-type="dropdown"][data-color="danger"]:hover > span::before {
 }
 
 button[data-type="flat"] {
-  background-color: theme("colors.white");
+  background-color: transparent;
   color: theme("colors.slate.600");
 }
 

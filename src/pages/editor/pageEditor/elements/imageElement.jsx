@@ -1,38 +1,11 @@
 import React, { useContext } from "react";
 import { PageEditorContext } from "../../editor";
 import { getElement } from "../../editorFunctions";
-import upload from "@/services/upload";
 
 export const ImageElement = ({ id }) => {
-  const { gridElements, setGridElements } = useContext(PageEditorContext);
+  const { gridElements } = useContext(PageEditorContext);
   const { element } = getElement(gridElements.elements, id);
   const selectedImage = element.fields.src;
-
-  const handleOnChange = async (e) => {
-    const image = await handleUploadFile(e.target.files[0]);
-
-    const updatedElement = {
-      ...element,
-      fields: { src: image.url || "" },
-    };
-
-    setGridElements({
-      type: "UPDATE_ELEMENT",
-      payload: {
-        elementId: id,
-        newElement: updatedElement,
-      },
-    });
-  };
-
-  const handleUploadFile = async (img) => {
-    const response = await upload({
-      file: img,
-      name: img.name,
-    });
-
-    return response;
-  };
 
   return (
     <figure
@@ -42,34 +15,20 @@ export const ImageElement = ({ id }) => {
       } w-full group/image rounded-[inherit] overflow-hidden`}
       data-type="image"
     >
-      <label htmlFor={id + "_input"} className="cursor-pointer">
-        <input
-          id={id + "_input"}
-          type="file"
-          accept="image/*"
-          onChange={handleOnChange}
-          style={{ display: "none" }}
-        />
-
-        {selectedImage && (
-          <img
-            src={selectedImage}
-            alt="test"
-            className="relative z-10 object-cover object-center w-full h-full group-hover/image:opacity-20 transition-all"
-          />
-        )}
-
-        <div className="absolute top-0 left-0 flex items-center justify-center gap-2 flex-col w-full h-full bg-slate-100 px-5 py-8 cursor-pointer hover:bg-slate-200 transition-all">
-          <span className="mgc_pic_line text-lg before:!text-blue-600" />
-          {!selectedImage ? (
-            <p>
-              Select <strong>Image</strong> to add an image to your page.
-            </p>
-          ) : (
-            <p>Select a different image</p>
-          )}
+      {!selectedImage ? (
+        <div className="flex items-center justify-center gap-2 flex-col w-full h-full bg-slate-100 px-5 py-8 cursor-pointer hover:bg-slate-200 transition-all">
+          <span className="mgc_pic_line text-lg" />
         </div>
-      </label>
+      ) : (
+        <img
+          src={selectedImage}
+          alt="test"
+          className="relative z-10 object-center w-full h-full group-hover/image:opacity-20 transition-all"
+          style={{
+            objectFit: element?.classes?.objectFit || "cover",
+          }}
+        />
+      )}
     </figure>
   );
 };
