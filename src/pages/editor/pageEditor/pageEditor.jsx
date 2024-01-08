@@ -51,7 +51,8 @@ function PageEditor() {
   return (
     <div
       id="page-editor"
-      className="animate-entrance-fade relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto flex flex-col z-40"
+      className="relative px-3 rounded-md border py-3 mb-2 h-full w-full overflow-y-auto flex flex-col z-40"
+      data-animation="entrance-fade"
       onContextMenu={(e) => handleContextMenu(e)}
       onClick={(e) => handleElementOnFocus(e)}
       onScroll={() => setDisplayContextMenu(false)}

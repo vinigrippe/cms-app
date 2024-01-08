@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "@/utils/api";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 import { Input } from "@/components/input/input";
@@ -7,22 +7,29 @@ import { Button } from "@/components/button/button";
 import { LogoBuilder } from "@/icons/logo/logo";
 import { LoadingIcon } from "@/icons/loading";
 
+import { ModalCreatePage } from "./createPage/createPage";
+import { findAllPages } from "../../services/page";
+
 export const Pages = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pageList, setPageList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [modalCreatePage, setModalCreatePage] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    Promise.all([handleLoadDesignSystem()]).then(() => {
-      setIsLoading(false);
-    });
+    handleLoadPages();
   }, []);
 
-  const handleLoadDesignSystem = async () => {
-    await api.get("/pages?page=1").then((response) => {
-      setPageList(response.data);
-    });
+  const handleLoadPages = async () => {
+    setIsLoading(true);
+
+    Promise.all([findAllPages()])
+      .then((response) => {
+        setPageList(response[0]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -40,7 +47,11 @@ export const Pages = () => {
               onChange={(e) => setSearchInput(e.target.value)}
               value={searchInput}
             />
-            <Button type="primary" icon="add">
+            <Button
+              type="primary"
+              icon="add"
+              onClick={() => setModalCreatePage(true)}
+            >
               New Page
             </Button>
           </div>
@@ -57,9 +68,15 @@ export const Pages = () => {
               .filter((page) =>
                 page.title.toLowerCase().includes(searchInput.toLowerCase())
               )
-              .map((page) => (
-                <a href={`/editor/${page.id}`} key={page.id}>
-                  <div className="animate-entrance-fade col-span-1 rounded-lg cursor-pointer border-slate-150 border bg-white flex flex-col p-2 gap-2">
+              .map((page, index) => (
+                <Link to={`/editor/${page.id}`} key={page.id}>
+                  <div
+                    data-animation="entrance-fade"
+                    className="col-span-1 rounded-lg cursor-pointer border-slate-150 border bg-white flex flex-col p-2 gap-2"
+                    style={{
+                      animationDelay: index * 0.15 + "s",
+                    }}
+                  >
                     <div className="rounded-lg bg-slate-200 w-full h-[150px]"></div>
                     <div className="flex flex-col">
                       <div className="flex gap-2 justify-between">
@@ -76,9 +93,17 @@ export const Pages = () => {
                       </p>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
           </div>
+        )}
+
+        {modalCreatePage && (
+          <ModalCreatePage
+            isOpen={modalCreatePage}
+            onClose={() => setModalCreatePage(false)}
+            handleLoadPages={handleLoadPages}
+          />
         )}
       </div>
     </div>

@@ -44,13 +44,13 @@ export const LogoBuilder = ({ size, color }) => {
         cy="171"
         r="166"
         stroke={color ?? "black"}
-        stroke-width="10"
+        strokeWidth="10"
       />
       <path
         d="M5 171H455"
         stroke={color ?? "black"}
-        stroke-width="10"
-        stroke-linecap="square"
+        strokeWidth="10"
+        strokeLinecap="square"
       />
       <rect
         x="1500.17"
