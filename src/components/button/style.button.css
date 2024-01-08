@@ -1,6 +1,6 @@
 button[data-component="button"] {
   border-radius: 0.5em;
-  padding: 0.7rem 0.7rem;
+  padding: 0.7rem 0.85rem;
   transition: all 0.4s ease;
   cursor: pointer;
   user-select: none;
@@ -48,6 +48,7 @@ button[data-type="ghost"][aria-disabled="true"] {
 }
 
 button[data-type="dropdown"] {
+  padding: 0.7rem;
   background-color: theme("colors.white");
   color: theme("colors.slate.600");
 }
@@ -79,6 +80,7 @@ button[data-type="flat"]:hover {
   background-color: theme("colors.slate.100");
 }
 button[data-type="flat"][data-active="true"] {
+  color: theme("colors.teal.500");
   background-color: theme("colors.teal.50");
 }
 button[data-type="flat"][data-active="true"] > span::before {
@@ -114,11 +116,20 @@ button[data-type="link"][data-color="danger"]:hover > span::before {
 }
 
 button[data-size="small"] {
-  padding: 0.35rem;
-  font-size: 0.7rem;
+  padding: 0.475rem;
+  font-size: 1em;
   border-radius: 0.5em;
 }
 
 button[data-size="small"] > span[class^="mgc_"] {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
+}
+button[data-size="xsmall"] {
+  padding: 0.35rem;
+  font-size: 0.8rem;
+  border-radius: 0.5em;
+}
+
+button[data-size="xsmall"] > span[class^="mgc_"] {
+  font-size: 0.9rem;
 }

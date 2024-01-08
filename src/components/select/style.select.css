@@ -3,6 +3,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
   gap: 0.25rem;
 }
 
