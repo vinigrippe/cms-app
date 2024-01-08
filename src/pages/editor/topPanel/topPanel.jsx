@@ -40,7 +40,10 @@ export const TopPanel = () => {
       .finally(() => setIsLoading(""));
   };
   return (
-    <div className="animate-entrance-fade z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between gap-2">
+    <div
+      data-animation="entrance-fade"
+      className="z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between gap-2"
+    >
       <div className="flex justify-end gap-2">
         <SubMenu.Trigger onClose={() => setDisplayMenuElements(false)}>
           <Button

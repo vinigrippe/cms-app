@@ -83,7 +83,8 @@ export function BoxElement({ id }) {
   return (
     <>
       <div
-        className="h-full w-full relative group/box animate-entrance-fade"
+        className="h-full w-full relative group/box"
+        data-animation="entrance-fade"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => handleOnDrop(e)}
       >

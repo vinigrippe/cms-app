@@ -1,6 +1,9 @@
 [data-component="select"] {
   width: inherit;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 [data-component="select"] .select-button {
@@ -8,12 +11,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.3rem;
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   cursor: pointer;
   user-select: none;
   width: inherit;
   border-radius: 0.6em;
-  border: 2px solid theme("colors.slate.200");
+  border: 1px solid theme("colors.slate.200");
   background-color: theme("colors.white");
   outline: 2px solid transparent;
   outline-offset: 1px;

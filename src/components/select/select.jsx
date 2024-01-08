@@ -3,7 +3,7 @@ import { Button } from "../button/button";
 
 import "./style.select.css";
 
-export const Select = ({ isDisabled, value, id, children }) => {
+export const Select = ({ isDisabled, value, id, children, label }) => {
   const [showSelect, setShowSelect] = useState(false);
   const refSelectEl = useRef(null);
 
@@ -28,13 +28,16 @@ export const Select = ({ isDisabled, value, id, children }) => {
       ref={refSelectEl}
       id={id}
     >
+      {label && <p className="font-semibold text-xs text-slate-600">{label}</p>}
       <div className="select-button" onClick={() => setShowSelect(!showSelect)}>
         <span>{value}</span>
         <span className="mgc_down_line"></span>
       </div>
-
       {showSelect && (
-        <div className="absolute z-[20] w-[-webkit-fill-available] mx-1 left-0 mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 flex flex-col">
+        <div
+          className="absolute z-[20] w-[-webkit-fill-available] top-[100%] left-0 mt-1 bg-white rounded-lg border shadow-lg py-2 px-2 flex flex-col"
+          onClick={() => setShowSelect(!showSelect)}
+        >
           {children}
         </div>
       )}

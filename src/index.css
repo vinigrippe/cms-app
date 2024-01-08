@@ -46,20 +46,28 @@ input::-webkit-inner-spin-button {
 /*   ANIMATIONS   */
 /*  ------------  */
 
-.animate-entrance-fade {
-  animation: entrance-fade 600ms ease-in-out;
+[data-animation="entrance-fade"] {
+  animation: entrance-fade 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.animate-entrance-top {
-  animation: entrance-top 400ms ease-in-out;
+[data-animation="exit-fade"] {
+  animation: exit-fade 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.animate-entrance-bottom {
-  animation: entrance-bottom 600ms ease-in-out;
+[data-animation="entrance-top"] {
+  animation: entrance-top 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-.animate-entrance-left {
-  animation: entrance-left 400ms ease-in-out;
+[data-animation="entrance-bottom"] {
+  animation: entrance-bottom 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+[data-animation="exit-bottom"] {
+  animation: exit-bottom 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+[data-animation="entrance-left"] {
+  animation: entrance-left 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes entrance-fade {
@@ -71,10 +79,19 @@ input::-webkit-inner-spin-button {
   }
 }
 
+@keyframes exit-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes entrance-top {
   0% {
     opacity: 0;
-    transform: scale(0.95) translateY(-40px);
+    transform: scale(0.98) translateY(-40px);
   }
   100% {
     opacity: 1;
@@ -85,7 +102,18 @@ input::-webkit-inner-spin-button {
 @keyframes entrance-bottom {
   0% {
     opacity: 0;
-    transform: scale(0.95) translateY(30px);
+    transform: scale(0.98) translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes exit-bottom {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(30px);
   }
   100% {
     opacity: 1;
@@ -96,7 +124,7 @@ input::-webkit-inner-spin-button {
 @keyframes entrance-left {
   0% {
     opacity: 0;
-    transform: scale(0.95) translateX(-40px);
+    transform: scale(0.98) translateX(-40px);
   }
   100% {
     opacity: 1;

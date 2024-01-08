@@ -40,10 +40,11 @@ export function GridElement({ id, index }) {
     return (
       <div
         id={id}
-        className={`group/grid animate-entrance-fade relative w-full grid ${
+        className={`group/grid relative w-full grid ${
           elementOnFocus?.grid?.id === id ? "element-focused" : ""
         }`}
         data-element="grid"
+        data-animation="entrance-fade"
         style={{
           gridTemplateColumns: `repeat(${element.elements.length}, minmax(0, 1fr))`,
           paddingTop: element?.classes?.paddingTop + "px" || "0px",
