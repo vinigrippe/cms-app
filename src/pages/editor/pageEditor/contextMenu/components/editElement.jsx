@@ -7,7 +7,7 @@ import { MenuContext } from "../contextMenu";
 import { getElement, getParentElement } from "../../../editorFunctions";
 
 import { Button } from "@/components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const EditElement = () => {
   const [subMenuChange, setSubMenuChange] = useState(false);
@@ -145,7 +145,7 @@ export const EditElement = () => {
         Delete
       </Button>
 
-      <SubMenu.Trigger onClose={() => setSubMenuChange(false)}>
+      <DropDown.Trigger onClose={() => setSubMenuChange(false)}>
         <Button
           type="dropdown"
           isActive={subMenuChange}
@@ -158,7 +158,7 @@ export const EditElement = () => {
         </Button>
 
         {subMenuChange && (
-          <SubMenu.Popup position={{ x: posSubMenu }}>
+          <DropDown.Popup position={{ x: posSubMenu }}>
             {elementList.map((elementItem) => (
               <Button
                 key={elementItem.type}
@@ -170,9 +170,9 @@ export const EditElement = () => {
                 {elementItem.title}
               </Button>
             ))}
-          </SubMenu.Popup>
+          </DropDown.Popup>
         )}
-      </SubMenu.Trigger>
+      </DropDown.Trigger>
 
       <div className="border-b w-full pt-1 mb-1"></div>
     </>

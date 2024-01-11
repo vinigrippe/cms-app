@@ -5,7 +5,7 @@ import { generateId } from "@/utils/functions";
 import elementsList from "@/utils/elementList.json";
 import { MenuContext } from "../contextMenu";
 import { Button } from "@/components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const NewElement = () => {
   const { setGridElements, elementOnFocus } = useContext(PageEditorContext);
@@ -49,7 +49,7 @@ export const NewElement = () => {
 
   return (
     <>
-      <SubMenu.Trigger onClose={() => setSubMenu("")}>
+      <DropDown.Trigger onClose={() => setSubMenu("")}>
         <Button
           type="dropdown"
           isActive={subMenu === "new" ? "true" : "false"}
@@ -61,7 +61,7 @@ export const NewElement = () => {
         </Button>
 
         {subMenu === "new" && (
-          <SubMenu.Popup position={{ x: posSubMenu }}>
+          <DropDown.Popup position={{ x: posSubMenu }}>
             {elementsList.map((elementItem) => (
               <Button
                 key={elementItem.type}
@@ -72,9 +72,9 @@ export const NewElement = () => {
                 {elementItem.title}
               </Button>
             ))}
-          </SubMenu.Popup>
+          </DropDown.Popup>
         )}
-      </SubMenu.Trigger>
+      </DropDown.Trigger>
 
       <div className="border-b w-full pt-1 mb-1"></div>
     </>

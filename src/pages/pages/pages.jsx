@@ -16,7 +16,11 @@ import { useNavigate } from "react-router-dom";
 export const Pages = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pageList, setPageList] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+  const [inputFilters, setInputFilters] = useState({
+    search: "",
+    sort: "activity",
+    view: "grid",
+  });
   const [modalCreatePage, setModalCreatePage] = useState(false);
 
   const navigate = useNavigate();
@@ -35,6 +39,13 @@ export const Pages = () => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const handleOnChangeFilter = (value, field) => {
+    setInputFilters({
+      ...inputFilters,
+      [field]: value,
+    });
   };
 
   return (
@@ -63,19 +74,48 @@ export const Pages = () => {
             <div className="w-full md:w-[250px] min-w-[120px]">
               <Input
                 placeholder="Search pages"
-                onChange={(e) => setSearchInput(e.target.value)}
-                value={searchInput}
+                onChange={(e) => handleOnChangeFilter(e.target.value, "search")}
+                value={inputFilters.search}
               />
             </div>
             <div className="w-fit md:w-[150px]">
-              <Select value="Sort by activity">
-                <Select.Option value="activity">Sort by activity</Select.Option>
-                <Select.Option value="date">Sort by name</Select.Option>
+              <Select
+                placeholder="Select a sort"
+                value={
+                  inputFilters.sort === "activity"
+                    ? "Sort by activity"
+                    : "Sort by name"
+                }
+              >
+                <Select.Option
+                  isActive={inputFilters.sort === "activity"}
+                  onChange={() => handleOnChangeFilter("activity", "sort")}
+                >
+                  Sort by activity
+                </Select.Option>
+                <Select.Option
+                  isActive={inputFilters.sort === "date"}
+                  onChange={() => handleOnChangeFilter("date", "sort")}
+                >
+                  Sort by name
+                </Select.Option>
               </Select>
             </div>
-            <div className="flex border p-1 bg-white rounded-lg">
-              <Button type="flat" icon="layout_grid" size="small" isActive />
-              <Button type="flat" icon="list_check_3" size="small" />
+            <div className="flex border p-[3.5px] gap-1 bg-white rounded-lg">
+              <Button
+                type="flat"
+                icon="layout_grid"
+                size="small"
+                isActive={inputFilters.view === "grid"}
+                onClick={() => handleOnChangeFilter("grid", "view")}
+              />
+              <Button
+                type="flat"
+                icon="list_check_3"
+                size="small"
+                isActive={inputFilters.view === "list"}
+                onClick={() => handleOnChangeFilter("list", "view")}
+              />
             </div>
             <div>
               <Button
@@ -95,15 +135,32 @@ export const Pages = () => {
             <p>Deers are working hard to bring you your pages!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div
+            className={`grid gap-4 
+          ${
+            inputFilters.view === "grid"
+              ? "grid-cols-2 md:grid-cols-3"
+              : "grid-cols-1"
+          }
+          `}
+          >
             {pageList
               .filter((page) =>
-                page.title.toLowerCase().includes(searchInput.toLowerCase())
+                page.title
+                  .toLowerCase()
+                  .includes(inputFilters.search.toLowerCase())
               )
               .sort((a, b) => {
-                return (
-                  moment(b.updateDate).unix() - moment(a.updateDate).unix()
-                );
+                switch (inputFilters.sort) {
+                  default:
+                  case "activity":
+                    return (
+                      moment(b.updateDate).unix() - moment(a.updateDate).unix()
+                    );
+
+                  case "name":
+                    return a.title.localeCompare(b.title);
+                }
               })
               .map((page, index) => (
                 <PageCard page={page} index={index} key={page.id} />

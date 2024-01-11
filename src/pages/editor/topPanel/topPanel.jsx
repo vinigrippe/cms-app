@@ -5,7 +5,7 @@ import elementsList from "@/utils/elementList.json";
 import api from "@/utils/api";
 
 import { Button } from "../../../components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const TopPanel = () => {
   const { pageId } = useParams();
@@ -42,18 +42,19 @@ export const TopPanel = () => {
   return (
     <div
       data-animation="entrance-fade"
-      className="z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between gap-2"
+      className="z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between items-center gap-2"
     >
-      <div className="flex justify-end gap-2">
-        <SubMenu.Trigger onClose={() => setDisplayMenuElements(false)}>
+      <div className="flex justify-end gap-1">
+        <DropDown.Trigger onClose={() => setDisplayMenuElements(false)}>
           <Button
             type="flat"
             onClick={() => setDisplayMenuElements(!displayMenuElements)}
             icon="add"
+            size="small"
             isActive={displayMenuElements}
           />
           {displayMenuElements && (
-            <SubMenu.Popup
+            <DropDown.Popup
               position={{
                 x: "left-0",
                 y: "top-full",
@@ -82,11 +83,12 @@ export const TopPanel = () => {
                   </div>
                 ))}
               </div>
-            </SubMenu.Popup>
+            </DropDown.Popup>
           )}
-        </SubMenu.Trigger>
+        </DropDown.Trigger>
         <Button
           type="ghost"
+          size="small"
           onClick={handleUndo}
           isDisabled={
             gridElements.historyPointer === 0 ||
@@ -96,6 +98,7 @@ export const TopPanel = () => {
         ></Button>
         <Button
           type="ghost"
+          size="small"
           onClick={handleRedo}
           isDisabled={
             gridElements.historyPointer >= gridElements.history.length - 1
@@ -104,9 +107,12 @@ export const TopPanel = () => {
         ></Button>
       </div>
       <div className="flex justify-end gap-2">
-        <Button type="ghost">Preview</Button>
+        <Button type="ghost" size="small">
+          Preview
+        </Button>
         <Button
           type="primary"
+          size="small"
           onClick={handleSavePage}
           isLoading={isLoading === "save"}
           isDisabled={isLoading === "save" || gridElements.isSaved}

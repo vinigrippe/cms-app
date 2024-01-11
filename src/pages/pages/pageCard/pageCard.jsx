@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 import { Button } from "@/components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const PageCard = ({ page, index }) => {
   const [menuOptions, setMenuOptions] = useState(false);
@@ -34,11 +34,11 @@ export const PageCard = ({ page, index }) => {
                 {page.status}
               </div>
 
-              <SubMenu.Trigger onClose={() => setMenuOptions(false)}>
+              <DropDown.Trigger onClose={() => setMenuOptions(false)}>
                 <Button
                   type="flat"
                   size="xsmall"
-                  icon="more_1"
+                  icon="more_horiz"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -47,7 +47,7 @@ export const PageCard = ({ page, index }) => {
                   isActive={menuOptions}
                 />
                 {menuOptions && (
-                  <SubMenu.Popup
+                  <DropDown.Popup
                     position={{
                       x: "right-0 left-auto",
                       y: "top-[100%]",
@@ -62,9 +62,9 @@ export const PageCard = ({ page, index }) => {
                     <Button type="dropdown" color="danger">
                       Delete Page
                     </Button>
-                  </SubMenu.Popup>
+                  </DropDown.Popup>
                 )}
-              </SubMenu.Trigger>
+              </DropDown.Trigger>
             </div>
           </div>
           <div className="flex gap-3 justify-between">

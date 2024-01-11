@@ -6,7 +6,7 @@ import { generateId } from "@/utils/functions";
 import { getElement } from "../../../editorFunctions";
 
 import { Button } from "../../../../../components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const EditGrid = () => {
   const [subMenu, setSubMenu] = useState("");
@@ -49,7 +49,7 @@ export const EditGrid = () => {
   };
 
   return (
-    <SubMenu.Trigger
+    <DropDown.Trigger
       onClose={() => setSubMenu(false)}
       onMouseEnter={() =>
         elementOnFocus?.grid?.classList?.add("element-focused")
@@ -69,7 +69,7 @@ export const EditGrid = () => {
       </Button>
 
       {subMenu && (
-        <SubMenu.Popup position={{ x: posSubMenu }}>
+        <DropDown.Popup position={{ x: posSubMenu }}>
           <Button type="dropdown" icon="copy_3" onClick={handleDuplicateGrid}>
             Duplicate Grid
           </Button>
@@ -81,8 +81,8 @@ export const EditGrid = () => {
           >
             Delete Grid
           </Button>
-        </SubMenu.Popup>
+        </DropDown.Popup>
       )}
-    </SubMenu.Trigger>
+    </DropDown.Trigger>
   );
 };

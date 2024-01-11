@@ -5,7 +5,7 @@ import { MenuContext } from "../contextMenu";
 import { getElement } from "../../../editorFunctions";
 
 import { Button } from "@/components/button/button";
-import { SubMenu } from "@/components/dropdown/dropdown";
+import { DropDown } from "@/components/dropdown/dropdown";
 
 export const EditBox = () => {
   const [subMenu, setSubMenu] = useState("");
@@ -53,7 +53,7 @@ export const EditBox = () => {
   };
 
   return (
-    <SubMenu.Trigger
+    <DropDown.Trigger
       onMouseEnter={() =>
         elementOnFocus?.box?.classList?.add("element-focused")
       }
@@ -72,7 +72,7 @@ export const EditBox = () => {
         Box Options
       </Button>
       {subMenu === "edit_box" && (
-        <SubMenu.Popup position={{ x: posSubMenu }}>
+        <DropDown.Popup position={{ x: posSubMenu }}>
           <Button type="dropdown" icon="copy_3" onClick={handleDuplicateBox}>
             Duplicate Box
           </Button>
@@ -84,8 +84,8 @@ export const EditBox = () => {
           >
             Delete Box
           </Button>
-        </SubMenu.Popup>
+        </DropDown.Popup>
       )}
-    </SubMenu.Trigger>
+    </DropDown.Trigger>
   );
 };

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const SubMenu = ({
+export const DropDown = ({
   children,
   position = { x: "top-0", y: "left-[100%]" },
 }) => {
@@ -15,7 +15,7 @@ export const SubMenu = ({
   );
 };
 
-export const SubMenuTrigger = ({
+export const DropDownTrigger = ({
   children,
   onClose,
   onMouseEnter,
@@ -51,5 +51,5 @@ export const SubMenuTrigger = ({
   );
 };
 
-SubMenu.Trigger = SubMenuTrigger;
-SubMenu.Popup = SubMenu;
+DropDown.Trigger = DropDownTrigger;
+DropDown.Popup = DropDown;
