@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { findAllPages } from "@/services/page";
 
@@ -23,6 +23,7 @@ export const Pages = () => {
   });
   const [modalCreatePage, setModalCreatePage] = useState(false);
 
+  const { websiteId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export const Pages = () => {
   return (
     <Layout borderBottom={false}>
       <Layout.Header>
-        <div className="pb-4">
+        <div className="pb-4 px-3">
           <Button
             type="flat"
             icon="arrow_left"
@@ -78,44 +79,46 @@ export const Pages = () => {
                 value={inputFilters.search}
               />
             </div>
-            <div className="w-fit md:w-[150px]">
-              <Select
-                placeholder="Select a sort"
-                value={
-                  inputFilters.sort === "activity"
-                    ? "Sort by activity"
-                    : "Sort by name"
-                }
-              >
-                <Select.Option
-                  isActive={inputFilters.sort === "activity"}
-                  onChange={() => handleOnChangeFilter("activity", "sort")}
+            <div className="sm:flex hidden items-center gap-2">
+              <div className="w-fit md:w-[150px]">
+                <Select
+                  placeholder="Select a sort"
+                  value={
+                    inputFilters.sort === "activity"
+                      ? "Sort by activity"
+                      : "Sort by name"
+                  }
                 >
-                  Sort by activity
-                </Select.Option>
-                <Select.Option
-                  isActive={inputFilters.sort === "date"}
-                  onChange={() => handleOnChangeFilter("date", "sort")}
-                >
-                  Sort by name
-                </Select.Option>
-              </Select>
-            </div>
-            <div className="flex border p-[3.5px] gap-1 bg-white rounded-lg">
-              <Button
-                type="flat"
-                icon="layout_grid"
-                size="small"
-                isActive={inputFilters.view === "grid"}
-                onClick={() => handleOnChangeFilter("grid", "view")}
-              />
-              <Button
-                type="flat"
-                icon="list_check_3"
-                size="small"
-                isActive={inputFilters.view === "list"}
-                onClick={() => handleOnChangeFilter("list", "view")}
-              />
+                  <Select.Option
+                    isActive={inputFilters.sort === "activity"}
+                    onChange={() => handleOnChangeFilter("activity", "sort")}
+                  >
+                    Sort by activity
+                  </Select.Option>
+                  <Select.Option
+                    isActive={inputFilters.sort === "date"}
+                    onChange={() => handleOnChangeFilter("date", "sort")}
+                  >
+                    Sort by name
+                  </Select.Option>
+                </Select>
+              </div>
+              <div className="flex border p-[1.8px] gap-1 bg-white rounded-lg">
+                <Button
+                  type="flat"
+                  icon="layout_grid"
+                  size="small"
+                  isActive={inputFilters.view === "grid"}
+                  onClick={() => handleOnChangeFilter("grid", "view")}
+                />
+                <Button
+                  type="flat"
+                  icon="list_check_3"
+                  size="small"
+                  isActive={inputFilters.view === "list"}
+                  onClick={() => handleOnChangeFilter("list", "view")}
+                />
+              </div>
             </div>
             <div>
               <Button

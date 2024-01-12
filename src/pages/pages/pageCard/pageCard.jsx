@@ -12,7 +12,7 @@ export const PageCard = ({ page, index }) => {
     <Link to={`/editor/${page.id}`}>
       <div
         data-animation="entrance-fade"
-        className="col-span-1 rounded-lg cursor-pointer border-slate-200 border bg-white flex flex-col px-3 pb-3 pt-2 gap-2 transition-all"
+        className="col-span-1 rounded-lg cursor-pointer border-slate-200 border bg-white flex flex-col px-3 pb-3 pt-2 gap-2 transition-all relative z-1"
         style={{
           animationDelay: index * 0.15 + "s",
         }}

@@ -35,10 +35,10 @@ export const NavTab = () => {
   ];
 
   return (
-    <div className="w-full flex gap-2">
+    <div className="w-full flex gap-2 invisiblescroll">
       {tabs.map((tab) => (
         <div
-          className={`border-b-2 pb-[6px] ${
+          className={`px-3 border-b-2 pb-[6px] ${
             activeTab === tab.value ? "border-teal-400" : "border-transparent"
           }
           

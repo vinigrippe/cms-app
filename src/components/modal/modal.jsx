@@ -9,10 +9,10 @@ const Modal = ({ isOpen, size, children }) => {
       />
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div
-          className="bg-white rounded-xl overflow-auto fixed min-w-[400px] max-h-[90vh]"
+          className="bg-white rounded-xl overflow-auto fixed min-w-[400px] w-[calc(100%-2rem)] max-h-[90vh]"
           data-animation={"entrance-bottom"}
           style={{
-            width: size,
+            maxWidth: size,
           }}
         >
           {children}

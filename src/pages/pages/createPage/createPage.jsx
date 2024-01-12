@@ -77,7 +77,7 @@ export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
         subtitle="Create a brand new page or get started with one of our Templates"
       />
       <Modal.Body>
-        <div className="grid grid-cols-2 gap-7">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-7">
           <div className="flex flex-col gap-2 p-4 border rounded-md h-fit">
             <h2 className="text-nd font-semibold">Brand New</h2>
             <div className="flex flex-col gap-2 items-center">

@@ -11,6 +11,7 @@ import {
 import { Login } from "./login/login";
 import { Editor } from "./editor/editor";
 import { Pages } from "./pages/pages";
+import { Websites } from "./websites/websites";
 
 const PrivateRoute = () => {
   const { isAuth } = useAuth();
@@ -32,9 +33,10 @@ export const RoutePages = () => {
         </Route>
 
         <Route element={<PrivateRoute />}>
-          <Route exact path="*" element={<Pages />} />
-          <Route exact path="/" element={<Pages />} />
-          <Route exact path="/pages" element={<Pages />} />
+          <Route exact path="*" element={<Websites />} />
+          <Route exact path="/" element={<Websites />} />
+          <Route exact path="/dashboard" element={<Websites />} />
+          <Route exact path="/website/:websiteId" element={<Pages />} />
           <Route exact path="/editor/:pageId" element={<Editor />} />
         </Route>
       </Routes>

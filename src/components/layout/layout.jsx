@@ -6,7 +6,7 @@ import { LogoBuilder } from "@/icons/logo/logo";
 import { Button } from "@/components/button/button";
 import { DropDown } from "@/components/dropdown/dropdown";
 
-export const Layout = ({ borderBottom, children }) => {
+export const Layout = ({ borderBottom = true, children }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user } = useAuth();
 
@@ -85,7 +85,7 @@ export const Layout = ({ borderBottom, children }) => {
 const LayoutHeader = ({ children }) => {
   return (
     <div className="bg-white w-full flex items-center justify-center border-b">
-      <div className="px-3 w-full max-w-[1000px]">{children}</div>
+      <div className="w-full max-w-[1000px]">{children}</div>
     </div>
   );
 };
