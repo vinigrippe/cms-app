@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { findAllPages } from "@/services/page";
 
 import { Input } from "@/components/input/input";
 import { Button } from "@/components/button/button";
 import { Select } from "@/components/select/select";
 import { LoadingIcon } from "@/icons/loading";
+import { Layout } from "@/components/layout/layout";
 
 import { ModalCreatePage } from "./createPage/createPage";
-import { findAllPages } from "../../services/page";
-import { Layout } from "../../components/layout/layout";
 import { PageCard } from "./pageCard/pageCard";
 import { NavTab } from "./navTab/navTab";
-import { useNavigate } from "react-router-dom";
 
 export const Pages = () => {
   const [isLoading, setIsLoading] = useState(true);

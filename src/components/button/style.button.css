@@ -1,13 +1,11 @@
 button[data-component="button"] {
   border-radius: 0.5em;
-  padding: 0.7rem 0.85rem;
+  padding: 0.7rem 0.7rem;
   transition: all 0.4s ease;
   cursor: pointer;
   user-select: none;
   display: flex;
-  align-items: center;
   gap: 0.3rem;
-  width: inherit;
   line-height: 1;
   white-space: pre;
 }
@@ -42,6 +40,26 @@ button[data-type="ghost"]:hover {
 }
 
 button[data-type="ghost"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+button[data-type="bubble"] {
+  border-radius: 100%;
+  background-color: theme("colors.transparent");
+  color: theme("colors.slate.600");
+}
+
+button[data-type="bubble"]:hover {
+  background-color: theme("colors.slate.200");
+}
+
+button[data-type="bubble"][data-active="true"] {
+  background-color: theme("colors.slate.300");
+}
+
+button[data-type="bubble"][aria-disabled="true"] {
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
@@ -98,6 +116,11 @@ button[data-type="link"] {
   color: theme("colors.slate.600");
 }
 
+button[data-type="link"]:hover {
+  text-decoration: underline;
+  color: theme("colors.teal.600");
+}
+
 button[data-type="link"][data-active="true"] {
   background-color: theme("colors.teal.50");
 }
@@ -116,7 +139,7 @@ button[data-type="link"][data-color="danger"]:hover > span::before {
 }
 
 button[data-size="small"] {
-  padding: 0.475rem;
+  padding: 0.575rem;
   font-size: 1em;
   border-radius: 0.5em;
 }

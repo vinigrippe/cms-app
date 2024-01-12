@@ -38,7 +38,7 @@ export const PageCard = ({ page, index }) => {
                 <Button
                   type="flat"
                   size="xsmall"
-                  icon="more_horiz"
+                  icon="more_1"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
