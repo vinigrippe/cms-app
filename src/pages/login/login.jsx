@@ -70,9 +70,11 @@ export const Login = () => {
             onKeyDown={(e) => e.key === "Enter" && handleLogin()}
             value={loginField.password}
           />
-          <Button type="primary" onClick={handleLogin} isLoading={isLoading}>
-            Login
-          </Button>
+          <div className="w-[-webkit-fill-available]">
+            <Button type="primary" onClick={handleLogin} isLoading={isLoading}>
+              Login
+            </Button>
+          </div>
           {error && (
             <p className="text-red-400 text-center">
               Username or password wrong

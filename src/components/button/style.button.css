@@ -8,6 +8,7 @@ button[data-component="button"] {
   gap: 0.3rem;
   line-height: 1;
   white-space: pre;
+  width: inherit;
 }
 
 button[data-type="primary"] {
@@ -117,7 +118,6 @@ button[data-type="link"] {
 }
 
 button[data-type="link"]:hover {
-  text-decoration: underline;
   color: theme("colors.teal.600");
 }
 

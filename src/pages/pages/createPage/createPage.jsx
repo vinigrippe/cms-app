@@ -6,6 +6,7 @@ import { Input } from "@/components/input/input";
 import { Button } from "@/components/button/button";
 
 import { createPage, findAllPages } from "../../../services/page";
+import { useParams } from "react-router-dom";
 
 export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,7 @@ export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
     template: null,
     duplicate: "",
   });
+  const { websiteId } = useParams();
 
   const templateDummy = [
     {
@@ -38,7 +40,7 @@ export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([findAllPages()])
+    Promise.all([findAllPages(websiteId)])
       .then((response) => {
         setPageList(response[0]);
       })

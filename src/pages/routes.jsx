@@ -12,6 +12,7 @@ import { Login } from "./login/login";
 import { Editor } from "./editor/editor";
 import { Pages } from "./pages/pages";
 import { Websites } from "./websites/websites";
+import { NotFound } from "./notFound/notFound";
 
 const PrivateRoute = () => {
   const { isAuth } = useAuth();
@@ -20,7 +21,7 @@ const PrivateRoute = () => {
 
 const PublicRoute = () => {
   const isAuth = localStorage.getItem("token");
-  return !isAuth ? <Outlet /> : <Navigate to="/pages" replace />;
+  return !isAuth ? <Outlet /> : <Navigate to="/websites" replace />;
 };
 
 export const RoutePages = () => {
@@ -33,11 +34,14 @@ export const RoutePages = () => {
         </Route>
 
         <Route element={<PrivateRoute />}>
-          <Route exact path="*" element={<Websites />} />
-          <Route exact path="/" element={<Websites />} />
-          <Route exact path="/dashboard" element={<Websites />} />
-          <Route exact path="/website/:websiteId" element={<Pages />} />
-          <Route exact path="/editor/:pageId" element={<Editor />} />
+          <Route exact path="*" element={<NotFound />} />
+          <Route exact path="/websites" element={<Websites />} />
+          <Route exact path="/website/:websiteId/pages" element={<Pages />} />
+          <Route
+            exact
+            path="/website/:websiteId/page/:pageId/editor"
+            element={<Editor />}
+          />
         </Route>
       </Routes>
     </Router>

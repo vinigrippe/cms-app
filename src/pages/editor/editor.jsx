@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 
 import { elementsReducer } from "./editorService";
 import { generateId } from "@/utils/functions";
-import api from "@/utils/api";
+
+import { findPageById } from "../../services/page";
+import { findAllDesign } from "../../services/design";
 
 import PageEditor from "./pageEditor/pageEditor";
 import { SidePanel } from "./sidePanel/sidePanel";
@@ -38,37 +40,35 @@ export function Editor() {
   }, []);
 
   const handleLoadDesignSystem = async () => {
-    await api.get("design").then((response) => {
-      setDesignSystem(response.data);
-    });
+    const response = await findAllDesign();
+    setDesignSystem(response);
   };
 
   const handleLoadPage = async () => {
-    await api.get("/page/" + pageId).then((response) => {
-      const elements = response.data.elements;
+    const response = await findPageById(pageId);
+    const elements = response.elements;
 
-      if (elements.length === 0) {
-        const newElement = {
-          id: generateId({ name: "grid" }),
-          type: "grid",
-          elements: [
-            {
-              id: generateId({ name: "box" }),
-              type: "box",
-              elements: [],
-            },
-          ],
-        };
-        elements.push(newElement);
-      }
+    if (elements.length === 0) {
+      const newElement = {
+        id: generateId({ name: "grid" }),
+        type: "grid",
+        elements: [
+          {
+            id: generateId({ name: "box" }),
+            type: "box",
+            elements: [],
+          },
+        ],
+      };
+      elements.push(newElement);
+    }
 
-      setGridElements({
-        type: "SET_GRID",
-        payload: {
-          loadElements: elements,
-          loadHistory: [elements],
-        },
-      });
+    setGridElements({
+      type: "SET_GRID",
+      payload: {
+        loadElements: elements,
+        loadHistory: [elements],
+      },
     });
   };
 

@@ -91,7 +91,7 @@ const LayoutHeader = ({ children }) => {
 };
 
 const LayoutContent = ({ children }) => {
-  return <div className="w-full max-w-[1000px] px-3">{children}</div>;
+  return <div className="w-full max-w-[1000px] px-3 pb-10">{children}</div>;
 };
 
 Layout.Header = LayoutHeader;

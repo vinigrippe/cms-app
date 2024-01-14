@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PageEditorContext } from "../editor";
-import elementsList from "@/utils/elementList.json";
-import api from "@/utils/api";
 
-import { Button } from "../../../components/button/button";
+import { savePage } from "@/services/page";
+import { Button } from "@/components/button/button";
 import { DropDown } from "@/components/dropdown/dropdown";
+
+import elementsList from "@/utils/elementList.json";
 
 export const TopPanel = () => {
   const { pageId } = useParams();
@@ -29,20 +30,19 @@ export const TopPanel = () => {
   const handleSavePage = async () => {
     setIsLoading("save");
 
-    await api
-      .post("/page", {
-        id: pageId,
-        elements: gridElements.elements,
-      })
-      .then(() => {
-        setGridElements({ type: "SAVE" });
-      })
-      .finally(() => setIsLoading(""));
+    await savePage({
+      id: pageId,
+      elements: gridElements.elements,
+    });
+
+    setGridElements({ type: "SAVE" });
+    setIsLoading("");
   };
+
   return (
     <div
       data-animation="entrance-fade"
-      className="z-50 my-2 rounded-[20px] backdrop-blur-xl shadow-xl border bg-white/75 w-[-webkit-fill-available] flex py-3 px-4 justify-between items-center gap-2"
+      className="z-50 my-2 rounded-lg border bg-white/75 w-[-webkit-fill-available] flex py-2 px-2 justify-between items-center gap-2"
     >
       <div className="flex justify-end gap-1">
         <DropDown.Trigger onClose={() => setDisplayMenuElements(false)}>

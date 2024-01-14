@@ -262,32 +262,34 @@ const BoxOptions = () => {
                 }
                 value={elementBox?.classes?.borderWidth ?? "0"}
               />
-              <Select value={elementBox?.classes?.borderStyle || "solid"}>
-                <Select.Option
-                  onClick={() =>
-                    handleChangeClass(elementBox, "borderStyle", "solid")
-                  }
-                  isActive={elementBox?.classes?.borderStyle === "solid"}
-                >
-                  Solid
-                </Select.Option>
-                <Select.Option
-                  onClick={() =>
-                    handleChangeClass(elementBox, "borderStyle", "dotted")
-                  }
-                  isActive={elementBox?.classes?.borderStyle === "dotted"}
-                >
-                  Dotted
-                </Select.Option>
-                <Select.Option
-                  onClick={() =>
-                    handleChangeClass(elementBox, "borderStyle", "dashed")
-                  }
-                  isActive={elementBox?.classes?.borderStyle === "dashed"}
-                >
-                  Dashed
-                </Select.Option>
-              </Select>
+              <div className="w-[-webkit-fill-available]">
+                <Select value={elementBox?.classes?.borderStyle || "solid"}>
+                  <Select.Option
+                    onClick={() =>
+                      handleChangeClass(elementBox, "borderStyle", "solid")
+                    }
+                    isActive={elementBox?.classes?.borderStyle === "solid"}
+                  >
+                    Solid
+                  </Select.Option>
+                  <Select.Option
+                    onClick={() =>
+                      handleChangeClass(elementBox, "borderStyle", "dotted")
+                    }
+                    isActive={elementBox?.classes?.borderStyle === "dotted"}
+                  >
+                    Dotted
+                  </Select.Option>
+                  <Select.Option
+                    onClick={() =>
+                      handleChangeClass(elementBox, "borderStyle", "dashed")
+                    }
+                    isActive={elementBox?.classes?.borderStyle === "dashed"}
+                  >
+                    Dashed
+                  </Select.Option>
+                </Select>
+              </div>
               <div className="relative">
                 <Input
                   type="color"

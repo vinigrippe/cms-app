@@ -248,32 +248,34 @@ const GridOptions = () => {
               }
               value={elementGrid?.classes?.borderWidth ?? "0"}
             />
-            <Select value={elementGrid?.classes?.borderStyle || "solid"}>
-              <Select.Option
-                onClick={() =>
-                  handleChangeClass(elementGrid, "borderStyle", "solid")
-                }
-                isActive={elementGrid?.classes?.borderStyle === "solid"}
-              >
-                Solid
-              </Select.Option>
-              <Select.Option
-                onClick={() =>
-                  handleChangeClass(elementGrid, "borderStyle", "dotted")
-                }
-                isActive={elementGrid?.classes?.borderStyle === "dotted"}
-              >
-                Dotted
-              </Select.Option>
-              <Select.Option
-                onClick={() =>
-                  handleChangeClass(elementGrid, "borderStyle", "dashed")
-                }
-                isActive={elementGrid?.classes?.borderStyle === "dashed"}
-              >
-                Dashed
-              </Select.Option>
-            </Select>
+            <div className="w-[-webkit-fill-available]">
+              <Select value={elementGrid?.classes?.borderStyle || "solid"}>
+                <Select.Option
+                  onClick={() =>
+                    handleChangeClass(elementGrid, "borderStyle", "solid")
+                  }
+                  isActive={elementGrid?.classes?.borderStyle === "solid"}
+                >
+                  Solid
+                </Select.Option>
+                <Select.Option
+                  onClick={() =>
+                    handleChangeClass(elementGrid, "borderStyle", "dotted")
+                  }
+                  isActive={elementGrid?.classes?.borderStyle === "dotted"}
+                >
+                  Dotted
+                </Select.Option>
+                <Select.Option
+                  onClick={() =>
+                    handleChangeClass(elementGrid, "borderStyle", "dashed")
+                  }
+                  isActive={elementGrid?.classes?.borderStyle === "dashed"}
+                >
+                  Dashed
+                </Select.Option>
+              </Select>
+            </div>
             <div className="relative">
               <Input
                 type="color"

@@ -7,8 +7,15 @@ export const createPage = async (page) => {
   return response;
 };
 
-export const findAllPages = async () => {
-  const pages = await api.get("/pages?page=1").then((response) => {
+export const savePage = async (page) => {
+  const response = await api.post("/page", page).then((response) => {
+    return response.data;
+  });
+  return response;
+};
+
+export const findAllPages = async (websiteId) => {
+  const pages = await api.get(`/pages/${websiteId}`).then((response) => {
     return response.data;
   });
   return pages;

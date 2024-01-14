@@ -33,7 +33,7 @@ export const Pages = () => {
   const handleLoadPages = async () => {
     setIsLoading(true);
 
-    Promise.all([findAllPages()])
+    Promise.all([findAllPages(websiteId)])
       .then((response) => {
         setPageList(response[0]);
       })
@@ -57,11 +57,11 @@ export const Pages = () => {
             type="flat"
             icon="arrow_left"
             onClick={() => {
-              navigate("/pages");
+              navigate("/websites");
             }}
             size="small"
           >
-            Back to dashboard
+            Back to websites
           </Button>
         </div>
 

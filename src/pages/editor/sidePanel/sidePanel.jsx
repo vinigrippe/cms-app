@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PageEditorContext } from "../editor";
 
 import { Button } from "@/components/button/button";
@@ -12,7 +12,7 @@ export const SidePanel = () => {
   const { showTreeWalker, setShowTreeWalker, gridElements, elementOnFocus } =
     useContext(PageEditorContext);
   const [isTabFocused, setIsTabFocused] = useState(false);
-
+  const { websiteId } = useParams();
   const navigate = useNavigate();
 
   const { element } = getElement(
@@ -32,20 +32,20 @@ export const SidePanel = () => {
 
   return (
     <div
-      className="relative min-w-[250px] max-w-[250px] bg-white rounded-[20px] z-10 border m-2 shadow-lg border-slate-200 flex flex-col justify-between overflow-hidden"
+      className="relative min-w-[250px] max-w-[250px] bg-white rounded-lg z-10 border m-2 border-slate-200 flex flex-col justify-between overflow-hidden"
       data-animation="entrance-fade"
       onFocus={(e) => {
         e.stopPropagation();
         e.preventDefault();
       }}
     >
-      <div className="flex flex-col gap-5 px-3 py-3 h-full overflow-y-auto">
+      <div className="flex flex-col gap-5 px-2 py-2 h-full overflow-y-auto">
         <div className="flex justify-between pb-2 pt-0 border-b">
           <Button
             type="flat"
             icon="arrow_left"
             onClick={() => {
-              navigate("/pages");
+              navigate(`/website/${websiteId}/pages`);
             }}
           >
             Back to Pages
@@ -115,7 +115,7 @@ export const SidePanel = () => {
           </div>
         )}
       </div>
-      <div className="sticky bottom-0 px-2 w-[-webkit-fill-available] bg-white pb-3 pt-2 border-t">
+      <div className="sticky bottom-0 px-2 w-[-webkit-fill-available] bg-white py-2 border-t">
         <Button
           type="flat"
           icon="tree_2"

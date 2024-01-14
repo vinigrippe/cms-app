@@ -23,7 +23,7 @@ export const ImageElement = ({ id }) => {
         <img
           src={selectedImage}
           alt="test"
-          className="relative z-10 object-center w-full h-full group-hover/image:opacity-20 transition-all"
+          className="relative z-10 object-center w-full h-full"
           style={{
             objectFit: element?.classes?.objectFit || "cover",
           }}

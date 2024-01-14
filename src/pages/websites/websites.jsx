@@ -11,7 +11,7 @@ import { WebsiteCard } from "./websiteCard/websiteCard";
 
 export const Websites = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [pageList, setPageList] = useState([]);
+  const [websites, setWebsitesList] = useState([]);
   const [inputFilters, setInputFilters] = useState({
     search: "",
     sort: "activity",
@@ -28,7 +28,7 @@ export const Websites = () => {
 
     Promise.all([findAllWebsites()])
       .then((response) => {
-        setPageList(response[0]);
+        setWebsitesList(response[0]);
       })
       .finally(() => {
         setIsLoading(false);
@@ -63,6 +63,7 @@ export const Websites = () => {
                 type="primary"
                 icon="add"
                 onClick={() => setModalCreatePage(true)}
+                isDisabled
               >
                 New Website
               </Button>
@@ -85,9 +86,9 @@ export const Websites = () => {
           }
           `}
           >
-            {pageList
-              .filter((page) =>
-                page.title
+            {websites
+              .filter((website) =>
+                website.title
                   .toLowerCase()
                   .includes(inputFilters.search.toLowerCase())
               )
@@ -103,8 +104,8 @@ export const Websites = () => {
                     return a.title.localeCompare(b.title);
                 }
               })
-              .map((page, index) => (
-                <WebsiteCard page={page} index={index} key={page.id} />
+              .map((website, index) => (
+                <WebsiteCard website={website} index={index} key={website.id} />
               ))}
           </div>
         )}

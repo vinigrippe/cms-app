@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import { ContextMenu } from "./contextMenu/contextMenu";
 
+import { savePage } from "@/services/page";
 import { PageEditorContext } from "../editor";
 import { GridElement } from "./elements/gridElement";
 import { LoadingIcon } from "../../../icons/loading";
 
 import "./pageEditor.css";
-
 function PageEditor() {
-  const { gridElements, isLoading, setElementOnFocus } =
+  const { gridElements, setGridElements, isLoading, setElementOnFocus } =
     useContext(PageEditorContext);
   const [displayContextMenu, setDisplayContextMenu] = useState(false);
   const [event, setEvent] = useState({ clientX: 0, clientY: 0 });
+  const { pageId } = useParams();
 
   const handleElementOnFocus = (e) => {
     setElementOnFocus({
@@ -48,6 +50,22 @@ function PageEditor() {
     handleElementOnFocus(e);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "s" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleSavePage();
+    }
+  };
+
+  const handleSavePage = async () => {
+    await savePage({
+      id: pageId,
+      elements: gridElements.elements,
+    });
+    setGridElements({ type: "SAVE" });
+  };
+
   return (
     <div
       id="page-editor"
@@ -56,6 +74,7 @@ function PageEditor() {
       onContextMenu={(e) => handleContextMenu(e)}
       onClick={(e) => handleElementOnFocus(e)}
       onScroll={() => setDisplayContextMenu(false)}
+      onKeyDown={(e) => handleKeyDown(e)}
       style={{
         backgroundColor: "#FFFFFF",
       }}

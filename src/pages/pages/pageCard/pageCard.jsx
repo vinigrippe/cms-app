@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import moment from "moment";
 
 import { Button } from "@/components/button/button";
@@ -7,12 +7,13 @@ import { DropDown } from "@/components/dropdown/dropdown";
 
 export const PageCard = ({ page, index }) => {
   const [menuOptions, setMenuOptions] = useState(false);
+  const { websiteId } = useParams();
 
   return (
-    <Link to={`/editor/${page.id}`}>
+    <Link to={`/website/${websiteId}/page/${page.id}/editor`}>
       <div
         data-animation="entrance-fade"
-        className="col-span-1 rounded-lg cursor-pointer border-slate-200 border bg-white flex flex-col px-3 pb-3 pt-2 gap-2 transition-all relative z-1"
+        className="col-span-1 rounded-lg cursor-pointer border-slate-200 border bg-white flex flex-col px-3 pb-3 pt-2 gap-2 transition-all"
         style={{
           animationDelay: index * 0.15 + "s",
         }}
