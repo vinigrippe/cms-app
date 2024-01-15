@@ -1,6 +1,6 @@
 import { Button } from "@/components/button/button";
 import { Layout } from "@/components/layout/layout";
-import { FaceFrownIcon, HomeIcon } from "@heroicons/react/24/outline";
+import { FaceFrownIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
 export const NotFound = () => {

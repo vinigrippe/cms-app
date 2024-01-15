@@ -47,7 +47,7 @@ export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [websiteId]);
 
   const handleOnChange = (field, value) => {
     setPageField({
@@ -66,7 +66,7 @@ export const ModalCreatePage = ({ isOpen, onClose, handleLoadPages }) => {
       elements: [],
       userCreator: 1,
     });
-    await handleLoadPages();
+    await handleLoadPages(websiteId);
 
     setIsLoading(false);
     onClose();

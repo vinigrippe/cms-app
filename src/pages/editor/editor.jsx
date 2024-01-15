@@ -34,18 +34,13 @@ export function Editor() {
 
   useEffect(() => {
     setIsLoading("load");
-    Promise.all([handleLoadPage(), handleLoadDesignSystem()]).then(() => {
+    Promise.all([handleLoadPage(pageId), handleLoadDesignSystem()]).then(() => {
       setIsLoading("");
     });
-  }, []);
+  }, [pageId]);
 
-  const handleLoadDesignSystem = async () => {
-    const response = await findAllDesign();
-    setDesignSystem(response);
-  };
-
-  const handleLoadPage = async () => {
-    const response = await findPageById(pageId);
+  const handleLoadPage = async (id) => {
+    const response = await findPageById(id);
     const elements = response.elements;
 
     if (elements.length === 0) {
@@ -70,6 +65,11 @@ export function Editor() {
         loadHistory: [elements],
       },
     });
+  };
+
+  const handleLoadDesignSystem = async () => {
+    const response = await findAllDesign();
+    setDesignSystem(response);
   };
 
   return (

@@ -8,6 +8,7 @@ import { LoadingIcon } from "@/icons/loading";
 import { Layout } from "@/components/layout/layout";
 
 import { WebsiteCard } from "./websiteCard/websiteCard";
+import { Modal } from "@/components/modal/modal";
 
 export const Websites = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -108,6 +109,23 @@ export const Websites = () => {
                 <WebsiteCard website={website} index={index} key={website.id} />
               ))}
           </div>
+        )}
+
+        {modalCreatePage && (
+          <Modal onClose={() => setModalCreatePage(false)}>
+            <Modal.Header title="Create a new website" />
+            <Modal.Body>
+              <div className="flex flex-col gap-2">
+                <Input placeholder="Website name" />
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button type="ghost" onClick={() => setModalCreatePage(false)}>
+                Cancel
+              </Button>
+              <Button type="primary">Create</Button>
+            </Modal.Footer>
+          </Modal>
         )}
       </Layout.Content>
     </Layout>

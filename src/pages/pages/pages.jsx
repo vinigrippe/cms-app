@@ -27,13 +27,13 @@ export const Pages = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleLoadPages();
-  }, []);
+    handleLoadPages(websiteId);
+  }, [websiteId]);
 
-  const handleLoadPages = async () => {
+  const handleLoadPages = async (id) => {
     setIsLoading(true);
 
-    Promise.all([findAllPages(websiteId)])
+    Promise.all([findAllPages(id)])
       .then((response) => {
         setPageList(response[0]);
       })
