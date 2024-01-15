@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ isOpen, size, children }) => {
+const Modal = ({ size, children }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full">
       <div
@@ -9,7 +9,7 @@ const Modal = ({ isOpen, size, children }) => {
       />
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div
-          className="bg-white rounded-xl overflow-auto fixed min-w-[400px] w-[calc(100%-2rem)] max-h-[90vh]"
+          className="bg-white rounded-xl overflow-auto fixed min-w-[350px] w-[calc(100%-2rem)] max-h-[90vh]"
           data-animation={"entrance-bottom"}
           style={{
             maxWidth: size,

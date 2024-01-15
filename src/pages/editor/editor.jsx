@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import { elementsReducer } from "./editorService";
 import { generateId } from "@/utils/functions";
 
-import { findPageById } from "../../services/page";
-import { findAllDesign } from "../../services/design";
+import { findPageById } from "@/services/page";
+import { findAllDesign } from "@/services/design";
 
 import PageEditor from "./pageEditor/pageEditor";
 import { SidePanel } from "./sidePanel/sidePanel";
