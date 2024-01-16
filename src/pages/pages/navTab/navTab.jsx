@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/button/button";
 import { useNavigate, useParams } from "react-router-dom";
 
-export const NavTab = () => {
-  const [activeTab, setActiveTab] = useState("pages");
+export const NavTab = ({ isActive }) => {
   const navigate = useNavigate();
   const { websiteId } = useParams();
 
@@ -43,7 +42,7 @@ export const NavTab = () => {
       {tabs.map((tab) => (
         <div
           className={`border-b-2 pb-[6px] ${
-            activeTab === tab.value ? "border-teal-400" : "border-transparent"
+            isActive === tab.value ? "border-teal-400" : "border-transparent"
           }
           
       `}
@@ -51,10 +50,9 @@ export const NavTab = () => {
         >
           <Button
             type="flat"
-            isActive={activeTab === tab.value}
+            isActive={isActive === tab.value}
             size="small"
             onClick={() => {
-              setActiveTab(tab.value);
               navigate(tab.link);
             }}
             isDisabled={tab.disabled}

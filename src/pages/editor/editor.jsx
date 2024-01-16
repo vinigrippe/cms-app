@@ -15,7 +15,7 @@ import { TopPanel } from "./topPanel/topPanel";
 export const PageEditorContext = createContext();
 
 export function Editor() {
-  const { pageId } = useParams();
+  const { pageId, websiteId } = useParams();
   const [gridElements, setGridElements] = useReducer(elementsReducer, {
     elements: [],
     history: [],
@@ -34,10 +34,13 @@ export function Editor() {
 
   useEffect(() => {
     setIsLoading("load");
-    Promise.all([handleLoadPage(pageId), handleLoadDesignSystem()]).then(() => {
+    Promise.all([
+      handleLoadPage(pageId),
+      handleLoadDesignSystem(websiteId),
+    ]).then(() => {
       setIsLoading("");
     });
-  }, [pageId]);
+  }, [pageId, websiteId]);
 
   const handleLoadPage = async (id) => {
     const response = await findPageById(id);
@@ -67,8 +70,8 @@ export function Editor() {
     });
   };
 
-  const handleLoadDesignSystem = async () => {
-    const response = await findAllDesign();
+  const handleLoadDesignSystem = async (id) => {
+    const response = await findAllDesign(id);
     setDesignSystem(response);
   };
 

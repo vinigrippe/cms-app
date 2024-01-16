@@ -7,8 +7,8 @@ export const createDesign = async (design) => {
   return response;
 };
 
-export const findAllDesign = async () => {
-  const design = await api.get("/design?page=1").then((response) => {
+export const findAllDesign = async (pageId) => {
+  const design = await api.get(`/design/${pageId}`).then((response) => {
     return response.data;
   });
   return design;

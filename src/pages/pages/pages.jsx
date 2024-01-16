@@ -12,9 +12,11 @@ import { Layout } from "@/components/layout/layout";
 import { ModalCreatePage } from "./createPage/createPage";
 import { PageCard } from "./pageCard/pageCard";
 import { NavTab } from "./navTab/navTab";
+import { findWebsiteById } from "@/services/website";
 
 export const Pages = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [websiteData, setWebsiteData] = useState({});
   const [pageList, setPageList] = useState([]);
   const [inputFilters, setInputFilters] = useState({
     search: "",
@@ -27,19 +29,24 @@ export const Pages = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleLoadPages(websiteId);
-  }, [websiteId]);
-
-  const handleLoadPages = async (id) => {
     setIsLoading(true);
 
-    Promise.all([findAllPages(id)])
-      .then((response) => {
-        setPageList(response[0]);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    Promise.all([
+      handleLoadWebsite(websiteId),
+      handleLoadPages(websiteId),
+    ]).then(() => {
+      setIsLoading(false);
+    });
+  }, [websiteId]);
+
+  const handleLoadWebsite = async (id) => {
+    const response = await findWebsiteById(id);
+    setWebsiteData(response);
+  };
+
+  const handleLoadPages = async (id) => {
+    const response = await findAllPages(id);
+    setPageList(response);
   };
 
   const handleOnChangeFilter = (value, field) => {
@@ -65,12 +72,14 @@ export const Pages = () => {
           </Button>
         </div>
 
-        <NavTab />
+        <NavTab isActive="pages" />
       </Layout.Header>
 
       <Layout.Content>
         <div className="flex justify-between items-center gap-2 py-5 flex-col md:flex-row">
-          <h1 className="text-lg font-semibold md:w-fit w-full">Alexandre</h1>
+          <h1 className="text-lg font-semibold md:w-fit w-full">
+            {websiteData.title}
+          </h1>
           <div className="flex items-center gap-2 md:w-fit w-full">
             <div className="w-full md:w-[250px] min-w-[120px]">
               <Input
@@ -148,12 +157,12 @@ export const Pages = () => {
           `}
           >
             {pageList
-              .filter((page) =>
+              ?.filter((page) =>
                 page.title
                   .toLowerCase()
                   .includes(inputFilters.search.toLowerCase())
               )
-              .sort((a, b) => {
+              ?.sort((a, b) => {
                 switch (inputFilters.sort) {
                   default:
                   case "activity":

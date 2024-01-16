@@ -13,6 +13,7 @@ import { Editor } from "./editor/editor";
 import { Pages } from "./pages/pages";
 import { Websites } from "./websites/websites";
 import { NotFound } from "./notFound/notFound";
+import { Design } from "./design/design";
 
 const PrivateRoute = () => {
   const { isAuth } = useAuth();
@@ -37,6 +38,7 @@ export const RoutePages = () => {
           <Route exact path="*" element={<NotFound />} />
           <Route exact path="/websites" element={<Websites />} />
           <Route exact path="/website/:websiteId/pages" element={<Pages />} />
+          <Route exact path="/website/:websiteId/design" element={<Design />} />
           <Route
             exact
             path="/website/:websiteId/page/:pageId/editor"
