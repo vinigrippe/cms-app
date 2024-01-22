@@ -10,6 +10,7 @@ import { DropDown } from "@/components/dropdown/dropdown";
 import elementsList from "@/utils/elementList.json";
 import { findAllDesign } from "@/services/design";
 import { ModalCreateStyle } from "./createStyle/createStyle";
+import { BuildStyleComponent } from "./buildStyleComponent/buildStyleComponent";
 
 export const Design = () => {
   const [modalCreateStyle, setModalCreateStyle] = useState(false);
@@ -48,7 +49,7 @@ export const Design = () => {
         <NavTab isActive="design" />
       </Layout.Header>
       <Layout.Content>
-        <div className="flex gap-4 pt-6 py-5 flex-col">
+        <div className="flex gap-4 pt-5 pb-6 flex-col">
           <div className="flex gap-6">
             <div className="flex flex-col gap-3 min-w-[200px]">
               <h1 className="text-md font-semibold md:w-fit w-full">
@@ -68,7 +69,19 @@ export const Design = () => {
               </div>
             </div>
             <div className="flex flex-col gap-3 w-full">
-              <h1 className="text-md font-semibold md:w-fit w-full">Styles</h1>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 className="text-md font-semibold md:w-fit w-full">
+                    Styles
+                  </h1>
+                  <span className="text-slate-400">
+                    {styles?.styles?.length} registers
+                  </span>
+                </div>
+                <Button icon="add" onClick={() => setModalCreateStyle(true)}>
+                  Create Style
+                </Button>
+              </div>
               <div className="grid grid-cols-3 gap-3">
                 {styles?.styles?.length > 0 &&
                   styles?.styles?.map((styleItem) => (
@@ -82,11 +95,11 @@ export const Design = () => {
           </div>
         </div>
 
-        {!modalCreateStyle && (
+        {modalCreateStyle && (
           <ModalCreateStyle
             isOpen={modalCreateStyle}
             onClose={() => setModalCreateStyle(false)}
-            designId={styles?.id}
+            style={styles}
             handleLoadDesign={handleLoadDesign}
           />
         )}
@@ -97,14 +110,6 @@ export const Design = () => {
 
 const ComponentStyle = ({ style, element }) => {
   const [menuOptions, setMenuOptions] = useState(false);
-
-  const StyleComponent = styled[element]`
-    ${style.styleInline};
-
-    &:hover {
-      ${style.styleHover};
-    }
-  `;
 
   return (
     <div className="border p-4 rounded-lg bg-white group">
@@ -141,7 +146,9 @@ const ComponentStyle = ({ style, element }) => {
         </div>
       </div>
       <div className="border-t pt-2 mt-2 w-full">
-        <StyleComponent>asda</StyleComponent>
+        <BuildStyleComponent element={element} style={style}>
+          {element}
+        </BuildStyleComponent>
       </div>
     </div>
   );

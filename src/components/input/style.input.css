@@ -1,5 +1,5 @@
 input[data-component="input"] {
-  width: -webkit-fill-available;
+  width: auto;
   border-radius: 0.6em;
   background-color: WHITE;
   color: theme("colors.slate.500");
